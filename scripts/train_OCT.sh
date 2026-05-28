@@ -1,0 +1,15 @@
+python main.py \
+    --data_root='./datasets/RetinalOCT_Dataset' \
+    --lr=5e-4 \
+    --backbone='Resnet18' \
+    --dataset='RetinalOCT' \
+    --known_class=5 \
+    --unknown_class=3 \
+    --seed=0 \
+    --batchsize=8 \
+    --epoches=100 \
+    --client_num=8 \
+    --worker_steps=1 \
+    --mode='Pretrain' \
+    --dirichlet=0.5 \
+    --log_dir='./logs'
