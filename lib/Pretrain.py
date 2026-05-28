@@ -12,7 +12,7 @@ import os.path as osp
 
 def run(args):
       
-    best_f1 = 0
+    best_oscr = 0
     best_epoch = 0
     print('==> Preparing data..')
     param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}          
@@ -42,33 +42,34 @@ def run(args):
                 print(f"Train {client_name} [{epoch}/{args.epoches}] LR={args.lr:.7f} loss={train_loss:.3f} ACC={train_acc:.3f} F1={train_f1:.3f} Rec={train_recall:.3f} Prec={train_precision:.3f}")     
         server_model, models = communication_Pretrain(args, server_model, models, client_weights)
         val_result = val(args, device, epoch, server_model, valloader)
-        val_loss, val_acc, val_f1, val_recall, val_prec = val_result['loss'], val_result['acc'],val_result['f1'],val_result['recall'], val_result['precision']               
+        val_loss, val_acc, val_f1, val_recall, val_prec = val_result['loss'], val_result['acc'],val_result['f1'],val_result['recall'], val_result['precision']
         print()
-        print(f"Val    [{epoch}/{args.epoches}] LR={args.lr:.7f} loss={val_loss:.3f} ACC={val_acc:.3f} F1={val_f1:.3f} Rec={val_recall:.3f} Prec={val_prec:.3f}") 
+        print(f"Val    [{epoch}/{args.epoches}] LR={args.lr:.7f} loss={val_loss:.3f} ACC={val_acc:.3f} F1={val_f1:.3f} Rec={val_recall:.3f} Prec={val_prec:.3f}")
         print()
 
-        if val_f1 > best_f1:
-            best_f1 = val_f1
-            best_epoch = epoch            
-            osr_result, close_test_result = test(args, device, epoch, server_model, closerloader, openloader)
-            osr_acc, osr_f1, osr_recall, osr_precision = osr_result['acc'],osr_result['f1'],osr_result['recall'],osr_result['precision']
-            osr_unk, osr_os_star, osr_hos, osr_auroc, osr_aupr, osr_oscr = osr_result['unk'], osr_result['os_star'], osr_result['hos'], osr_result['auroc'], osr_result['aupr'], osr_result['oscr']
-            test_loss, test_acc, test_f1, test_recall, test_precision = close_test_result['loss'], close_test_result['acc'],close_test_result['f1'],close_test_result['recall'],close_test_result['precision']
-            print(f"Test-  OSR [{epoch}/{args.epoches}] LR={args.lr:.7f} ACC={osr_acc:.3f} F1={osr_f1:.3f} Rec={osr_recall:.3f} Prec={osr_precision:.3f} UNK={osr_unk:.3f} OS*={osr_os_star:.3f} HOS={osr_hos:.3f} AUROC={osr_auroc:.3f} AUPR={osr_aupr:.3f} OSCR={osr_oscr:.3f}")
-            print(f"Test-Close [{epoch}/{args.epoches}] LR={args.lr:.7f} loss={test_loss:.3f} ACC={test_acc:.3f} F1={test_f1:.3f} Rec={test_recall:.3f} Prec={test_precision:.3f}")                     
+        osr_result, close_test_result = test(args, device, epoch, server_model, closerloader, openloader)
+        osr_acc, osr_f1, osr_recall, osr_precision = osr_result['acc'],osr_result['f1'],osr_result['recall'],osr_result['precision']
+        osr_unk, osr_os_star, osr_hos, osr_auroc, osr_aupr, osr_oscr = osr_result['unk'], osr_result['os_star'], osr_result['hos'], osr_result['auroc'], osr_result['aupr'], osr_result['oscr']
+        test_loss, test_acc, test_f1, test_recall, test_precision = close_test_result['loss'], close_test_result['acc'],close_test_result['f1'],close_test_result['recall'],close_test_result['precision']
+        print(f"Test-  OSR [{epoch}/{args.epoches}] LR={args.lr:.7f} ACC={osr_acc:.3f} F1={osr_f1:.3f} Rec={osr_recall:.3f} Prec={osr_precision:.3f} UNK={osr_unk:.3f} OS*={osr_os_star:.3f} HOS={osr_hos:.3f} AUROC={osr_auroc:.3f} AUPR={osr_aupr:.3f} OSCR={osr_oscr:.3f}")
+        print(f"Test-Close [{epoch}/{args.epoches}] LR={args.lr:.7f} loss={test_loss:.3f} ACC={test_acc:.3f} F1={test_f1:.3f} Rec={test_recall:.3f} Prec={test_precision:.3f}")
+
+        if osr_oscr > best_oscr:
+            best_oscr = osr_oscr
+            best_epoch = epoch
             #server
             state = {
                 'net': server_model.state_dict(),
                 }
             name_model = 'best_ckpt_'+args.mode+'_known_class_'+str(args.known_class)+'_unknown_class_'+str(args.unknown_class)+'_seed_'+str(args.seed)+'.pth'
-            torch.save(state, osp.join(args.save_path,name_model))             
+            torch.save(state, osp.join(args.save_path,name_model))
             #clients
-            for clint_idx, mo in enumerate(models):           
+            for clint_idx, mo in enumerate(models):
                 state = {
                     'net': mo.state_dict(),
                     }
                 name_model = 'best_ckpt_'+args.mode+'_known_class_'+str(args.known_class)+'_unknown_class_'+str(args.unknown_class)+'_seed_'+str(args.seed)+'_C_'+str(clint_idx)+'.pth'
-                torch.save(state, osp.join(args.save_path,name_model))        
+                torch.save(state, osp.join(args.save_path,name_model))
             print(f'Saving best model . . . . . . . .')
             print()
 
@@ -92,7 +93,7 @@ def run(args):
 
         epoch += 1
 
-    print('------>Best performance--->>>>>>>')
+    print('------>Best performance (by OSCR)--->>>>>>>')
     print()
     print(f"Test-  OSR [{best_epoch}/{args.epoches}] ACC={osr_acc:.3f} F1={osr_f1:.3f} Rec={osr_recall:.3f} Prec={osr_precision:.3f} UNK={osr_unk:.3f} OS*={osr_os_star:.3f} HOS={osr_hos:.3f} AUROC={osr_auroc:.3f} AUPR={osr_aupr:.3f} OSCR={osr_oscr:.3f}")
     print('=====================================================================================================================================')
