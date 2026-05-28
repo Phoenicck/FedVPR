@@ -14,7 +14,7 @@ import gc
 
 def run(args):
       
-    best_f1 = 0
+    best_oscr = 0
     best_epoch = 0
     string1 = ''
     string2 = ''    
@@ -66,9 +66,9 @@ def run(args):
         print(f"Test-  OSR [{epoch}/{args.epoches}] LR={args.lr:.7f} ACC={osr_acc:.3f} F1={osr_f1:.3f} Rec={osr_recall:.3f} Prec={osr_precision:.3f} UNK={osr_unk:.3f} OS*={osr_os_star:.3f} HOS={osr_hos:.3f} AUROC={osr_auroc:.3f} AUPR={osr_aupr:.3f} OSCR={osr_oscr:.3f}")
         print(f"Test-Close [{epoch}/{args.epoches}] LR={args.lr:.7f} loss={test_loss:.3f} ACC={test_acc:.3f} F1={test_f1:.3f} Rec={test_recall:.3f} Prec={test_precision:.3f}")                     
         print()
-        if osr_f1 > best_f1:
+        if osr_oscr > best_oscr:
             best_epoch = epoch
-            best_f1 = osr_f1
+            best_oscr = osr_oscr
             string1 = f"Test-  OSR [{epoch}/{args.epoches}] LR={args.lr:.7f} ACC={osr_acc:.3f} F1={osr_f1:.3f} Rec={osr_recall:.3f} Prec={osr_precision:.3f} UNK={osr_unk:.3f} OS*={osr_os_star:.3f} HOS={osr_hos:.3f} AUROC={osr_auroc:.3f} AUPR={osr_aupr:.3f} OSCR={osr_oscr:.3f}"
             string2 = f"Test-Close [{epoch}/{args.epoches}] LR={args.lr:.7f} loss={test_loss:.3f} ACC={test_acc:.3f} F1={test_f1:.3f} Rec={test_recall:.3f} Prec={test_precision:.3f}"
 
@@ -91,7 +91,7 @@ def run(args):
             print()
         epoch += 1
     
-    print('------>Best performance--->>>>>>')
+    print('------>Best performance (by OSCR)--->>>>>>>')
     print()
     print(string1)
     print(string2)
