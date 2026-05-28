@@ -12,6 +12,26 @@ import torch.nn as nn
 import torch.nn.init as init
 
 
+class Tee:
+    """Duplicate stdout to a file, like `tee` command."""
+    def __init__(self, filepath):
+        self.file = open(filepath, 'w')
+        self.stdout = sys.stdout
+        sys.stdout = self
+
+    def write(self, data):
+        self.file.write(data)
+        self.stdout.write(data)
+
+    def flush(self):
+        self.file.flush()
+        self.stdout.flush()
+
+    def close(self):
+        self.file.close()
+        sys.stdout = self.stdout
+
+
 def get_mean_and_std(dataset):
     '''Compute the mean and std value of dataset.'''
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=True, num_workers=2)

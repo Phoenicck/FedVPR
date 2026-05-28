@@ -6,12 +6,15 @@ Created on Sun Jun 12 10:05:53 2022
 """
 
 import argparse
+import os
 import os.path as osp
+import sys
 import numpy as np
 import torch
 import random
 import warnings
 from models.utils import pprint, ensure_path
+from utils import Tee
 warnings.filterwarnings('ignore')
 
 
@@ -50,6 +53,8 @@ if __name__=="__main__":
     parser.add_argument('--cropsize', default=128,type=int,help='crop size')
     parser.add_argument('--batchsize', default=16,type=int,help='minibatch size')    
     parser.add_argument('--epoches', default=200,type=int,help='epoches')
+    parser.add_argument('--save_interval', default=0, type=int, help='save checkpoint every N epochs (0=disabled)')
+    parser.add_argument('--log_dir', default='./logs', type=str, help='directory for log files (set to empty string to disable)')
     
     parser.add_argument('--client_num', type=int, default=8, help='the number of clients')
     parser.add_argument('--worker_steps', type=int, default=1, help='step of worker')
@@ -85,9 +90,21 @@ if __name__=="__main__":
     ensure_path(save_path1, remove=False)
     ensure_path(args.save_path, remove=False)
 
-    main(args)
-    
-    now = time.strftime('%Y-%m-%d %H:%M:%S')
-    print('The ending time ：{}'.format(now)) 
+    # Setup logging: duplicate stdout to log file
+    tee = None
+    if args.log_dir:
+        os.makedirs(args.log_dir, exist_ok=True)
+        log_name = f"{args.dataset}_{args.mode}_K{args.known_class}_U{args.unknown_class}_seed{args.seed}_{time.strftime('%Y%m%d_%H%M%S')}.log"
+        log_path = osp.join(args.log_dir, log_name)
+        tee = Tee(log_path)
+        print(f"Logging to: {log_path}")
+
+    try:
+        main(args)
+        now = time.strftime('%Y-%m-%d %H:%M:%S')
+        print('The ending time ：{}'.format(now))
+    finally:
+        if tee:
+            tee.close()
     
     

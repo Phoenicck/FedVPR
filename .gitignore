@@ -1,0 +1,6 @@
+results/*/
+*.pyc
+__pycache__/
+.DS_Store
+pre_model/resnet18-5c106cde.pth
+datasets/MedMNIST/bloodmnist.npz

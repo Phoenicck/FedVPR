@@ -60,23 +60,30 @@ def run(args):
             gc.collect()
         osr_result, close_test_result = test(args, device, epoch, server_model, closerloader, openloader)
         osr_acc, osr_f1, osr_recall, osr_precision = osr_result['acc'],osr_result['f1'],osr_result['recall'],osr_result['precision']
-        test_loss, test_acc, test_f1, test_recall, test_precision = close_test_result['loss'], close_test_result['acc'],close_test_result['f1'],close_test_result['recall'],close_test_result['precision']   
-        print() 
-        print(f"Test-  OSR [{epoch}/{args.epoches}] LR={args.lr:.7f} ACC={osr_acc:.3f} F1={osr_f1:.3f} Rec={osr_recall:.3f} Prec={osr_precision:.3f}")
+        osr_unk, osr_os_star, osr_hos, osr_auroc, osr_aupr, osr_oscr = osr_result['unk'], osr_result['os_star'], osr_result['hos'], osr_result['auroc'], osr_result['aupr'], osr_result['oscr']
+        test_loss, test_acc, test_f1, test_recall, test_precision = close_test_result['loss'], close_test_result['acc'],close_test_result['f1'],close_test_result['recall'],close_test_result['precision']
+        print()
+        print(f"Test-  OSR [{epoch}/{args.epoches}] LR={args.lr:.7f} ACC={osr_acc:.3f} F1={osr_f1:.3f} Rec={osr_recall:.3f} Prec={osr_precision:.3f} UNK={osr_unk:.3f} OS*={osr_os_star:.3f} HOS={osr_hos:.3f} AUROC={osr_auroc:.3f} AUPR={osr_aupr:.3f} OSCR={osr_oscr:.3f}")
         print(f"Test-Close [{epoch}/{args.epoches}] LR={args.lr:.7f} loss={test_loss:.3f} ACC={test_acc:.3f} F1={test_f1:.3f} Rec={test_recall:.3f} Prec={test_precision:.3f}")                     
         print()
         if osr_f1 > best_f1:
             best_epoch = epoch
             best_f1 = osr_f1
-            string1 = f"Test-  OSR [{epoch}/{args.epoches}] LR={args.lr:.7f} ACC={osr_acc:.3f} F1={osr_f1:.3f} Rec={osr_recall:.3f} Prec={osr_precision:.3f}"
+            string1 = f"Test-  OSR [{epoch}/{args.epoches}] LR={args.lr:.7f} ACC={osr_acc:.3f} F1={osr_f1:.3f} Rec={osr_recall:.3f} Prec={osr_precision:.3f} UNK={osr_unk:.3f} OS*={osr_os_star:.3f} HOS={osr_hos:.3f} AUROC={osr_auroc:.3f} AUPR={osr_aupr:.3f} OSCR={osr_oscr:.3f}"
             string2 = f"Test-Close [{epoch}/{args.epoches}] LR={args.lr:.7f} loss={test_loss:.3f} ACC={test_acc:.3f} F1={test_f1:.3f} Rec={test_recall:.3f} Prec={test_precision:.3f}"
-          
+
             state = {
                 'net': server_model.state_dict(),
                 'osr_acc':osr_acc,
-                'osr_f1':osr_f1, 
+                'osr_f1':osr_f1,
                 'osr_recall':osr_recall,
                 'osr_precision':osr_precision,
+                'osr_unk':osr_unk,
+                'osr_os_star':osr_os_star,
+                'osr_hos':osr_hos,
+                'osr_auroc':osr_auroc,
+                'osr_aupr':osr_aupr,
+                'osr_oscr':osr_oscr,
                 'epoch': best_epoch,
                 }
             torch.save(state, osp.join(args.save_path,'best_finetune_ckpt_'+args.mode+'.pth'))        
