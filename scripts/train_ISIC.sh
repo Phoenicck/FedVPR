@@ -1,16 +1,16 @@
 #!/bin/bash
-# FedOSS RetinalOCT training script
-# Usage: bash scripts/train_OCT.sh
+# FedOSS ISIC 2019 training script
+# Usage: bash scripts/train_ISIC.sh
 
-echo "====== FedOSS RetinalOCT Training ======"
+echo "====== FedOSS ISIC 2019 Training ======"
 echo ""
 
 # Pretrain (seed 0, known=5, unknown=3)
 python main.py \
-    --data_root='./datasets/RetinalOCT_Dataset' \
+    --data_root='./datasets' \
     --lr=5e-4 \
     --backbone='Resnet18' \
-    --dataset='RetinalOCT' \
+    --dataset='ISIC' \
     --known_class=5 \
     --unknown_class=3 \
     --seed=0 \
@@ -25,10 +25,10 @@ python main.py \
 
 # Finetune
 python main.py \
-    --data_root='./datasets/RetinalOCT_Dataset' \
+    --data_root='./datasets' \
     --lr=1e-4 \
     --backbone='Resnet18' \
-    --dataset='RetinalOCT' \
+    --dataset='ISIC' \
     --known_class=5 \
     --unknown_class=3 \
     --seed=0 \

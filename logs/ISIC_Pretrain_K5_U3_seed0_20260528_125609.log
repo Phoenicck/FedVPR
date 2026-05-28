@@ -1,0 +1,25 @@
+Logging to: ./logs/ISIC_Pretrain_K5_U3_seed0_20260528_125609.log
+==> Preparing data..
+Known class list: [6 2 1 7 3] Unknown class list [0 5 4]
+Total selected images: 25331
+Train: 17731, Val: 2533, Test: 5067
+Train class distribution: [(0, 3132), (1, 8985), (2, 2364), (3, 607), (4, 1858), (5, 156), (6, 177), (7, 452)]
+{6: 0, 2: 1, 1: 2, 7: 3, 3: 4} {0: 5, 5: 6, 4: 7}
+Known origin: [6 2 1 7 3] , new: [0 1 2 3 4]
+Unknown origin: [0 5 4] , new: [5 6 7]
+Known/Unknown in Train: 12585/5146
+Known/Unknown in Val:   1792/741
+Known/Unknown in Test:  3569/1498
+Client0 sample num: 656
+Client1 sample num: 2734
+Client2 sample num: 5544
+Client3 sample num: 351
+Client4 sample num: 1294
+Client5 sample num: 1259
+Client6 sample num: 200
+Client7 sample num: 547
+
+>>> Setting up
+==> Building [Resnet18] model..
+154
+120

@@ -38,6 +38,14 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
             p_lower = 0
             p_upper = 1.
 
+    if args.dataset == 'ISIC':
+        if args.unknown_class == 3:
+            p_lower = 0
+            p_upper = 1.
+        if args.unknown_class == 5:
+            p_lower = 0
+            p_upper = 1.
+
     if args.dataset == 'Bloodmnist':
         if args.unknown_class == 3:
             p_lower = 0
@@ -84,7 +92,7 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
             is_boundary_lower = torch.gt(aux_preds_peers/(net_peers_sample_number+1), p_lower)
             is_boundary = is_boundary_lower & is_boundary_upper    
 
-            if (is_boundary.sum()>0 and (args.dataset=='Hyperkvasir' or args.dataset=='RetinalOCT')) or (is_boundary.sum()>1 and (args.dataset=='Bloodmnist' or args.dataset=='OrganMNIST3D')): #  batchnorm error when batchsize = 1               
+            if (is_boundary.sum()>0 and (args.dataset=='Hyperkvasir' or args.dataset=='RetinalOCT' or args.dataset=='ISIC')) or (is_boundary.sum()>1 and (args.dataset=='Bloodmnist' or args.dataset=='OrganMNIST3D')): #  batchnorm error when batchsize = 1               
                 discrete_feats = discrete_feats[is_boundary]
                 discrete_targets = targets[is_boundary]
                 inputs_unknown, targets_unknown = attack.i_DUS(net, discrete_feats, discrete_targets, net_peers_sample)
@@ -104,7 +112,7 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
                     if epoch in args.start_epoch:
                         targets_unknown_numpy = targets_unknown.cpu().data.numpy() 
                         for index in range(len(targets_unknown)):
-                            if ((args.dataset=='Hyperkvasir' or args.dataset=='RetinalOCT') and PDs[index]>0) or ((args.dataset=='Bloodmnist' or args.dataset=='OrganMNIST3D') and PDs[index]>-1):
+                            if ((args.dataset=='Hyperkvasir' or args.dataset=='RetinalOCT' or args.dataset=='ISIC') and PDs[index]>0) or ((args.dataset=='Bloodmnist' or args.dataset=='OrganMNIST3D') and PDs[index]>-1):
                                 dict_key = targets_unknown_numpy[index]
                                 unknown_sample = inputs_unknown[index].clone().detach().view(1, -1)
                                 if unknown_dict[dict_key] == None:
@@ -126,6 +134,8 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
                                 _, index_prob = torch.topk(- prob_density, sample_num[index])
                                 generated_unknown_samples = generated_unknown_samples[index_prob].to(device)
                                 if args.dataset=='Hyperkvasir':
+                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 8, 8)
+                                elif args.dataset=='ISIC':
                                     generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 8, 8)
                                 elif args.dataset=='Bloodmnist':
                                     generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 2, 2)

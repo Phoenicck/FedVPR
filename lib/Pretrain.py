@@ -21,6 +21,9 @@ def run(args):
     elif args.dataset=='RetinalOCT':
         param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}
         from data.fed_retinal_oct_relabel import get_dataloaders
+    elif args.dataset=='ISIC':
+        param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}
+        from data.fed_isic_relabel import get_dataloaders
     elif args.dataset=='Bloodmnist':
         param = {'dataset': args.dataset, 'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}        
         from data.fed_MedMINIST_relabel import get_dataloaders

@@ -1,0 +1,10 @@
+Logging to: ./logs/RetinalOCT_Finetune_K5_U3_seed0_20260528_123110.log
+==> Preparing data..
+Known class list: [6 2 1 7 3] Unknown class list [0 5 4]
+Total images — Train: 0, Val: 0, Test: 0
+{6: 0, 2: 1, 1: 2, 7: 3, 3: 4} {0: 5, 5: 6, 4: 7}
+Known origin: [6 2 1 7 3] , new: [0 1 2 3 4]
+Unknown origin: [0 5 4] , new: [5 6 7]
+Known/Unknown in Train: 0/0
+Known/Unknown in Val:   0/0
+Known/Unknown in Test:  0/0
