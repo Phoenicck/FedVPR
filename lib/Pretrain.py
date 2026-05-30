@@ -14,6 +14,8 @@ def run(args):
       
     best_oscr = 0
     best_epoch = 0
+    best_osr_acc = best_osr_f1 = best_osr_recall = best_osr_precision = 0
+    best_osr_unk = best_osr_os_star = best_osr_hos = best_osr_auroc = best_osr_aupr = best_osr_oscr = 0
     print('==> Preparing data..')
     param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}          
     if args.dataset=='Hyperkvasir':
@@ -63,6 +65,8 @@ def run(args):
         if osr_oscr > best_oscr:
             best_oscr = osr_oscr
             best_epoch = epoch
+            best_osr_acc, best_osr_f1, best_osr_recall, best_osr_precision = osr_acc, osr_f1, osr_recall, osr_precision
+            best_osr_unk, best_osr_os_star, best_osr_hos, best_osr_auroc, best_osr_aupr, best_osr_oscr = osr_unk, osr_os_star, osr_hos, osr_auroc, osr_aupr, osr_oscr
             #server
             state = {
                 'net': server_model.state_dict(),
@@ -101,6 +105,6 @@ def run(args):
 
     print('------>Best performance (by OSCR)--->>>>>>>')
     print()
-    print(f"Test-  OSR [{best_epoch}/{args.epoches}] ACC={osr_acc:.3f} F1={osr_f1:.3f} Rec={osr_recall:.3f} Prec={osr_precision:.3f} UNK={osr_unk:.3f} OS*={osr_os_star:.3f} HOS={osr_hos:.3f} AUROC={osr_auroc:.3f} AUPR={osr_aupr:.3f} OSCR={osr_oscr:.3f}")
+    print(f"Test-  OSR [{best_epoch}/{args.epoches}] ACC={best_osr_acc:.3f} F1={best_osr_f1:.3f} Rec={best_osr_recall:.3f} Prec={best_osr_precision:.3f} UNK={best_osr_unk:.3f} OS*={best_osr_os_star:.3f} HOS={best_osr_hos:.3f} AUROC={best_osr_auroc:.3f} AUPR={best_osr_aupr:.3f} OSCR={best_osr_oscr:.3f}")
     print('=====================================================================================================================================')
         
