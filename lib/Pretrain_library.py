@@ -21,10 +21,31 @@ def train(args, device, epoch, net, trainloader, optimizer):
         inputs, targets = inputs.to(device), targets.long().to(device)
         optimizer.zero_grad()
         outs = net(inputs)
-        outputs = outs['outputs']    
+        outputs = outs['outputs']
         aux_outputs = outs['aux_out']
-        loss = criterion(outputs, targets)        
-        loss += criterion(aux_outputs, targets)  
+        # Stage 1: Pre-training with Space Reservation
+        # L_Stage1 = L_CE(W_known) + lambda * L_vir(W_known U W_vir)
+
+        # 1. Split outputs into known and virtual logits
+        known_logits = outputs[:, :args.known_class]
+        virtual_logits = outputs[:, args.known_class:]
+
+        # 2. Standard CrossEntropy on Known Classes
+        loss_ce = criterion(known_logits, targets)
+
+        # 3. Virtual Softmax Loss
+        true_class_logits = known_logits.gather(1, targets.unsqueeze(1))  # [B, 1]
+        vir_loss_input = torch.cat([true_class_logits, virtual_logits], dim=1)  # [B, 1 + M]
+        vir_loss_targets = torch.zeros(inputs.size(0), dtype=torch.long, device=device)
+        loss_vir = criterion(vir_loss_input, vir_loss_targets)
+
+        # Total Loss with lambda schedule
+        if epoch < 4:
+            loss = loss_ce + 0.5 * loss_vir
+        else:
+            loss = loss_ce + 0.01 * loss_vir
+        # Add Aux Loss
+        loss += criterion(aux_outputs, targets)
         loss.backward()
         optimizer.step()
         train_loss += loss.item()

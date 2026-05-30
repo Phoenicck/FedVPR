@@ -36,13 +36,13 @@ def setup(args, trainloaders):
     if args.mode == 'Pretrain':
          if args.backbone== 'Resnet18':
             from models.ResNet_FedOSR_Pretrain import resnet18
-            server_model=resnet18(pretrained=pretrained, num_classes=args.known_class) 
+            server_model=resnet18(pretrained=pretrained, num_classes=args.known_class, num_virtual=args.virtue_num)
          if args.backbone== 'Resnet34':
             from models.ResNet_FedOSR_Pretrain import resnet34
-            server_model=resnet34(pretrained=pretrained, num_classes=args.known_class) 
+            server_model=resnet34(pretrained=pretrained, num_classes=args.known_class, num_virtual=args.virtue_num)
          if args.backbone== 'Resnet18_3D':
             from models.ResNet_FedOSR_Pretrain import resnet18
-            server_model=resnet18(pretrained=pretrained, num_classes=args.known_class)
+            server_model=resnet18(pretrained=pretrained, num_classes=args.known_class, num_virtual=args.virtue_num)
             #https://discuss.pytorch.org/t/inconsistent-results-with-3d-maxpool-on-gpu/38558/3
             #torch.nn.MaxPool3d(kernel_size=3, stride=2, padding=1) leads to non-deterministic results
             server_model.maxpool = torch.nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
