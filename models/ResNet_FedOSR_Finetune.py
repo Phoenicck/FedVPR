@@ -149,7 +149,7 @@ class MixLinear(nn.Linear):
 
 class ResNet(nn.Module):
 
-    def __init__(self, block, layers, num_classes=1000, zero_init_residual=False,
+    def __init__(self, block, layers, num_classes=1000, num_virtual=0, zero_init_residual=False,
                  groups=1, width_per_group=64, replace_stride_with_dilation=None,
                  norm_layer=None):
         super(ResNet, self).__init__()
@@ -181,7 +181,7 @@ class ResNet(nn.Module):
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2,
                                        dilate=replace_stride_with_dilation[2])
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.main_cls = nn.Linear(512, num_classes+1)
+        self.main_cls = nn.Linear(512, num_classes + num_virtual)
         
         self.auxiliary_layer4 = self._make_auxiliary_layer(block, 256, 512, layers[3], stride=2,
                                        dilate=replace_stride_with_dilation[2])      
@@ -313,21 +313,18 @@ def _resnet(arch, block, layers, pretrained, **kwargs):
         
     return model
 
-def resnet18(pretrained=False, num_classes=8, **kwargs):
-
-    return _resnet('resnet18', BasicBlock, [2, 2, 2, 2], pretrained, num_classes=num_classes,
+def resnet18(pretrained=False, num_classes=8, num_virtual=0, **kwargs):
+    return _resnet('resnet18', BasicBlock, [2, 2, 2, 2], pretrained, num_classes=num_classes, num_virtual=num_virtual,
                    **kwargs)
 
 
-def resnet34(pretrained=False, num_classes=8, **kwargs):
-
-    return _resnet('resnet34', BasicBlock, [3, 4, 6, 3], pretrained, num_classes=num_classes,
+def resnet34(pretrained=False, num_classes=8, num_virtual=0, **kwargs):
+    return _resnet('resnet34', BasicBlock, [3, 4, 6, 3], pretrained, num_classes=num_classes, num_virtual=num_virtual,
                    **kwargs)
 
 
-def resnet50(pretrained=False, num_classes=8, **kwargs):
-
-    return _resnet('resnet50', Bottleneck, [3, 4, 6, 3], pretrained, num_classes=num_classes,
+def resnet50(pretrained=False, num_classes=8, num_virtual=0, **kwargs):
+    return _resnet('resnet50', Bottleneck, [3, 4, 6, 3], pretrained, num_classes=num_classes, num_virtual=num_virtual,
                    **kwargs)
 
 

@@ -1,0 +1,49 @@
+Logging to: ./logs_smoke/RetinalOCT_Finetune_K5_U3_seed0_20260602_205739.log
+==> Preparing data..
+Known class list: [6 2 1 7 3] Unknown class list [0 5 4]
+Total images — Train: 18400, Val: 2800, Test: 2800
+{6: 0, 2: 1, 1: 2, 7: 3, 3: 4} {0: 5, 5: 6, 4: 7}
+Known origin: [6 2 1 7 3] , new: [0 1 2 3 4]
+Unknown origin: [0 5 4] , new: [5 6 7]
+Known/Unknown in Train: 11500/6900
+Known/Unknown in Val:   1750/1050
+Known/Unknown in Test:  1750/1050
+Client0 sample num: 6305
+Client1 sample num: 5195
+
+>>> Setting up
+==> Building [Resnet18] model..
+154
+154
+154
+154
+154
+154
+Train Client0 [0/3] LR=0.0001000 loss=6.373 ACC=97.500 F1=95.820 Rec=95.590 Prec=96.073
+Train Client1 [0/3] LR=0.0001000 loss=1.171 ACC=96.625 F1=93.761 Rec=94.562 Prec=93.061
+
+Test-  OSR [0/3] LR=0.0001000 ACC=49.750 F1=16.379 Rec=16.583 Prec=16.179 UNK=0.000 OS*=19.900 HOS=0.000 AUROC=99.343 AUPR=99.175 OSCR=99.143
+Test-Close [0/3] LR=0.0001000 loss=1.587 ACC=99.500 F1=49.875 Rec=49.750 Prec=50.000
+
+Saving best model . . . . . . . .
+
+Train Client0 [1/3] LR=0.0001000 loss=1.394 ACC=97.625 F1=96.083 Rec=95.990 Prec=96.181
+Train Client1 [1/3] LR=0.0001000 loss=0.544 ACC=95.062 F1=89.882 Rec=90.030 Prec=89.738
+
+Test-  OSR [1/3] LR=0.0001000 ACC=50.250 F1=16.308 Rec=16.750 Prec=32.316 UNK=0.500 OS*=20.000 HOS=0.976 AUROC=99.575 AUPR=99.460 OSCR=99.575
+Test-Close [1/3] LR=0.0001000 loss=1.591 ACC=100.000 F1=100.000 Rec=100.000 Prec=100.000
+
+Saving best model . . . . . . . .
+
+Train Client0 [2/3] LR=0.0001000 loss=0.909 ACC=97.625 F1=96.689 Rec=96.534 Prec=96.850
+Train Client1 [2/3] LR=0.0001000 loss=0.365 ACC=95.625 F1=90.479 Rec=91.762 Prec=89.450
+
+Test-  OSR [2/3] LR=0.0001000 ACC=50.000 F1=16.064 Rec=16.667 Prec=15.504 UNK=0.000 OS*=20.000 HOS=0.000 AUROC=99.420 AUPR=98.777 OSCR=99.420
+Test-Close [2/3] LR=0.0001000 loss=1.602 ACC=100.000 F1=100.000 Rec=100.000 Prec=100.000
+
+------>Best performance (by OSCR)--->>>>>>>
+
+Test-  OSR [1/3] LR=0.0001000 ACC=50.250 F1=16.308 Rec=16.750 Prec=32.316 UNK=0.500 OS*=20.000 HOS=0.976 AUROC=99.575 AUPR=99.460 OSCR=99.575
+Test-Close [1/3] LR=0.0001000 loss=1.591 ACC=100.000 F1=100.000 Rec=100.000 Prec=100.000
+=====================================================================================================================================
+The ending time ：2026-06-02 21:01:32

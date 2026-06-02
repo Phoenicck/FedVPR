@@ -79,9 +79,9 @@ def compute_global_statistic(args, mean_clients,cov_clients,number_clients):
     # 保证g_cov为正定矩阵
     g_cov += 0.0001 * eye_matrix
     
-    unknown_dis = []                    
-    for index in range(args.known_class):
-        #    if ((args.dataset =='OrganMNIST3D' or args.dataset =='Bloodmnist') and number_total[0][index] > 10) or args.dataset == 'Hyperkvasir': #and (not torch.isnan(g_mean[index]).any()) and (not torch.isnan(g_cov[index]).any()):
+    unknown_dis = []
+    num_distributions = g_mean.shape[0]
+    for index in range(num_distributions):
         if number_total[0][index] > 10:
             unknown_dis.append(torch.distributions.multivariate_normal.MultivariateNormal(g_mean[index], covariance_matrix=g_cov[index]))
         else:
@@ -93,13 +93,47 @@ def compute_global_statistic(args, mean_clients,cov_clients,number_clients):
     
     return unknown_dis
 
-def communication_Finetune(args, server_model, models, client_weights, mean_clients,cov_clients,number_clients, unknown_dis):
+def compute_global_diag_statistic(args, mean_clients, var_clients, number_clients):
+    """Server-side diagonal variance aggregation for LUPS."""
+    D = mean_clients.shape[-1]                                  # [K, C, D]
+    number_total = number_clients.sum(0)                      # [C]
+    N = number_total.float().clamp_min(1e-9)
+
+    # Global mean: weighted by client sample count
+    g_mean = (number_clients.unsqueeze(2) * mean_clients).sum(0) / N.unsqueeze(1)  # [C, D]
+
+    # Global diagonal var: E[x^2] - E[x]^2 pooled across clients
+    second = (number_clients.unsqueeze(2) * (var_clients + mean_clients ** 2)).sum(0) / N.unsqueeze(1)
+    g_var = second - g_mean ** 2
+    g_var = torch.clamp(g_var, min=args.lups_min_var) * args.lups_var_scale
+
+    unknown_dis = []
+    num_distributions = g_mean.shape[0]
+    for index in range(num_distributions):
+        if number_total[index] > args.lups_min_count:
+            unknown_dis.append({
+                'mean': g_mean[index],
+                'var': g_var[index],
+                'count': number_total[index].item(),
+            })
+        else:
+            unknown_dis.append(None)
+
+    del g_var, g_mean, second
+    gc.collect()
+    return unknown_dis
+
+def communication_Finetune(args, server_model, models, client_weights, mean_clients, cov_clients, var_clients, number_clients, unknown_dis):
     
     if len(mean_clients)>0:
         mean_clients = torch.stack(mean_clients, 0)
-        cov_clients = torch.stack(cov_clients, 0)
-        number_clients = torch.stack(number_clients, 0)        
-        unknown_dis = compute_global_statistic(args, mean_clients, cov_clients, number_clients)
+        number_clients = torch.stack(number_clients, 0)
+        if args.lups_mode == 'diag':
+            var_clients = torch.stack([v for v in var_clients if v is not None], 0)
+            unknown_dis = compute_global_diag_statistic(args, mean_clients, var_clients, number_clients)
+        else:
+            cov_clients = torch.stack([c for c in cov_clients if c is not None], 0)
+            unknown_dis = compute_global_statistic(args, mean_clients, cov_clients, number_clients)
 
     with torch.no_grad():
         # aggregate params

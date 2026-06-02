@@ -6,10 +6,31 @@ Created on Tue Aug 23 00:03:23 2022
 """
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import numpy as np
 from sklearn import metrics
 from random import sample
 import gc
+
+
+def known_unknown_rank_loss(args, outputs_known, outputs_unknown):
+    """Penalize when known samples have lower max-known-prob than unknown samples."""
+    prob_known = torch.softmax(outputs_known, dim=-1)
+    prob_unknown = torch.softmax(outputs_unknown, dim=-1)
+    known_score = prob_known[:, :args.known_class].max(dim=1)[0]
+    unknown_known_score = prob_unknown[:, :args.known_class].max(dim=1)[0]
+    return torch.relu(args.rank_margin - known_score.mean() + unknown_known_score.mean())
+
+
+def prepare_lups_feature(args, feats):
+    """Pool feature maps for LUPS to reduce dimension."""
+    if args.lups_space == 'fullmap':
+        return feats
+    if args.lups_space == 'pooled':
+        return F.adaptive_avg_pool2d(feats, (args.lups_pool_size, args.lups_pool_size))
+    if args.lups_space == 'gap':
+        return F.adaptive_avg_pool2d(feats, (1, 1))
+    raise ValueError(args.lups_space)
 
 def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, attack = None, unknown_dis = None):
     net.train()
@@ -61,10 +82,11 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
         if args.unknown_class == 7:            
             p_lower = 0
             p_upper = 1.    
-    unknown_dict = [None for i in range(args.known_class)]
-    mean_dict = [None for i in range(args.known_class)]
-    cov_dict = [None for i in range(args.known_class)]
-    number_dict = torch.zeros(args.known_class)
+    unknown_dict = [None for i in range(args.virtue_num)]
+    mean_dict = [None for i in range(args.virtue_num)]
+    cov_dict = [None for i in range(args.virtue_num)]
+    var_dict = [None for i in range(args.virtue_num)]
+    number_dict = torch.zeros(args.virtue_num)
     for batch_idx, (inputs, targets, img_dirs) in enumerate(trainloader):
         gc.collect()
         torch.cuda.empty_cache()
@@ -101,51 +123,62 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
                     outputs_unknown = outs_unknown['outputs']
                     # probabilistic distance
                     prob_unknown = torch.softmax(outputs_unknown,dim=-1)
-                    PDs = prob_unknown[:,-1] - prob_unknown[:,:-1].max(-1)[0]                     
-                    gt_unknown=torch.ones(outputs_unknown.shape[0]).long().to(device)*args.known_class                
-                    for i in range(len(outputs_unknown)):
-                        nowlabel=targets_unknown[i]
-                        outputs_unknown[i][nowlabel]=-1e9                 
-                    loss += criterion(outputs_unknown, gt_unknown) * args.unknown_weight          
+                    PDs = prob_unknown[:,-1] - prob_unknown[:,:-1].max(-1)[0]
+                    # Multi-virtual target assignment (deterministic)
+                    virtual_idx = targets_unknown % args.virtue_num
+                    virtual_targets = (args.known_class + virtual_idx).long().to(device)
+                    loss += criterion(outputs_unknown, virtual_targets) * args.lups_local_weight
+                    loss += args.rank_weight * known_unknown_rank_loss(args, outputs, outputs_unknown)          
                     
                     #start save unknown data
                     if epoch in args.start_epoch:
                         targets_unknown_numpy = targets_unknown.cpu().data.numpy() 
                         for index in range(len(targets_unknown)):
                             if ((args.dataset=='Hyperkvasir' or args.dataset=='RetinalOCT' or args.dataset=='ISIC') and PDs[index]>0) or ((args.dataset=='Bloodmnist' or args.dataset=='OrganMNIST3D') and PDs[index]>-1):
-                                dict_key = targets_unknown_numpy[index]
-                                unknown_sample = inputs_unknown[index].clone().detach().view(1, -1)
-                                if unknown_dict[dict_key] == None:
+                                dict_key = int(targets_unknown_numpy[index]) % args.virtue_num
+                                unknown_feat = inputs_unknown[index].clone().detach()
+                                if args.lups_space != 'fullmap':
+                                    unknown_feat = prepare_lups_feature(args, unknown_feat)
+                                unknown_sample = unknown_feat.view(1, -1)
+                                if unknown_dict[dict_key] is None:
                                     unknown_dict[dict_key] = unknown_sample
                                 else:
-                                    unknown_dict[dict_key] = torch.cat((unknown_dict[dict_key], unknown_sample),dim=0)                                    
-                    if unknown_dis is not None: 
-                        sample_c = torch.randint(0, args.known_class, (args.sample_from,))
-                        sample_num = {index: 0 for index in range(args.known_class)}
+                                    unknown_dict[dict_key] = torch.cat((unknown_dict[dict_key], unknown_sample),dim=0)
+                    if unknown_dis is not None:
+                        sample_c = torch.randint(0, args.virtue_num, (args.sample_from,))
+                        sample_num = {index: 0 for index in range(args.virtue_num)}
                         for it in sample_c:
-                            sample_num[it.item()] = sample_num[it.item()] + 1 
+                            sample_num[it.item()] = sample_num[it.item()] + 1
                         ood_samples = None
-                        ood_targets = None                                                
-                        for index in range(args.known_class):
-                            if sample_num[index] > 0 and unknown_dis[index] != None:                            
-                                generated_unknown_samples = unknown_dis[index].rsample((100,))
-                                prob_density = unknown_dis[index].log_prob(generated_unknown_samples)
-                                # keep the data in the low density area.
-                                _, index_prob = torch.topk(- prob_density, sample_num[index])
-                                generated_unknown_samples = generated_unknown_samples[index_prob].to(device)
-                                if args.dataset=='Hyperkvasir':
-                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 8, 8)
-                                elif args.dataset=='ISIC':
-                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 8, 8)
-                                elif args.dataset=='Bloodmnist':
-                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 2, 2)
-                                elif args.dataset=='OrganMNIST3D':
-                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 2, 2, 2)
-                                elif args.dataset=='RetinalOCT':
-                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 8, 8)
+                        ood_targets = None
+                        for index in range(args.virtue_num):
+                            if sample_num[index] > 0 and unknown_dis[index] is not None:
+                                if args.lups_mode == 'diag':
+                                    d = unknown_dis[index]
+                                    mean = d['mean'].to(device)
+                                    var = d['var'].to(device)
+                                    eps = torch.randn(args.lups_candidates, mean.shape[0], device=device)
+                                    z = mean + torch.sqrt(var + 1e-8) * eps
+                                    if args.lups_sample_strategy == 'low_density':
+                                        score = ((z - mean) ** 2 / (var + 1e-8)).sum(dim=1)
+                                        _, idx = torch.topk(score, sample_num[index])
+                                    else:
+                                        idx = torch.randperm(args.lups_candidates, device=device)[:sample_num[index]]
+                                    generated_unknown_samples = z[idx]
                                 else:
-                                    assert False                                     
-                                generated_unknown_targets = (torch.ones(sample_num[index])*index).long().to(device) 
+                                    generated_unknown_samples = unknown_dis[index].rsample((args.lups_candidates,))
+                                    prob_density = unknown_dis[index].log_prob(generated_unknown_samples)
+                                    _, index_prob = torch.topk(-prob_density, sample_num[index])
+                                    generated_unknown_samples = generated_unknown_samples[index_prob].to(device)
+
+                                # Reshape for discrete_forward
+                                if args.dataset == 'OrganMNIST3D':
+                                    p = args.lups_pool_size if args.lups_space == 'pooled' else 2
+                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, p, p, p)
+                                else:
+                                    p = args.lups_pool_size if args.lups_space == 'pooled' else (2 if args.dataset == 'Bloodmnist' else 8)
+                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, p, p)
+                                generated_unknown_targets = (torch.ones(sample_num[index]) * index).long().to(device) 
                                 if ood_samples is None:
                                     ood_samples = generated_unknown_samples
                                     ood_targets = generated_unknown_targets
@@ -153,14 +186,13 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
                                     ood_samples = torch.cat((ood_samples, generated_unknown_samples), 0) 
                                     ood_targets = torch.cat((ood_targets, generated_unknown_targets), 0)
                                 del generated_unknown_samples
-                        if ood_samples is not None and ood_samples.shape[0]>1:        
-                            outs_unknown = net.discrete_forward(ood_samples.clone().detach()) 
-                            outputs_unknown = outs_unknown['outputs'] 
-                            gt_unknown=torch.ones(outputs_unknown.shape[0]).long().to(device)*args.known_class                
-                            for i in range(len(outputs_unknown)):
-                                nowlabel=ood_targets[i]
-                                outputs_unknown[i][nowlabel]=-1e9                 
-                            loss += criterion(outputs_unknown, gt_unknown) * args.unknown_weight                                
+                        if ood_samples is not None and ood_samples.shape[0]>1:
+                            outs_unknown = net.discrete_forward(ood_samples.clone().detach())
+                            outputs_unknown = outs_unknown['outputs']
+                            # Multi-virtual target for global FOSS samples
+                            global_virtual_targets = (args.known_class + ood_targets).long().to(device)
+                            loss += criterion(outputs_unknown, global_virtual_targets) * args.lups_global_weight
+                            loss += args.rank_weight * known_unknown_rank_loss(args, outputs, outputs_unknown)                                
                                 
         optimizer.zero_grad()        
         loss.backward()
@@ -174,28 +206,47 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
     
         del inputs, loss
         gc.collect()
+        if args.max_train_batches > 0 and (batch_idx + 1) >= args.max_train_batches:
+            break
 
-    if epoch in args.start_epoch:      
-        for index in range(args.known_class):            
-            if unknown_dict[index] is not None:                
+    if epoch in args.start_epoch:
+        fallback_dim = None
+        for item in unknown_dict:
+            if item is not None:
+                fallback_dim = item.shape[1]
+                break
+        if fallback_dim is None:
+            with torch.no_grad():
+                fallback_feat = prepare_lups_feature(args, discrete_feats[:1])
+                fallback_dim = fallback_feat.reshape(1, -1).shape[1]
+
+        for index in range(args.virtue_num):
+            if unknown_dict[index] is not None:
                 mean_dict[index] = unknown_dict[index].mean(0).cpu()
-                X = unknown_dict[index] - unknown_dict[index].mean(0)
-                cov_matrix = torch.mm(X.t(), X) / len(X)
-                cov_dict[index] = cov_matrix.cpu()
-                number_dict[index] =  len(X)
-                del cov_matrix, X                
+                number_dict[index] = len(unknown_dict[index])
+                if args.lups_mode == 'diag':
+                    X = unknown_dict[index] - unknown_dict[index].mean(0)
+                    var_dict[index] = X.var(0, unbiased=False).cpu()
+                    del X
+                else:
+                    X = unknown_dict[index] - unknown_dict[index].mean(0)
+                    cov_matrix = torch.mm(X.t(), X) / len(X)
+                    cov_dict[index] = cov_matrix.cpu()
+                    del cov_matrix, X
             else:
-                for i in range(args.known_class):   
-                    if unknown_dict[i] is not None:
-                       break
-                D = unknown_dict[i].shape[1]   
-                mean_dict[index] = torch.zeros(D) 
-                cov_dict[index] = torch.zeros(D, D)                          
+                mean_dict[index] = torch.zeros(fallback_dim)
+                if args.lups_mode == 'diag':
+                    var_dict[index] = torch.ones(fallback_dim)
+                else:
+                    cov_dict[index] = torch.zeros(fallback_dim, fallback_dim)
         del unknown_dict
         gc.collect()
-        
-        mean_dict = torch.stack(mean_dict, dim = 0)
-        cov_dict = torch.stack(cov_dict, dim = 0)
+
+        mean_dict = torch.stack(mean_dict, dim=0)
+        if args.lups_mode == 'diag':
+            var_dict = torch.stack(var_dict, dim=0)
+        else:
+            cov_dict = torch.stack(cov_dict, dim=0)
 
     for peer_net in net_peers:        
         peer_net.train()          
@@ -212,7 +263,8 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
               'recall':recall_macro,
               'precision': precision,
               'mean_dict': mean_dict,
-              'cov_dict':cov_dict,
+              'cov_dict': cov_dict if args.lups_mode == 'fullcov' else None,
+              'var_dict': var_dict if args.lups_mode == 'diag' else None,
               'number_dict': number_dict
               }
     return result
@@ -235,8 +287,10 @@ def val(args, device, epoch, net, valloader):
             val_loss += loss.item()               
             _, predicted = outputs[:, :args.known_class].max(1)
             pred_list.extend(predicted.cpu().numpy().tolist())
-            label_list.extend(targets.cpu().numpy().tolist())    
-            
+            label_list.extend(targets.cpu().numpy().tolist())
+            if args.max_eval_batches > 0 and (batch_idx + 1) >= args.max_eval_batches:
+                break
+
         loss_avg = val_loss/(batch_idx+1)
         mean_acc = 100*metrics.accuracy_score(label_list, pred_list)
         precision = 100*metrics.precision_score(label_list, pred_list, average='macro')        
@@ -277,7 +331,9 @@ def test(args, device, epoch, net, closerloader, openloader, threshold=0):
             test_loss += loss.item()
             _, predicted = outputs[:, :args.known_class].max(1)
             pred_list_temp.extend(predicted.cpu().numpy().tolist())
-            label_list_temp.extend(targets.cpu().numpy().tolist())    
+            label_list_temp.extend(targets.cpu().numpy().tolist())
+            if args.max_eval_batches > 0 and (batch_idx + 1) >= args.max_eval_batches:
+                break
 
         loss_avg = test_loss/(batch_idx+1)
         mean_acc = 100*metrics.accuracy_score(label_list_temp, pred_list_temp)
@@ -308,6 +364,8 @@ def test(args, device, epoch, net, closerloader, openloader, threshold=0):
             # Store max probability over known classes for AUROC/AUPR
             prob_known_list.append(prob[:, :args.known_class].max(1)[0].cpu().numpy())
             targets_list.append(targets.cpu().numpy())
+            if args.max_eval_batches > 0 and (batch_idx + 1) >= args.max_eval_batches:
+                break
 
         for batch_idx, (inputs, targets, img_dirs) in enumerate(openloader):
             inputs, targets = inputs.to(device), targets.to(device)
@@ -320,6 +378,8 @@ def test(args, device, epoch, net, closerloader, openloader, threshold=0):
 
             targets = np.ones_like(targets.cpu().numpy())*args.known_class
             targets_list.append(targets)
+            if args.max_eval_batches > 0 and (batch_idx + 1) >= args.max_eval_batches:
+                break
 
         # openset recognition
         targets_list=np.reshape(np.array(targets_list),(-1))

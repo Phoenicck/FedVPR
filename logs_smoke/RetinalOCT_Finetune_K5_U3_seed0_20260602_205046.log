@@ -1,0 +1,41 @@
+Logging to: ./logs_smoke/RetinalOCT_Finetune_K5_U3_seed0_20260602_205046.log
+==> Preparing data..
+Known class list: [6 2 1 7 3] Unknown class list [0 5 4]
+Total images — Train: 18400, Val: 2800, Test: 2800
+{6: 0, 2: 1, 1: 2, 7: 3, 3: 4} {0: 5, 5: 6, 4: 7}
+Known origin: [6 2 1 7 3] , new: [0 1 2 3 4]
+Unknown origin: [0 5 4] , new: [5 6 7]
+Known/Unknown in Train: 11500/6900
+Known/Unknown in Val:   1750/1050
+Known/Unknown in Test:  1750/1050
+Client0 sample num: 6305
+Client1 sample num: 5195
+
+>>> Setting up
+==> Building [Resnet18] model..
+154
+154
+154
+154
+154
+154
+Train Client0 [0/2] LR=0.0001000 loss=12.479 ACC=97.500 F1=94.308 Rec=98.247 Prec=92.130
+Train Client1 [0/2] LR=0.0001000 loss=1.422 ACC=95.625 F1=90.873 Rec=96.469 Prec=87.713
+
+Test-  OSR [0/2] LR=0.0001000 ACC=50.000 F1=22.222 Rec=25.000 Prec=20.000 UNK=0.000 OS*=20.000 HOS=0.000 AUROC=100.000 AUPR=100.000 OSCR=100.000
+Test-Close [0/2] LR=0.0001000 loss=1.580 ACC=100.000 F1=100.000 Rec=100.000 Prec=100.000
+
+Saving best model . . . . . . . .
+
+Train Client0 [1/2] LR=0.0001000 loss=13.257 ACC=95.625 F1=92.913 Rec=97.158 Prec=91.250
+Train Client1 [1/2] LR=0.0001000 loss=1.754 ACC=97.500 F1=94.837 Rec=98.370 Prec=92.688
+
+Test-  OSR [1/2] LR=0.0001000 ACC=50.000 F1=29.630 Rec=33.333 Prec=26.667 UNK=0.000 OS*=20.000 HOS=0.000 AUROC=100.000 AUPR=100.000 OSCR=100.000
+Test-Close [1/2] LR=0.0001000 loss=1.582 ACC=100.000 F1=100.000 Rec=100.000 Prec=100.000
+
+------>Best performance (by OSCR)--->>>>>>>
+
+Test-  OSR [0/2] LR=0.0001000 ACC=50.000 F1=22.222 Rec=25.000 Prec=20.000 UNK=0.000 OS*=20.000 HOS=0.000 AUROC=100.000 AUPR=100.000 OSCR=100.000
+Test-Close [0/2] LR=0.0001000 loss=1.580 ACC=100.000 F1=100.000 Rec=100.000 Prec=100.000
+=====================================================================================================================================
+The ending time ：2026-06-02 20:51:22

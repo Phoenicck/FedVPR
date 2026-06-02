@@ -56,12 +56,12 @@ def setup(args, trainloaders):
             base2 = 'LR'+str(0.0005)+'-K'+str(args.known_class)+'-U'+str(args.unknown_class)+'-Seed'+str(args.seed)
             server = 'best_ckpt_Pretrain_known_class_'+str(args.known_class)+'_unknown_class_'+str(args.unknown_class)+'_seed_'+str(args.seed)+'.pth'
             pretrained = os.path.join(base0, base1, base2, server)
-            server_model=resnet18(pretrained=pretrained, num_classes=args.known_class) 
+            server_model=resnet18(pretrained=pretrained, num_classes=args.known_class, num_virtual=args.virtue_num)
             models = []
             for client_idx in range(args.client_num):
                 client = 'best_ckpt_Pretrain_known_class_'+str(args.known_class)+'_unknown_class_'+str(args.unknown_class)+'_seed_'+str(args.seed)+'_C_'+str(client_idx)+'.pth'
                 pretrained = os.path.join(base0, base1, base2, client)
-                client_model=resnet18(pretrained=pretrained, num_classes=args.known_class)
+                client_model=resnet18(pretrained=pretrained, num_classes=args.known_class, num_virtual=args.virtue_num)
                 models.append(client_model)
             server_model = server_model.to(device)     
             sample_num = np.array([trainloader.dataset.__len__() for trainloader in trainloaders])
@@ -74,18 +74,18 @@ def setup(args, trainloaders):
             base2 = 'LR'+str(0.0005)+'-K'+str(args.known_class)+'-U'+str(args.unknown_class)+'-Seed'+str(args.seed)
             server = 'best_ckpt_Pretrain_known_class_'+str(args.known_class)+'_unknown_class_'+str(args.unknown_class)+'_seed_'+str(args.seed)+'.pth'
             pretrained = os.path.join(base0, base1, base2, server)
-            server_model=resnet18(pretrained=False, num_classes=args.known_class)
+            server_model=resnet18(pretrained=False, num_classes=args.known_class, num_virtual=args.virtue_num)
             #https://discuss.pytorch.org/t/inconsistent-results-with-3d-maxpool-on-gpu/38558/3
             #torch.nn.MaxPool3d(kernel_size=3, stride=2, padding=1) leads to non-deterministic results
             server_model.maxpool = torch.nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
             from acsconv.converters import ACSConverter
             server_model = ACSConverter(server_model)
-            server_model = pretrained_3D(server_model, pretrained)            
+            server_model = pretrained_3D(server_model, pretrained)
             models = []
             for client_idx in range(args.client_num):
                 client = 'best_ckpt_Pretrain_known_class_'+str(args.known_class)+'_unknown_class_'+str(args.unknown_class)+'_seed_'+str(args.seed)+'_C_'+str(client_idx)+'.pth'
                 pretrained = os.path.join(base0, base1, base2, client)
-                client_model=resnet18(pretrained=False, num_classes=args.known_class)
+                client_model=resnet18(pretrained=False, num_classes=args.known_class, num_virtual=args.virtue_num)
                 #https://discuss.pytorch.org/t/inconsistent-results-with-3d-maxpool-on-gpu/38558/3
                 #torch.nn.MaxPool3d(kernel_size=3, stride=2, padding=1) leads to non-deterministic results
                 client_model.maxpool = torch.nn.MaxPool2d(kernel_size=2, stride=2, padding=0)

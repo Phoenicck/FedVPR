@@ -56,6 +56,8 @@ if __name__=="__main__":
     parser.add_argument('--epoches', default=200,type=int,help='epoches')
     parser.add_argument('--save_interval', default=0, type=int, help='save checkpoint every N epochs (0=disabled)')
     parser.add_argument('--log_dir', default='./logs', type=str, help='directory for log files (set to empty string to disable)')
+    parser.add_argument('--max_train_batches', default=0, type=int, help='debug only: max train batches per client per epoch (0=all)')
+    parser.add_argument('--max_eval_batches', default=0, type=int, help='debug only: max eval batches per loader (0=all)')
     
     parser.add_argument('--client_num', type=int, default=8, help='the number of clients')
     parser.add_argument('--worker_steps', type=int, default=1, help='step of worker')
@@ -67,9 +69,23 @@ if __name__=="__main__":
     parser.add_argument('--eps', type=float, default=1.,help='eps') 
     parser.add_argument('--num_steps', type=int, default=10,help='num_steps') 
     parser.add_argument('--unknown_weight', type=float, default=1.,help='unknown_weight')
+    parser.add_argument('--rank_weight', default=0.05, type=float, help='ranking loss weight')
+    parser.add_argument('--rank_margin', default=0.2, type=float, help='ranking loss margin')
 
-    parser.add_argument('--start_epoch', type=str, default='[5, 10, 15, 20, 25]', help='start_epoch') 
-    parser.add_argument('--sample_from', type=int, default=8, help='sample_from') 
+    parser.add_argument('--start_epoch', type=str, default='[5, 10, 15, 20, 25]', help='start_epoch')
+    parser.add_argument('--sample_from', type=int, default=8, help='sample_from')
+
+    # LUPS parameters
+    parser.add_argument('--lups_mode', default='diag', choices=['fullcov', 'diag'], help='FOSS mode: fullcov or diag')
+    parser.add_argument('--lups_space', default='pooled', choices=['fullmap', 'pooled', 'gap'], help='feature space for LUPS')
+    parser.add_argument('--lups_pool_size', default=2, type=int, help='pooled spatial size')
+    parser.add_argument('--lups_min_count', default=10, type=int, help='min samples to build distribution')
+    parser.add_argument('--lups_min_var', default=1e-4, type=float, help='min diagonal variance')
+    parser.add_argument('--lups_var_scale', default=1.0, type=float, help='variance scale factor')
+    parser.add_argument('--lups_candidates', default=100, type=int, help='candidate samples for low_density')
+    parser.add_argument('--lups_sample_strategy', default='low_density', choices=['random', 'low_density'])
+    parser.add_argument('--lups_local_weight', default=0.1, type=float, help='local i-DUS loss weight')
+    parser.add_argument('--lups_global_weight', default=0.01, type=float, help='global LUPS loss weight')
 
     import time
     now = time.strftime("%Y-%m-%d %H:%M:%S")

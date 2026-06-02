@@ -46,6 +46,7 @@ def run(args):
         for ws in range(args.worker_steps): 
             mean_clients = []
             cov_clients = []
+            var_clients = []
             number_clients = []            
             for client_idx in range(args.client_num):
                 client_name = args.client_names[client_idx] 
@@ -57,11 +58,13 @@ def run(args):
                 if epoch in args.start_epoch:
                     mean_clients.append(train_result['mean_dict'])
                     cov_clients.append(train_result['cov_dict'])
+                    var_clients.append(train_result['var_dict'])
                     number_clients.append(train_result['number_dict'])
-        server_model, models, unknown_dis = communication_Finetune(args, server_model, models, client_weights, mean_clients,cov_clients,number_clients, unknown_dis)
+        server_model, models, unknown_dis = communication_Finetune(args, server_model, models, client_weights, mean_clients,cov_clients,var_clients,number_clients, unknown_dis)
         if len(mean_clients)>0:
             del mean_clients
             del cov_clients
+            del var_clients
             del number_clients
             gc.collect()
         osr_result, close_test_result = test(args, device, epoch, server_model, closerloader, openloader)
