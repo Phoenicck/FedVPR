@@ -107,9 +107,12 @@ def setup(args, trainloaders):
     return server_model, models, device, client_weights
 
 def update_lr(lr, epoch, n_epoch, lr_step=20, lr_gamma=0.5):
-    """Sets the learning rate to the initial LR decayed by 0.5 every 20 epochs"""
-    if (epoch + 1) % (n_epoch//4) == 0 and (epoch + 1) != n_epoch:  # Yeah, ugly but will clean that later
+    """Sets the learning rate to the initial LR decayed by lr_gamma four times."""
+    decay_interval = n_epoch // 4
+    if decay_interval <= 0:
+        return lr
+    if (epoch + 1) % decay_interval == 0 and (epoch + 1) != n_epoch:
         lr *= lr_gamma
         print(f'>> New learning Rate: {lr}')
-        
+
     return lr
