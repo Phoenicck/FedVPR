@@ -5,3 +5,4 @@ __pycache__/
 pre_model/resnet18-5c106cde.pth
 datasets/MedMNIST/bloodmnist.npz
 datasets/*
+dataset/RetinalOCT_Dataset/test/AMD/amd_test_1002.jpg

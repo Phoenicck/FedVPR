@@ -162,15 +162,10 @@ def get_dataloaders(client_num, data_root, seed, param = {'Known_class': 6, 'unK
     train_val_loaders = []    
     #np.random.set_state(state)
     #np.random.shuffle(train_data_known_index)
-    default_workers = 0 if platform.system() == 'Windows' else 4
-    num_workers = int(param.get('num_workers', default_workers))
-    pin_memory = bool(param.get('pin_memory', False))
-    prefetch_factor = int(param.get('prefetch_factor', 2))
-    loader_kwargs = {'num_workers': num_workers, 'pin_memory': pin_memory}
-    if num_workers > 0:
-        loader_kwargs['prefetch_factor'] = prefetch_factor
-    print('DataLoader settings: num_workers={}, pin_memory={}, prefetch_factor={}'.format(
-        num_workers, pin_memory, prefetch_factor if num_workers > 0 else 'disabled'))
+    if platform.system()=='Windows':
+        num_workers = 0
+    else:
+        num_workers = 4
         
     train_labels = trainy[train_data_known_index]
     train_images = [trainx[idx] for idx in train_data_known_index]
@@ -180,22 +175,22 @@ def get_dataloaders(client_num, data_root, seed, param = {'Known_class': 6, 'unK
         print('Client'+str(i)+' sample num:', len(client_idcs[i]))
         subtrain_data_known_index = client_idcs[i]
         client_trainset=HyperKvasir(data_root, subtrain_data_known_index, 'train', train_images, train_labels, param)
-        client_trainloader=torch.utils.data.DataLoader(client_trainset, batch_size=batchsize, shuffle=True, **loader_kwargs)
+        client_trainloader=torch.utils.data.DataLoader(client_trainset, batch_size=batchsize, shuffle=True, num_workers=num_workers)
         trainloaders.append(client_trainloader)
         
         client_trainset=HyperKvasir(data_root, subtrain_data_known_index, 'train_val', train_images, train_labels, param)
-        client_train_val_loader=torch.utils.data.DataLoader(client_trainset, batch_size=1, shuffle=False, **loader_kwargs)
+        client_train_val_loader=torch.utils.data.DataLoader(client_trainset, batch_size=1, shuffle=False, num_workers=num_workers)
         train_val_loaders.append(client_train_val_loader)        
 
     # val dataloader
     valset=HyperKvasir(data_root,val_data_known_index,'valclose', valx, valy, param)
-    valloader=torch.utils.data.DataLoader(valset, batch_size=1, shuffle=False, **loader_kwargs)
+    valloader=torch.utils.data.DataLoader(valset, batch_size=1, shuffle=False, num_workers=num_workers)
 
     closeset=HyperKvasir(data_root,test_data_known_index,'testclose', testx, testy, param=param)
-    closeloader=torch.utils.data.DataLoader(closeset, batch_size=1, shuffle=False, **loader_kwargs)
+    closeloader=torch.utils.data.DataLoader(closeset, batch_size=1, shuffle=False, num_workers=num_workers)
 
     openset=HyperKvasir(data_root,test_data_unknown_index,'testopen',testx, testy, param=param)
-    openloader=torch.utils.data.DataLoader(openset, batch_size=1, shuffle=False, **loader_kwargs) 
+    openloader=torch.utils.data.DataLoader(openset, batch_size=1, shuffle=False, num_workers=num_workers) 
     
     return trainloaders, valloader, closeloader, openloader, train_val_loaders
 

@@ -1,0 +1,67 @@
+Logging to: /workspace/Phoenic/claude0527/FedOSS/logs_smoke/Bloodmnist_Pretrain_K5_U3_seed1_20260615_154530.log
+==> Preparing data..
+The number of class each [(6, 2330), (1, 2181), (3, 2026), (7, 1643), (2, 1085), (5, 993), (0, 852), (4, 849)]
+The numbers of Training, Val, Test sets, 11959, 1712, 3421
+{7: 0, 2: 1, 1: 2, 6: 3, 0: 4} {4: 5, 3: 6, 5: 7}
+[7 2 1 6 0] [0 1 2 3 4] [4 3 5] [5 6 7]
+Known and Unknow in Train: 8091 3868
+Known and Unknow in Val: 1157 555
+Known and Unknow in Test: 2315 1106
+Client0 sample num: 12284
+Client1 sample num: 3898
+
+>>> Setting up
+==> Building [Resnet18] model..
+154
+120
+>> New learning Rate: 0.00025
+Train Client0 [0/4] LR=0.0002500 loss=0.353 ACC=94.019 F1=84.522 Rec=83.651 Prec=85.628
+Train Client1 [0/4] LR=0.0002500 loss=0.367 ACC=93.621 F1=68.680 Rec=67.869 Prec=69.744
+
+Val    [0/4] LR=0.0002500 loss=2.012 ACC=86.430 F1=81.474 Rec=81.707 Prec=89.424
+
+Test-  OSR [0/4] LR=0.0002500 ACC=57.644 F1=53.364 Rec=66.843 Prec=52.924 UNK=0.000 OS*=80.212 HOS=0.000 AUROC=88.904 AUPR=73.031 OSCR=78.680
+Test-Close [0/4] LR=0.0002500 loss=2.037 ACC=85.184 F1=79.335 Rec=80.212 Prec=88.428
+Saving best model . . . . . . . .
+
+Saving model at epoch 0 . . . . . . . .
+
+>> New learning Rate: 0.000125
+Train Client0 [1/4] LR=0.0001250 loss=0.121 ACC=98.093 F1=94.896 Rec=94.574 Prec=95.234
+Train Client1 [1/4] LR=0.0001250 loss=0.152 ACC=96.939 F1=83.288 Rec=84.368 Prec=82.377
+
+Val    [1/4] LR=0.0001250 loss=1.650 ACC=98.531 F1=98.394 Rec=98.551 Prec=98.263
+
+Test-  OSR [1/4] LR=0.0001250 ACC=66.121 F1=64.777 Rec=81.361 Prec=58.256 UNK=0.000 OS*=97.633 HOS=0.000 AUROC=93.825 AUPR=83.239 OSCR=92.922
+Test-Close [1/4] LR=0.0001250 loss=1.663 ACC=97.711 F1=97.297 Rec=97.633 Prec=96.999
+Saving best model . . . . . . . .
+
+Saving model at epoch 1 . . . . . . . .
+
+>> New learning Rate: 6.25e-05
+Train Client0 [2/4] LR=0.0000625 loss=0.063 ACC=98.933 F1=97.056 Rec=96.902 Prec=97.214
+Train Client1 [2/4] LR=0.0000625 loss=0.131 ACC=97.557 F1=87.901 Rec=91.425 Prec=85.393
+
+Val    [2/4] LR=0.0000625 loss=1.613 ACC=98.790 F1=98.611 Rec=98.625 Prec=98.617
+
+Test-  OSR [2/4] LR=0.0000625 ACC=66.676 F1=64.892 Rec=81.811 Prec=56.535 UNK=0.000 OS*=98.173 HOS=0.000 AUROC=94.042 AUPR=85.743 OSCR=93.466
+Test-Close [2/4] LR=0.0000625 loss=1.623 ACC=98.531 F1=98.215 Rec=98.173 Prec=98.258
+Saving best model . . . . . . . .
+
+Saving model at epoch 2 . . . . . . . .
+
+Train Client0 [3/4] LR=0.0000625 loss=0.042 ACC=99.348 F1=98.151 Rec=98.038 Prec=98.267
+Train Client1 [3/4] LR=0.0000625 loss=0.066 ACC=98.688 F1=93.672 Rec=95.158 Prec=92.332
+
+Val    [3/4] LR=0.0000625 loss=1.616 ACC=98.704 F1=98.676 Rec=98.761 Prec=98.613
+
+Test-  OSR [3/4] LR=0.0000625 ACC=66.706 F1=65.305 Rec=82.031 Prec=57.847 UNK=0.000 OS*=98.437 HOS=0.000 AUROC=90.938 AUPR=83.498 OSCR=90.290
+Test-Close [3/4] LR=0.0000625 loss=1.628 ACC=98.575 F1=98.373 Rec=98.437 Prec=98.319
+Saving model at epoch 3 . . . . . . . .
+
+------>Best performance (by OSCR)--->>>>>>>
+
+Test-  OSR [2/4] LR=0.0000625 ACC=66.676 F1=64.892 Rec=81.811 Prec=56.535 UNK=0.000 OS*=98.173 HOS=0.000 AUROC=94.042 AUPR=85.743 OSCR=93.466
+Test-Close [2/4] LR=0.0000625 loss=1.623 ACC=98.531 F1=98.215 Rec=98.173 Prec=98.258
+=====================================================================================================================================
+The ending time ：2026-06-15 15:49:26

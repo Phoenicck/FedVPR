@@ -12,25 +12,25 @@ import os.path as osp
 
 def run(args):
       
-    best_oscr = 0
+    best_oscr = float('-inf')
     best_epoch = 0
-    best_osr_acc = best_osr_f1 = best_osr_recall = best_osr_precision = 0
-    best_osr_unk = best_osr_os_star = best_osr_hos = best_osr_auroc = best_osr_aupr = best_osr_oscr = 0
+    best_osr_log = ''
+    best_close_log = ''
     print('==> Preparing data..')
-    param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'num_workers': args.num_workers, 'pin_memory': args.pin_memory, 'prefetch_factor': args.prefetch_factor}          
+    param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}          
     if args.dataset=='Hyperkvasir':
         from data.fed_hyper_kvasir_relabel import get_dataloaders
     elif args.dataset=='RetinalOCT':
-        param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'num_workers': args.num_workers, 'pin_memory': args.pin_memory, 'prefetch_factor': args.prefetch_factor}
+        param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}
         from data.fed_retinal_oct_relabel import get_dataloaders
     elif args.dataset=='ISIC':
-        param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'num_workers': args.num_workers, 'pin_memory': args.pin_memory, 'prefetch_factor': args.prefetch_factor}
+        param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}
         from data.fed_isic_relabel import get_dataloaders
     elif args.dataset=='Bloodmnist':
-        param = {'dataset': args.dataset, 'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'num_workers': args.num_workers, 'pin_memory': args.pin_memory, 'prefetch_factor': args.prefetch_factor}        
+        param = {'dataset': args.dataset, 'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}        
         from data.fed_MedMINIST_relabel import get_dataloaders
     elif args.dataset=='OrganMNIST3D':
-        param = {'dataset': args.dataset, 'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'num_workers': args.num_workers, 'pin_memory': args.pin_memory, 'prefetch_factor': args.prefetch_factor}        
+        param = {'dataset': args.dataset, 'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}        
         from data.fed_MedMINIST3D_relabel import get_dataloaders
     else:
         assert False
@@ -65,11 +65,27 @@ def run(args):
         if osr_oscr > best_oscr:
             best_oscr = osr_oscr
             best_epoch = epoch
-            best_osr_acc, best_osr_f1, best_osr_recall, best_osr_precision = osr_acc, osr_f1, osr_recall, osr_precision
-            best_osr_unk, best_osr_os_star, best_osr_hos, best_osr_auroc, best_osr_aupr, best_osr_oscr = osr_unk, osr_os_star, osr_hos, osr_auroc, osr_aupr, osr_oscr
+            best_osr_log = f"Test-  OSR [{epoch}/{args.epoches}] LR={args.lr:.7f} ACC={osr_acc:.3f} F1={osr_f1:.3f} Rec={osr_recall:.3f} Prec={osr_precision:.3f} UNK={osr_unk:.3f} OS*={osr_os_star:.3f} HOS={osr_hos:.3f} AUROC={osr_auroc:.3f} AUPR={osr_aupr:.3f} OSCR={osr_oscr:.3f}"
+            best_close_log = f"Test-Close [{epoch}/{args.epoches}] LR={args.lr:.7f} loss={test_loss:.3f} ACC={test_acc:.3f} F1={test_f1:.3f} Rec={test_recall:.3f} Prec={test_precision:.3f}"
             #server
             state = {
                 'net': server_model.state_dict(),
+                'osr_acc': osr_acc,
+                'osr_f1': osr_f1,
+                'osr_recall': osr_recall,
+                'osr_precision': osr_precision,
+                'osr_unk': osr_unk,
+                'osr_os_star': osr_os_star,
+                'osr_hos': osr_hos,
+                'osr_auroc': osr_auroc,
+                'osr_aupr': osr_aupr,
+                'osr_oscr': osr_oscr,
+                'test_loss': test_loss,
+                'test_acc': test_acc,
+                'test_f1': test_f1,
+                'test_recall': test_recall,
+                'test_precision': test_precision,
+                'epoch': best_epoch,
                 }
             name_model = 'best_ckpt_'+args.mode+'_known_class_'+str(args.known_class)+'_unknown_class_'+str(args.unknown_class)+'_seed_'+str(args.seed)+'.pth'
             torch.save(state, osp.join(args.save_path,name_model))
@@ -105,6 +121,7 @@ def run(args):
 
     print('------>Best performance (by OSCR)--->>>>>>>')
     print()
-    print(f"Test-  OSR [{best_epoch}/{args.epoches}] ACC={best_osr_acc:.3f} F1={best_osr_f1:.3f} Rec={best_osr_recall:.3f} Prec={best_osr_precision:.3f} UNK={best_osr_unk:.3f} OS*={best_osr_os_star:.3f} HOS={best_osr_hos:.3f} AUROC={best_osr_auroc:.3f} AUPR={best_osr_aupr:.3f} OSCR={best_osr_oscr:.3f}")
+    print(best_osr_log)
+    print(best_close_log)
     print('=====================================================================================================================================')
         

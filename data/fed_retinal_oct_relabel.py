@@ -120,15 +120,7 @@ def get_dataloaders(client_num, data_root, seed, param=None):
 
     assert len(test_unknown_idx) + len(test_known_idx) == len(testy)
 
-    default_workers = 0 if platform.system() == 'Windows' else 4
-    num_workers = int(param.get('num_workers', default_workers))
-    pin_memory = bool(param.get('pin_memory', False))
-    prefetch_factor = int(param.get('prefetch_factor', 2))
-    loader_kwargs = {'num_workers': num_workers, 'pin_memory': pin_memory}
-    if num_workers > 0:
-        loader_kwargs['prefetch_factor'] = prefetch_factor
-    print('DataLoader settings: num_workers={}, pin_memory={}, prefetch_factor={}'.format(
-        num_workers, pin_memory, prefetch_factor if num_workers > 0 else 'disabled'))
+    num_workers = 0 if platform.system() == 'Windows' else 4
 
     train_labels = trainy[train_known_idx]
     train_images = [trainx[idx] for idx in train_known_idx]
@@ -142,20 +134,20 @@ def get_dataloaders(client_num, data_root, seed, param=None):
         sub_idx = client_idcs[i]
         client_trainset = RetinalOCT(data_root, sub_idx, 'train', train_images, train_labels, param)
         trainloaders.append(torch.utils.data.DataLoader(
-            client_trainset, batch_size=batchsize, shuffle=True, drop_last=True, **loader_kwargs))
+            client_trainset, batch_size=batchsize, shuffle=True, num_workers=num_workers, drop_last=True))
 
         client_valset = RetinalOCT(data_root, sub_idx, 'train_val', train_images, train_labels, param)
         train_val_loaders.append(torch.utils.data.DataLoader(
-            client_valset, batch_size=1, shuffle=False, **loader_kwargs))
+            client_valset, batch_size=1, shuffle=False, num_workers=num_workers))
 
     valset = RetinalOCT(data_root, val_known_idx, 'valclose', valx, valy, param)
-    valloader = torch.utils.data.DataLoader(valset, batch_size=1, shuffle=False, **loader_kwargs)
+    valloader = torch.utils.data.DataLoader(valset, batch_size=1, shuffle=False, num_workers=num_workers)
 
     closeset = RetinalOCT(data_root, test_known_idx, 'testclose', testx, testy, param)
-    closeloader = torch.utils.data.DataLoader(closeset, batch_size=1, shuffle=False, **loader_kwargs)
+    closeloader = torch.utils.data.DataLoader(closeset, batch_size=1, shuffle=False, num_workers=num_workers)
 
     openset = RetinalOCT(data_root, test_unknown_idx, 'testopen', testx, testy, param)
-    openloader = torch.utils.data.DataLoader(openset, batch_size=1, shuffle=False, **loader_kwargs)
+    openloader = torch.utils.data.DataLoader(openset, batch_size=1, shuffle=False, num_workers=num_workers)
 
     return trainloaders, valloader, closeloader, openloader, train_val_loaders
 

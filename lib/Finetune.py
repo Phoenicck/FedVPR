@@ -19,20 +19,20 @@ def run(args):
     string1 = ''
     string2 = ''    
     print('==> Preparing data..')
-    param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'num_workers': args.num_workers, 'pin_memory': args.pin_memory, 'prefetch_factor': args.prefetch_factor}
+    param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}
     if args.dataset=='Hyperkvasir':
         from data.fed_hyper_kvasir_relabel import get_dataloaders
     elif args.dataset=='RetinalOCT':
-        param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'num_workers': args.num_workers, 'pin_memory': args.pin_memory, 'prefetch_factor': args.prefetch_factor}
+        param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}
         from data.fed_retinal_oct_relabel import get_dataloaders
     elif args.dataset=='ISIC':
-        param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'num_workers': args.num_workers, 'pin_memory': args.pin_memory, 'prefetch_factor': args.prefetch_factor}
+        param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}
         from data.fed_isic_relabel import get_dataloaders
     elif args.dataset=='Bloodmnist':
-        param = {'dataset': args.dataset, 'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'num_workers': args.num_workers, 'pin_memory': args.pin_memory, 'prefetch_factor': args.prefetch_factor}        
+        param = {'dataset': args.dataset, 'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}        
         from data.fed_MedMINIST_relabel import get_dataloaders
     elif args.dataset=='OrganMNIST3D':
-        param = {'dataset': args.dataset, 'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'num_workers': args.num_workers, 'pin_memory': args.pin_memory, 'prefetch_factor': args.prefetch_factor}        
+        param = {'dataset': args.dataset, 'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet}        
         from data.fed_MedMINIST3D_relabel import get_dataloaders           
     else:
         assert False

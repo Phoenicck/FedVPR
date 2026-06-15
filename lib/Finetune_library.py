@@ -13,17 +13,13 @@ import gc
 
 def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, attack = None, unknown_dis = None):
     net.train()
-    for peer_net in net_peers:
-        peer_net.eval()
+    for peer_net in net_peers:        
+        peer_net.eval()    
     train_loss = 0
     pred_list = []
     label_list = []
     output_list = []
     criterion = nn.CrossEntropyLoss()
-
-    # Pooling to reduce FOSS memory: shrink large feature maps before computing covariance
-    foss_pool = nn.AdaptiveAvgPool2d((4, 4)).to(device) if args.dataset in ('Hyperkvasir', 'RetinalOCT', 'ISIC') else None
-    foss_pool3d = nn.AdaptiveAvgPool3d((2, 2, 2)).to(device) if args.dataset == 'OrganMNIST3D' else None
     
     net_peers_sample_number = args.client_num-1
     if args.dataset == 'Hyperkvasir':
@@ -118,12 +114,7 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
                         for index in range(len(targets_unknown)):
                             if ((args.dataset=='Hyperkvasir' or args.dataset=='RetinalOCT' or args.dataset=='ISIC') and PDs[index]>0) or ((args.dataset=='Bloodmnist' or args.dataset=='OrganMNIST3D') and PDs[index]>-1):
                                 dict_key = targets_unknown_numpy[index]
-                                unknown_feat = inputs_unknown[index].clone().detach()
-                                if foss_pool is not None:
-                                    unknown_feat = foss_pool(unknown_feat)
-                                elif foss_pool3d is not None:
-                                    unknown_feat = foss_pool3d(unknown_feat)
-                                unknown_sample = unknown_feat.view(1, -1)
+                                unknown_sample = inputs_unknown[index].clone().detach().view(1, -1)
                                 if unknown_dict[dict_key] == None:
                                     unknown_dict[dict_key] = unknown_sample
                                 else:
@@ -143,15 +134,15 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
                                 _, index_prob = torch.topk(- prob_density, sample_num[index])
                                 generated_unknown_samples = generated_unknown_samples[index_prob].to(device)
                                 if args.dataset=='Hyperkvasir':
-                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 4, 4)
+                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 8, 8)
                                 elif args.dataset=='ISIC':
-                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 4, 4)
+                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 8, 8)
                                 elif args.dataset=='Bloodmnist':
                                     generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 2, 2)
                                 elif args.dataset=='OrganMNIST3D':
                                     generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 2, 2, 2)
                                 elif args.dataset=='RetinalOCT':
-                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 4, 4)
+                                    generated_unknown_samples = generated_unknown_samples.reshape(sample_num[index], 256, 8, 8)
                                 else:
                                     assert False                                     
                                 generated_unknown_targets = (torch.ones(sample_num[index])*index).long().to(device) 

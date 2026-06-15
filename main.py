@@ -55,9 +55,6 @@ if __name__=="__main__":
     parser.add_argument('--epoches', default=200,type=int,help='epoches')
     parser.add_argument('--save_interval', default=0, type=int, help='save checkpoint every N epochs (0=disabled)')
     parser.add_argument('--log_dir', default='./logs', type=str, help='directory for log files (set to empty string to disable)')
-    parser.add_argument('--num_workers', default=4, type=int, help='DataLoader workers per loader. Use 0 to avoid /dev/shm shared-memory pressure')
-    parser.add_argument('--pin_memory', action='store_true', help='enable DataLoader pin_memory')
-    parser.add_argument('--prefetch_factor', default=2, type=int, help='DataLoader prefetch factor when num_workers > 0')
     
     parser.add_argument('--client_num', type=int, default=8, help='the number of clients')
     parser.add_argument('--worker_steps', type=int, default=1, help='step of worker')
