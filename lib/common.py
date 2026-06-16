@@ -28,9 +28,10 @@ def setup(args, trainloaders):
     if platform.system()=='Windows':
         device = torch.device("cpu")
     else:
-        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        device = torch.device(f"cuda:{args.device_id}") if torch.cuda.is_available() else torch.device("cpu")
         
     pretrained = True
+    print(f'==> Using device: {device}')
     print(f'==> Building [{args.backbone}] model..')
     base0 = './results/'
     if args.mode == 'Pretrain':

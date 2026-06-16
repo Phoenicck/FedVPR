@@ -45,6 +45,7 @@ if __name__=="__main__":
     parser.add_argument('--dataset', default='Hyperkvasir',type=str,help='dataset configuration')
     parser.add_argument('--known_class', default=5,type=int,help='number of known class')
     parser.add_argument('--unknown_class', default=3,type=int,help='number of unknown class')
+    parser.add_argument('--device_id', default=0, type=int, help='CUDA device index')
     parser.add_argument('--virtue_num', default=3, type=int, help='number of virtual classes')
     parser.add_argument('--seed', default='0',type=int,help='random seed for dataset generation.')
     
@@ -95,9 +96,12 @@ if __name__=="__main__":
     args.client_names = client_names
     
     args.start_epoch = eval(args.start_epoch)
-    
+
+    if torch.cuda.is_available():
+        torch.cuda.set_device(args.device_id)
+
     pprint(vars(args))
-    
+
     #os.environ['CUDA_VISIBLE_DEVICES'] =args.gpu
     set_seed(args.seed)
 

@@ -1,0 +1,36 @@
+Logging to: ./logs_smoke/RetinalOCT_Pretrain_K5_U3_seed0_20260615_202419.log
+==> Preparing data..
+Known class list: [6 2 1 7 3] Unknown class list [0 5 4]
+Total images — Train: 18400, Val: 2800, Test: 2800
+{6: 0, 2: 1, 1: 2, 7: 3, 3: 4} {0: 5, 5: 6, 4: 7}
+Known origin: [6 2 1 7 3] , new: [0 1 2 3 4]
+Unknown origin: [0 5 4] , new: [5 6 7]
+Known/Unknown in Train: 11500/6900
+Known/Unknown in Val:   1750/1050
+Known/Unknown in Test:  1750/1050
+Client0 sample num: 2764
+Client1 sample num: 4691
+Client2 sample num: 2682
+Client3 sample num: 1363
+
+>>> Setting up
+==> Using device: cuda:0
+==> Building [Resnet18] model..
+154
+120
+Train Client0 [0/1] LR=0.0005000 loss=1.059 ACC=81.196 F1=50.765 Rec=50.298 Prec=52.933
+Train Client1 [0/1] LR=0.0005000 loss=1.370 ACC=74.915 F1=65.488 Rec=65.014 Prec=67.276
+Train Client2 [0/1] LR=0.0005000 loss=1.303 ACC=78.209 F1=37.145 Rec=37.296 Prec=39.762
+Train Client3 [0/1] LR=0.0005000 loss=1.068 ACC=84.118 F1=39.107 Rec=38.751 Prec=40.425
+
+Val    [0/1] LR=0.0005000 loss=2.854 ACC=37.829 F1=30.538 Rec=37.829 Prec=61.762
+
+Test-  OSR [0/1] LR=0.0005000 ACC=24.464 F1=21.722 Rec=32.619 Prec=28.175 UNK=0.000 OS*=39.143 HOS=0.000 AUROC=61.479 AUPR=44.141 OSCR=25.833
+Test-Close [0/1] LR=0.0005000 loss=2.851 ACC=39.143 F1=31.384 Rec=39.143 Prec=41.061
+Saving best model . . . . . . . .
+
+------>Best performance (by OSCR)--->>>>>>>
+
+Test-  OSR [0/1] ACC=24.464 F1=21.722 Rec=32.619 Prec=28.175 UNK=0.000 OS*=39.143 HOS=0.000 AUROC=61.479 AUPR=44.141 OSCR=25.833
+=====================================================================================================================================
+The ending time ：2026-06-15 20:26:57
