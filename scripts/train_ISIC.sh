@@ -21,7 +21,8 @@ python main.py \
     --mode='Pretrain' \
     --dirichlet=0.5 \
     --save_interval=5 \
-    --log_dir='./logs'
+    --log_dir='./logs' \
+    --device_id=1
 
 # Finetune
 python main.py \
@@ -43,7 +44,8 @@ python main.py \
     --dirichlet=0.5 \
     --start_epoch='[5,10,15,20,25]' \
     --sample_from=8 \
-    --log_dir='./logs'
+    --log_dir='./logs' \
+    --device_id=1
 
 echo ""
 echo "====== Training Complete ======"
