@@ -6,23 +6,23 @@ echo "====== FedOSS ISIC 2019 Training ======"
 echo ""
 
 # Pretrain (seed 0, known=5, unknown=3)
-python main.py \
-    --data_root='./datasets' \
-    --lr=5e-4 \
-    --backbone='Resnet18' \
-    --dataset='ISIC' \
-    --known_class=5 \
-    --unknown_class=3 \
-    --seed=0 \
-    --batchsize=8 \
-    --epoches=100 \
-    --client_num=8 \
-    --worker_steps=1 \
-    --mode='Pretrain' \
-    --dirichlet=0.5 \
-    --save_interval=5 \
-    --log_dir='./logs' \
-    --device_id=1
+# python main.py \
+#     --data_root='./datasets' \
+#     --lr=5e-4 \
+#     --backbone='Resnet18' \
+#     --dataset='ISIC' \
+#     --known_class=5 \
+#     --unknown_class=3 \
+#     --seed=0 \
+#     --batchsize=8 \
+#     --epoches=100 \
+#     --client_num=8 \
+#     --worker_steps=1 \
+#     --mode='Pretrain' \
+#     --dirichlet=0.5 \
+#     --save_interval=5 \
+#     --log_dir='./logs' \
+#     --device_id=1
 
 # Finetune
 python main.py \

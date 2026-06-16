@@ -18,10 +18,18 @@ from utils import Tee
 warnings.filterwarnings('ignore')
 
 
+def resolve_foss_mode(args):
+    if args.foss_mode != 'auto':
+        return args.foss_mode
+    if args.dataset in {'ISIC', 'RetinalOCT', 'Hyperkvasir'}:
+        return 'diag'
+    return 'fullcov'
+
+
 def main(args):
     if args.mode == 'Pretrain':
         from lib.Pretrain import run
-        run(args)        
+        run(args)
     elif args.mode == 'Finetune':
         from lib.Finetune import run
         run(args)
@@ -47,29 +55,41 @@ if __name__=="__main__":
     parser.add_argument('--unknown_class', default=3,type=int,help='number of unknown class')
     parser.add_argument('--device_id', default=0, type=int, help='CUDA device index')
     parser.add_argument('--seed', default='0',type=int,help='random seed for dataset generation.')
-    
+
     parser.add_argument('--data_root', default='./dataset/', type=str, help='data_root')
     parser.add_argument('--rotation', default=45,type=int,help='Rotation Angle')
     parser.add_argument('--resize', default=144,type=int,help='resize')
     parser.add_argument('--cropsize', default=128,type=int,help='crop size')
-    parser.add_argument('--batchsize', default=16,type=int,help='minibatch size')    
+    parser.add_argument('--batchsize', default=16,type=int,help='minibatch size')
     parser.add_argument('--epoches', default=200,type=int,help='epoches')
     parser.add_argument('--save_interval', default=0, type=int, help='save checkpoint every N epochs (0=disabled)')
     parser.add_argument('--log_dir', default='./logs', type=str, help='directory for log files (set to empty string to disable)')
-    
+
     parser.add_argument('--client_num', type=int, default=8, help='the number of clients')
     parser.add_argument('--worker_steps', type=int, default=1, help='step of worker')
     parser.add_argument('--mode', type=str, default='Pretrain', help='Pretrain, Finetune')
 
-    parser.add_argument('--dirichlet', type=float, default=0.5,help='dirichlet alpha')    
-    
+    parser.add_argument('--dirichlet', type=float, default=0.5,help='dirichlet alpha')
+
     #Attack
-    parser.add_argument('--eps', type=float, default=1.,help='eps') 
-    parser.add_argument('--num_steps', type=int, default=10,help='num_steps') 
+    parser.add_argument('--eps', type=float, default=1.,help='eps')
+    parser.add_argument('--num_steps', type=int, default=10,help='num_steps')
     parser.add_argument('--unknown_weight', type=float, default=1.,help='unknown_weight')
 
-    parser.add_argument('--start_epoch', type=str, default='[5, 10, 15, 20, 25]', help='start_epoch') 
-    parser.add_argument('--sample_from', type=int, default=8, help='sample_from') 
+    parser.add_argument('--start_epoch', type=str, default='[5, 10, 15, 20, 25]', help='start_epoch')
+    parser.add_argument('--sample_from', type=int, default=8, help='sample_from')
+    parser.add_argument('--foss_mode', default='auto', choices=['auto', 'fullcov', 'diag'],
+                        help='unknown distribution mode for finetune')
+    parser.add_argument('--foss_min_count', default=10, type=int,
+                        help='minimum samples required to build a global unknown distribution')
+    parser.add_argument('--foss_min_var', default=1e-4, type=float,
+                        help='minimum diagonal variance for diag FOSS')
+    parser.add_argument('--foss_var_scale', default=1.0, type=float,
+                        help='variance scale factor for diag FOSS')
+    parser.add_argument('--foss_candidates', default=100, type=int,
+                        help='candidate samples for unknown-space sampling')
+    parser.add_argument('--foss_sample_strategy', default='low_density', choices=['random', 'low_density'],
+                        help='sampling strategy for diag FOSS')
 
     import time
     now = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -77,8 +97,9 @@ if __name__=="__main__":
     args = parser.parse_args()
     client_names = ['Client'+str(i) for i in range(args.client_num)]
     args.client_names = client_names
-    
+
     args.start_epoch = eval(args.start_epoch)
+    args.foss_mode_resolved = resolve_foss_mode(args)
 
     if torch.cuda.is_available():
         torch.cuda.set_device(args.device_id)
@@ -110,5 +131,3 @@ if __name__=="__main__":
     finally:
         if tee:
             tee.close()
-    
-    

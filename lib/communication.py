@@ -7,6 +7,7 @@ Created on Mon Aug 22 23:45:51 2022
 import torch
 import gc
 
+
 def communication(args, server_model, models, client_weights):
 
     with torch.no_grad():
@@ -22,8 +23,8 @@ def communication(args, server_model, models, client_weights):
                     temp += client_weights[client_idx] * models[client_idx].state_dict()[key]
                 server_model.state_dict()[key].data.copy_(temp)
                 for client_idx in range(len(client_weights)):
-                    models[client_idx].state_dict()[key].data.copy_(server_model.state_dict()[key])             
-              
+                    models[client_idx].state_dict()[key].data.copy_(server_model.state_dict()[key])
+
     return server_model, models
 
 
@@ -37,7 +38,7 @@ def communication_Pretrain(args, server_model, models, client_weights):
             if not 'auxiliary' in key:
                 if 'num_batches_tracked' in key:
                     server_model.state_dict()[key].data.copy_(models[0].state_dict()[key])
-                else:                    
+                else:
                     temp = torch.zeros_like(server_model.state_dict()[key])
                     for client_idx in range(len(client_weights)):
                         temp += client_weights[client_idx] * models[client_idx].state_dict()[key]
@@ -47,59 +48,101 @@ def communication_Pretrain(args, server_model, models, client_weights):
 
     return server_model, models
 
-def compute_global_statistic(args, mean_clients,cov_clients,number_clients):
-    
+
+def compute_global_statistic(args, mean_clients, cov_clients, number_clients):
+
     D = mean_clients.shape[-1]
-    number_total = number_clients.sum(0, keepdim = True) # 1, C
-    mean_weights = number_clients/number_total.float() # K, C
+    number_total = number_clients.sum(0, keepdim=True) # 1, C
+    mean_weights = number_clients / number_total.float().clamp_min(1e-9) # K, C
     mean_clients_weighted = mean_clients * mean_weights.unsqueeze(2).expand([-1, -1, D])
     g_mean = mean_clients_weighted.sum(0) # C, D
-    
+
     if (number_total > 1).all():
-        cov_weight1 = (number_clients-1)/(number_total-1).float() # K, C 
-        cov_weight2 = (number_clients)/(number_total-1).float() # K, C
-        cov_weight3 = number_total/(number_total-1).float() # 1, C
-    else:  
-        cov_weight1 = (number_clients)/(number_total+1e-9).float() # K, C 
-        cov_weight2 = (number_clients)/(number_total+1e-9).float() # K, C
-        cov_weight3 = number_total/(number_total+1e-9).float() # 1, C    
-    
+        cov_weight1 = (number_clients - 1) / (number_total - 1).float() # K, C
+        cov_weight2 = number_clients / (number_total - 1).float() # K, C
+        cov_weight3 = number_total / (number_total - 1).float() # 1, C
+    else:
+        cov_weight1 = number_clients / (number_total + 1e-9).float() # K, C
+        cov_weight2 = number_clients / (number_total + 1e-9).float() # K, C
+        cov_weight3 = number_total / (number_total + 1e-9).float() # 1, C
+
     cov_term1 = cov_clients * cov_weight1.unsqueeze(2).unsqueeze(3).expand([-1, -1, D, D]) # K, C, D, D
     cov_term1 = cov_term1.sum(0) # C, D, D
-    
+
     cov_term2 = torch.einsum('abcd, abde->abce', mean_clients.unsqueeze(3), mean_clients.unsqueeze(2)) # K, C, D, D
     cov_term2 = cov_term2 * cov_weight2.unsqueeze(2).unsqueeze(3).expand([-1, -1, D, D]) # K, C, D, D
-    cov_term2 = cov_term2.sum(0) # C, D, D    
+    cov_term2 = cov_term2.sum(0) # C, D, D
     cov_term3 = torch.einsum('abc, acd->abd', g_mean.unsqueeze(2), g_mean.unsqueeze(1)) # C, D, D
     cov_term3 = cov_term3 * cov_weight3.permute(1, 0).unsqueeze(2).expand([-1, D, D]) # C, D, D
 
-    g_cov = cov_term1 + cov_term2 - cov_term3 # C, D, D  
-    # b为n阶矩阵,e为单位矩阵,a为正实数。ae+b在a充分大时,ae+b为正定矩阵
-    eye_matrix = torch.eye(g_cov.shape[1]).expand(g_cov.shape[0], g_cov.shape[1], g_cov.shape[1])
-    # 保证g_cov为正定矩阵
-    g_cov += 0.0001 * eye_matrix
-    
-    unknown_dis = []                    
+    g_cov = cov_term1 + cov_term2 - cov_term3 # C, D, D
+    eye_matrix = torch.eye(g_cov.shape[1], device=g_cov.device).expand(g_cov.shape[0], g_cov.shape[1], g_cov.shape[1])
+    g_cov += args.foss_min_var * eye_matrix
+
+    unknown_dis = []
     for index in range(args.known_class):
-        #    if ((args.dataset =='OrganMNIST3D' or args.dataset =='Bloodmnist') and number_total[0][index] > 10) or args.dataset == 'Hyperkvasir': #and (not torch.isnan(g_mean[index]).any()) and (not torch.isnan(g_cov[index]).any()):
-        if number_total[0][index] > 10:
-            unknown_dis.append(torch.distributions.multivariate_normal.MultivariateNormal(g_mean[index], covariance_matrix=g_cov[index]))
+        if number_total[0][index] > args.foss_min_count:
+            cov = g_cov[index]
+            if not torch.isfinite(cov).all() or not torch.isfinite(g_mean[index]).all():
+                print(f'Warning: skipping class {index} global full covariance due to non-finite values')
+                unknown_dis.append(None)
+                continue
+            try:
+                unknown_dis.append(
+                    torch.distributions.multivariate_normal.MultivariateNormal(
+                        g_mean[index], covariance_matrix=cov
+                    )
+                )
+            except Exception as exc:
+                print(f'Warning: skipping class {index} global full covariance: {exc}')
+                unknown_dis.append(None)
         else:
             unknown_dis.append(None)
 
     del cov_term1, cov_term2, cov_term3, cov_weight1, cov_weight2, cov_weight3
     del g_cov, g_mean, eye_matrix
     gc.collect()
-    
+
     return unknown_dis
 
-def communication_Finetune(args, server_model, models, client_weights, mean_clients,cov_clients,number_clients, unknown_dis):
-    
-    if len(mean_clients)>0:
+
+def compute_global_diag_statistic(args, mean_clients, var_clients, number_clients):
+    D = mean_clients.shape[-1]
+    number_total = number_clients.sum(0) # C
+    N = number_total.float().clamp_min(1e-9)
+
+    g_mean = (number_clients.unsqueeze(2) * mean_clients).sum(0) / N.unsqueeze(1) # C, D
+    second = (number_clients.unsqueeze(2) * (var_clients + mean_clients ** 2)).sum(0) / N.unsqueeze(1)
+    g_var = second - g_mean ** 2
+    g_var = torch.clamp(g_var, min=args.foss_min_var) * args.foss_var_scale
+
+    unknown_dis = []
+    for index in range(args.known_class):
+        if number_total[index] > args.foss_min_count:
+            unknown_dis.append({
+                'mean': g_mean[index],
+                'var': g_var[index],
+                'count': number_total[index].item(),
+            })
+        else:
+            unknown_dis.append(None)
+
+    del g_var, g_mean, second
+    gc.collect()
+    return unknown_dis
+
+
+def communication_Finetune(args, server_model, models, client_weights, mean_clients, cov_clients, var_clients, number_clients, unknown_dis):
+
+    if len(mean_clients) > 0:
         mean_clients = torch.stack(mean_clients, 0)
-        cov_clients = torch.stack(cov_clients, 0)
-        number_clients = torch.stack(number_clients, 0)        
-        unknown_dis = compute_global_statistic(args, mean_clients, cov_clients, number_clients)
+        number_clients = torch.stack(number_clients, 0)
+        if args.foss_mode_resolved == 'diag':
+            var_clients = torch.stack(var_clients, 0)
+            unknown_dis = compute_global_diag_statistic(args, mean_clients, var_clients, number_clients)
+        else:
+            cov_clients = torch.stack(cov_clients, 0)
+            unknown_dis = compute_global_statistic(args, mean_clients, cov_clients, number_clients)
 
     with torch.no_grad():
         # aggregate params
@@ -109,7 +152,7 @@ def communication_Finetune(args, server_model, models, client_weights, mean_clie
             if not 'auxiliary' in key:
                 if 'num_batches_tracked' in key:
                     server_model.state_dict()[key].data.copy_(models[0].state_dict()[key])
-                else:                    
+                else:
                     temp = torch.zeros_like(server_model.state_dict()[key])
                     for client_idx in range(len(client_weights)):
                         temp += client_weights[client_idx] * models[client_idx].state_dict()[key]
