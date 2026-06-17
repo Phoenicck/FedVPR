@@ -21,12 +21,12 @@ warnings.filterwarnings('ignore')
 def main(args):
     if args.mode == 'Pretrain':
         from lib.Pretrain import run
-        run(args)        
+        run(args)
     elif args.mode == 'Finetune':
         from lib.Finetune import run
         run(args)
 
- 
+
 def set_seed(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False #for reproducibility
@@ -35,6 +35,7 @@ def set_seed(seed):
     torch.cuda.manual_seed_all(seed)
     np.random.seed(seed)
     random.seed(seed)
+
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='PyTorch Training')
@@ -48,27 +49,37 @@ if __name__=="__main__":
     parser.add_argument('--device_id', default=0, type=int, help='CUDA device index')
     parser.add_argument('--virtue_num', default=3, type=int, help='number of virtual classes')
     parser.add_argument('--seed', default='0',type=int,help='random seed for dataset generation.')
-    
+
     parser.add_argument('--data_root', default='./dataset/', type=str, help='data_root')
     parser.add_argument('--rotation', default=45,type=int,help='Rotation Angle')
     parser.add_argument('--resize', default=144,type=int,help='resize')
     parser.add_argument('--cropsize', default=128,type=int,help='crop size')
-    parser.add_argument('--batchsize', default=16,type=int,help='minibatch size')    
+    parser.add_argument('--batchsize', default=16,type=int,help='minibatch size')
     parser.add_argument('--epoches', default=200,type=int,help='epoches')
     parser.add_argument('--save_interval', default=0, type=int, help='save checkpoint every N epochs (0=disabled)')
     parser.add_argument('--log_dir', default='./logs', type=str, help='directory for log files (set to empty string to disable)')
     parser.add_argument('--max_train_batches', default=0, type=int, help='debug only: max train batches per client per epoch (0=all)')
     parser.add_argument('--max_eval_batches', default=0, type=int, help='debug only: max eval batches per loader (0=all)')
-    
+
     parser.add_argument('--client_num', type=int, default=8, help='the number of clients')
     parser.add_argument('--worker_steps', type=int, default=1, help='step of worker')
     parser.add_argument('--mode', type=str, default='Pretrain', help='Pretrain, Finetune')
 
-    parser.add_argument('--dirichlet', type=float, default=0.5,help='dirichlet alpha')    
-    
+    parser.add_argument('--dirichlet', type=float, default=0.5,help='dirichlet alpha')
+    parser.add_argument('--vir_weight_warmup', default=0.5, type=float,
+                        help='stage-1 virtual loss weight before warmup boundary')
+    parser.add_argument('--vir_weight_main', default=0.01, type=float,
+                        help='stage-1 virtual loss weight after warmup boundary')
+    parser.add_argument('--protocol_mode', default='random', choices=['random', 'easy'],
+                        help='class protocol mode: random selection or fixed easy protocol')
+    parser.add_argument('--anchor_log_interval', default=1, type=int,
+                        help='log virtual-anchor diagnostics every N epochs during pretrain')
+    parser.add_argument('--anchor_log_file', default='anchor_diagnostics.jsonl', type=str,
+                        help='jsonl file for per-epoch virtual-anchor diagnostics')
+
     #Attack
-    parser.add_argument('--eps', type=float, default=1.,help='eps') 
-    parser.add_argument('--num_steps', type=int, default=10,help='num_steps') 
+    parser.add_argument('--eps', type=float, default=1.,help='eps')
+    parser.add_argument('--num_steps', type=int, default=10,help='num_steps')
     parser.add_argument('--unknown_weight', type=float, default=1.,help='unknown_weight')
     parser.add_argument('--rank_weight', default=0.05, type=float, help='ranking loss weight')
     parser.add_argument('--rank_margin', default=0.2, type=float, help='ranking loss margin')
@@ -94,7 +105,7 @@ if __name__=="__main__":
     args = parser.parse_args()
     client_names = ['Client'+str(i) for i in range(args.client_num)]
     args.client_names = client_names
-    
+
     args.start_epoch = eval(args.start_epoch)
 
     if torch.cuda.is_available():
@@ -127,5 +138,3 @@ if __name__=="__main__":
     finally:
         if tee:
             tee.close()
-    
-    

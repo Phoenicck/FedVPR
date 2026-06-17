@@ -1,0 +1,169 @@
+Logging to: ./logs/RetinalOCT_Pretrain_K5_U3_seed0_20260616_215620.log
+==> Preparing data..
+Protocol mode: easy
+Fixed known classes: ['CNV', 'DME', 'DR', 'DRUSEN', 'NORMAL']
+Fixed unknown classes: ['AMD', 'CSR', 'MH']
+Known class list: [1 3 4 5 7] Unknown class list [0 2 6]
+Total images — Train: 18400, Val: 2800, Test: 2800
+{1: 0, 3: 1, 4: 2, 5: 3, 7: 4} {0: 5, 2: 6, 6: 7}
+Known origin: [1 3 4 5 7] , new: [0 1 2 3 4]
+Unknown origin: [0 2 6] , new: [5 6 7]
+Known/Unknown in Train: 11500/6900
+Known/Unknown in Val:   1750/1050
+Known/Unknown in Test:  1750/1050
+Client0 sample num: 1861
+Client1 sample num: 2876
+Client2 sample num: 2109
+Client3 sample num: 533
+Client4 sample num: 1312
+Client5 sample num: 1125
+Client6 sample num: 362
+Client7 sample num: 1322
+
+>>> Setting up
+==> Using device: cuda:1
+==> Building [Resnet18] model..
+154
+120
+Train Client0 [0/10] LR=0.0005000 loss=2.266 ACC=60.399 F1=38.205 Rec=37.842 Prec=41.233
+Train Client1 [0/10] LR=0.0005000 loss=1.653 ACC=70.508 F1=52.964 Rec=52.221 Prec=53.938
+Train Client2 [0/10] LR=0.0005000 loss=1.311 ACC=78.184 F1=37.535 Rec=38.886 Prec=37.591
+Train Client3 [0/10] LR=0.0005000 loss=3.158 ACC=42.424 F1=34.559 Rec=34.243 Prec=34.913
+Train Client4 [0/10] LR=0.0005000 loss=1.297 ACC=81.707 F1=41.673 Rec=40.996 Prec=45.393
+Train Client5 [0/10] LR=0.0005000 loss=2.239 ACC=58.036 F1=39.862 Rec=40.247 Prec=39.852
+Train Client6 [0/10] LR=0.0005000 loss=2.759 ACC=60.556 F1=25.688 Rec=25.857 Prec=25.621
+Train Client7 [0/10] LR=0.0005000 loss=2.055 ACC=64.242 F1=36.293 Rec=35.173 Prec=38.064
+
+Val    [0/10] LR=0.0005000 loss=3.157 ACC=20.286 F1=7.246 Rec=20.286 Prec=24.011
+Val-Known->Virtual [0/10] rate=0.000% prob_mean=0.024266 margin_mean=0.349393
+Val-LogitMargin [0/10] TrueKnown-VMax mean=3.0009 std=0.4261 p10=2.4280 p50=2.9780 p90=3.6385
+
+Test-  OSR [0/10] LR=0.0005000 ACC=12.893 F1=4.728 Rec=17.190 Prec=15.189 UNK=0.000 OS*=20.629 HOS=0.000 AUROC=84.535 AUPR=62.581 OSCR=20.034
+Test-Close [0/10] LR=0.0005000 loss=3.164 ACC=20.629 F1=7.921 Rec=20.629 Prec=24.025
+Test-Virtual [0/10] CloseK->V=0.000% Open->V=0.000% OpenVEntropy=0.000000 CloseHist=[0, 0, 0] OpenHist=[0, 0, 0]
+Test-LogitMargin [0/10] CloseTrue-VMax mean=3.0000 std=0.4345 p10=2.4340 p50=2.9638 p90=3.6595 | OpenKnown-VMax mean=3.2757 std=0.1155 p10=3.1307 p50=3.2785 p90=3.4229
+AnchorDiag [0/10] VNorm=[1.0000001192092896, 0.9999999403953552, 0.9999999403953552] VDriftMax=0.000000 Vcos(max/mean)=(0.0000/-0.0000) KVcos(max/mean)=(0.0020/-0.0009) ValK->V=0.00% CloseK->V=0.00% Open->V=0.00% OpenVEntropy=0.0000
+Saving best model . . . . . . . .
+
+>> New learning Rate: 0.00025
+Train Client0 [1/10] LR=0.0002500 loss=1.410 ACC=72.845 F1=52.769 Rec=51.717 Prec=54.535
+Train Client1 [1/10] LR=0.0002500 loss=1.048 ACC=79.909 F1=63.178 Rec=63.180 Prec=63.226
+Train Client2 [1/10] LR=0.0002500 loss=0.884 ACC=84.743 F1=56.839 Rec=55.327 Prec=60.499
+Train Client3 [1/10] LR=0.0002500 loss=1.814 ACC=62.121 F1=50.998 Rec=50.953 Prec=51.174
+Train Client4 [1/10] LR=0.0002500 loss=0.656 ACC=89.787 F1=48.429 Rec=48.007 Prec=49.021
+Train Client5 [1/10] LR=0.0002500 loss=1.450 ACC=68.839 F1=51.587 Rec=50.953 Prec=53.114
+Train Client6 [1/10] LR=0.0002500 loss=1.319 ACC=78.056 F1=51.878 Rec=52.346 Prec=51.933
+Train Client7 [1/10] LR=0.0002500 loss=1.098 ACC=75.909 F1=53.197 Rec=51.317 Prec=56.667
+
+Val    [1/10] LR=0.0002500 loss=2.297 ACC=72.857 F1=67.086 Rec=72.857 Prec=82.616
+Val-Known->Virtual [1/10] rate=0.000% prob_mean=0.010359 margin_mean=0.661920
+Val-LogitMargin [1/10] TrueKnown-VMax mean=4.7969 std=0.8366 p10=3.6710 p50=4.8239 p90=5.8952
+
+Test-  OSR [1/10] LR=0.0002500 ACC=45.643 F1=45.049 Rec=60.857 Prec=53.424 UNK=0.000 OS*=73.029 HOS=0.000 AUROC=44.010 AUPR=35.312 OSCR=38.454
+Test-Close [1/10] LR=0.0002500 loss=2.287 ACC=73.029 F1=67.008 Rec=73.029 Prec=80.619
+Test-Virtual [1/10] CloseK->V=0.000% Open->V=0.000% OpenVEntropy=0.000000 CloseHist=[0, 0, 0] OpenHist=[0, 0, 0]
+Test-LogitMargin [1/10] CloseTrue-VMax mean=4.8123 std=0.7910 p10=3.7745 p50=4.7918 p90=5.8839 | OpenKnown-VMax mean=4.8839 std=0.7003 p10=3.9550 p50=4.8911 p90=5.8288
+AnchorDiag [1/10] VNorm=[1.0000001192092896, 0.9999999403953552, 0.9999999403953552] VDriftMax=0.000000 Vcos(max/mean)=(0.0000/-0.0000) KVcos(max/mean)=(0.0030/-0.0008) ValK->V=0.00% CloseK->V=0.00% Open->V=0.00% OpenVEntropy=0.0000
+Saving best model . . . . . . . .
+
+Train Client0 [2/10] LR=0.0002500 loss=1.314 ACC=74.677 F1=68.015 Rec=66.593 Prec=70.302
+Train Client1 [2/10] LR=0.0002500 loss=0.916 ACC=83.043 F1=65.552 Rec=65.198 Prec=66.034
+Train Client2 [2/10] LR=0.0002500 loss=0.691 ACC=86.359 F1=61.182 Rec=59.742 Prec=65.624
+Train Client3 [2/10] LR=0.0002500 loss=1.425 ACC=67.614 F1=55.574 Rec=55.538 Prec=55.634
+Train Client4 [2/10] LR=0.0002500 loss=0.502 ACC=91.616 F1=54.229 Rec=53.697 Prec=55.602
+Train Client5 [2/10] LR=0.0002500 loss=1.235 ACC=73.482 F1=57.004 Rec=56.190 Prec=58.474
+Train Client6 [2/10] LR=0.0002500 loss=1.030 ACC=84.722 F1=57.208 Rec=55.248 Prec=60.090
+Train Client7 [2/10] LR=0.0002500 loss=0.868 ACC=82.424 F1=62.170 Rec=60.340 Prec=64.487
+
+Val    [2/10] LR=0.0002500 loss=2.195 ACC=76.229 F1=73.238 Rec=76.229 Prec=81.737
+Val-Known->Virtual [2/10] rate=0.000% prob_mean=0.007466 margin_mean=0.714387
+Val-LogitMargin [2/10] TrueKnown-VMax mean=5.4260 std=1.1600 p10=4.0950 p50=5.3459 p90=7.2697
+
+Test-  OSR [2/10] LR=0.0002500 ACC=48.393 F1=52.132 Rec=64.524 Prec=56.045 UNK=0.000 OS*=77.429 HOS=0.000 AUROC=25.780 AUPR=25.913 OSCR=24.323
+Test-Close [2/10] LR=0.0002500 loss=2.180 ACC=77.429 F1=74.740 Rec=77.429 Prec=82.565
+Test-Virtual [2/10] CloseK->V=0.000% Open->V=0.000% OpenVEntropy=0.000000 CloseHist=[0, 0, 0] OpenHist=[0, 0, 0]
+Test-LogitMargin [2/10] CloseTrue-VMax mean=5.4410 std=1.1276 p10=4.1872 p50=5.3130 p90=7.2238 | OpenKnown-VMax mean=6.2074 std=1.1264 p10=4.6026 p50=6.4108 p90=7.5950
+AnchorDiag [2/10] VNorm=[1.0000001192092896, 0.9999999403953552, 0.9999999403953552] VDriftMax=0.000000 Vcos(max/mean)=(0.0000/-0.0000) KVcos(max/mean)=(0.0054/-0.0011) ValK->V=0.00% CloseK->V=0.00% Open->V=0.00% OpenVEntropy=0.0000
+>> New learning Rate: 0.000125
+Train Client0 [3/10] LR=0.0001250 loss=0.934 ACC=81.789 F1=61.221 Rec=60.234 Prec=62.675
+Train Client1 [3/10] LR=0.0001250 loss=0.647 ACC=88.545 F1=70.822 Rec=71.257 Prec=70.424
+Train Client2 [3/10] LR=0.0001250 loss=0.494 ACC=89.591 F1=73.116 Rec=72.103 Prec=74.580
+Train Client3 [3/10] LR=0.0001250 loss=1.233 ACC=75.947 F1=69.371 Rec=70.182 Prec=68.683
+Train Client4 [3/10] LR=0.0001250 loss=0.371 ACC=93.750 F1=59.157 Rec=59.433 Prec=59.197
+Train Client5 [3/10] LR=0.0001250 loss=0.893 ACC=80.714 F1=64.007 Rec=63.444 Prec=64.718
+Train Client6 [3/10] LR=0.0001250 loss=0.719 ACC=88.056 F1=64.021 Rec=62.350 Prec=66.228
+Train Client7 [3/10] LR=0.0001250 loss=0.630 ACC=87.424 F1=68.684 Rec=68.548 Prec=68.833
+
+Val    [3/10] LR=0.0001250 loss=1.997 ACC=86.629 F1=86.314 Rec=86.629 Prec=87.848
+Val-Known->Virtual [3/10] rate=0.000% prob_mean=0.003427 margin_mean=0.834798
+Val-LogitMargin [3/10] TrueKnown-VMax mean=6.5553 std=1.3242 p10=4.9503 p50=6.4417 p90=8.4300
+
+Test-  OSR [3/10] LR=0.0001250 ACC=54.607 F1=61.320 Rec=72.810 Prec=58.338 UNK=0.000 OS*=87.371 HOS=0.000 AUROC=35.828 AUPR=37.552 OSCR=33.605
+Test-Close [3/10] LR=0.0001250 loss=1.983 ACC=87.371 F1=87.177 Rec=87.371 Prec=88.162
+Test-Virtual [3/10] CloseK->V=0.000% Open->V=0.000% OpenVEntropy=0.000000 CloseHist=[0, 0, 0] OpenHist=[0, 0, 0]
+Test-LogitMargin [3/10] CloseTrue-VMax mean=6.5767 std=1.2859 p10=5.0441 p50=6.4853 p90=8.4043 | OpenKnown-VMax mean=6.8679 std=1.6405 p10=4.3406 p50=7.4527 p90=8.6581
+AnchorDiag [3/10] VNorm=[1.0000001192092896, 0.9999999403953552, 0.9999999403953552] VDriftMax=0.000000 Vcos(max/mean)=(0.0000/-0.0000) KVcos(max/mean)=(0.0080/-0.0008) ValK->V=0.00% CloseK->V=0.00% Open->V=0.00% OpenVEntropy=0.0000
+Train Client0 [4/10] LR=0.0001250 loss=0.893 ACC=83.944 F1=79.667 Rec=78.337 Prec=81.438
+Train Client1 [4/10] LR=0.0001250 loss=0.570 ACC=89.450 F1=74.734 Rec=74.136 Prec=77.359
+Train Client2 [4/10] LR=0.0001250 loss=0.431 ACC=90.732 F1=74.908 Rec=73.615 Prec=76.735
+Train Client3 [4/10] LR=0.0001250 loss=1.105 ACC=76.515 F1=66.035 Rec=66.172 Prec=65.996
+Train Client4 [4/10] LR=0.0001250 loss=0.297 ACC=94.817 F1=62.200 Rec=63.049 Prec=62.513
+Train Client5 [4/10] LR=0.0001250 loss=0.831 ACC=81.250 F1=64.934 Rec=64.409 Prec=65.554
+Train Client6 [4/10] LR=0.0001250 loss=0.734 ACC=88.333 F1=71.072 Rec=73.061 Prec=70.355
+Train Client7 [4/10] LR=0.0001250 loss=0.580 ACC=88.182 F1=70.187 Rec=70.331 Prec=70.087
+
+Val    [4/10] LR=0.0001250 loss=1.998 ACC=86.743 F1=86.677 Rec=86.743 Prec=88.193
+Val-Known->Virtual [4/10] rate=0.000% prob_mean=0.004938 margin_mean=0.853040
+Val-LogitMargin [4/10] TrueKnown-VMax mean=6.1878 std=1.2949 p10=4.5220 p50=6.2416 p90=7.9301
+
+Test-  OSR [4/10] LR=0.0001250 ACC=54.929 F1=62.452 Rec=73.238 Prec=59.911 UNK=0.000 OS*=87.886 HOS=0.000 AUROC=31.505 AUPR=33.131 OSCR=29.868
+Test-Close [4/10] LR=0.0001250 loss=1.986 ACC=87.886 F1=87.871 Rec=87.886 Prec=88.887
+Test-Virtual [4/10] CloseK->V=0.000% Open->V=0.000% OpenVEntropy=0.000000 CloseHist=[0, 0, 0] OpenHist=[0, 0, 0]
+Test-LogitMargin [4/10] CloseTrue-VMax mean=6.2049 std=1.2644 p10=4.6390 p50=6.2569 p90=7.9462 | OpenKnown-VMax mean=6.4821 std=1.6216 p10=3.8457 p50=7.0281 p90=8.2588
+AnchorDiag [4/10] VNorm=[1.0000001192092896, 1.0, 0.9999999403953552] VDriftMax=0.000000 Vcos(max/mean)=(0.0000/-0.0000) KVcos(max/mean)=(0.0103/-0.0008) ValK->V=0.00% CloseK->V=0.00% Open->V=0.00% OpenVEntropy=0.0000
+>> New learning Rate: 6.25e-05
+Train Client0 [5/10] LR=0.0000625 loss=0.714 ACC=87.069 F1=84.188 Rec=83.106 Prec=85.534
+Train Client1 [5/10] LR=0.0000625 loss=0.518 ACC=90.564 F1=77.626 Rec=76.904 Prec=79.634
+Train Client2 [5/10] LR=0.0000625 loss=0.342 ACC=93.298 F1=83.385 Rec=83.925 Prec=82.955
+Train Client3 [5/10] LR=0.0000625 loss=0.905 ACC=79.356 F1=72.708 Rec=79.679 Prec=70.650
+Train Client4 [5/10] LR=0.0000625 loss=0.306 ACC=94.436 F1=63.145 Rec=66.316 Prec=60.958
+Train Client5 [5/10] LR=0.0000625 loss=0.725 ACC=84.911 F1=68.369 Rec=67.844 Prec=68.989
+Train Client6 [5/10] LR=0.0000625 loss=0.651 ACC=86.667 F1=68.462 Rec=73.025 Prec=65.286
+Train Client7 [5/10] LR=0.0000625 loss=0.588 ACC=89.242 F1=70.549 Rec=70.635 Prec=70.567
+
+Val    [5/10] LR=0.0000625 loss=1.948 ACC=88.457 F1=88.328 Rec=88.457 Prec=89.369
+Val-Known->Virtual [5/10] rate=0.000% prob_mean=0.006414 margin_mean=0.866801
+Val-LogitMargin [5/10] TrueKnown-VMax mean=5.9630 std=1.2386 p10=4.3311 p50=6.0372 p90=7.5713
+
+Test-  OSR [5/10] LR=0.0000625 ACC=55.750 F1=63.648 Rec=74.333 Prec=61.068 UNK=0.000 OS*=89.200 HOS=0.000 AUROC=30.997 AUPR=32.029 OSCR=29.731
+Test-Close [5/10] LR=0.0000625 loss=1.939 ACC=89.200 F1=89.128 Rec=89.200 Prec=89.870
+Test-Virtual [5/10] CloseK->V=0.000% Open->V=0.000% OpenVEntropy=0.000000 CloseHist=[0, 0, 0] OpenHist=[0, 0, 0]
+Test-LogitMargin [5/10] CloseTrue-VMax mean=5.9774 std=1.2069 p10=4.4535 p50=6.0547 p90=7.5563 | OpenKnown-VMax mean=6.1444 std=1.6960 p10=3.3876 p50=6.7846 p90=7.8706
+AnchorDiag [5/10] VNorm=[1.0000001192092896, 1.0, 0.9999999403953552] VDriftMax=0.000000 Vcos(max/mean)=(0.0000/-0.0000) KVcos(max/mean)=(0.0115/-0.0006) ValK->V=0.00% CloseK->V=0.00% Open->V=0.00% OpenVEntropy=0.0000
+Train Client0 [6/10] LR=0.0000625 loss=0.715 ACC=86.907 F1=67.084 Rec=66.371 Prec=67.955
+Train Client1 [6/10] LR=0.0000625 loss=0.475 ACC=91.609 F1=82.377 Rec=81.128 Prec=84.437
+Train Client2 [6/10] LR=0.0000625 loss=0.312 ACC=93.584 F1=82.392 Rec=81.954 Prec=82.956
+Train Client3 [6/10] LR=0.0000625 loss=0.904 ACC=84.091 F1=78.659 Rec=85.705 Prec=75.625
+Train Client4 [6/10] LR=0.0000625 loss=0.257 ACC=95.351 F1=68.803 Rec=74.866 Prec=66.389
+Train Client5 [6/10] LR=0.0000625 loss=0.659 ACC=86.429 F1=69.007 Rec=68.660 Prec=69.409
+Train Client6 [6/10] LR=0.0000625 loss=0.669 ACC=86.944 F1=67.764 Rec=70.842 Prec=65.370
+Train Client7 [6/10] LR=0.0000625 loss=0.539 ACC=88.485 F1=70.607 Rec=71.683 Prec=69.650
+
+Val    [6/10] LR=0.0000625 loss=1.946 ACC=88.057 F1=87.777 Rec=88.057 Prec=89.122
+Val-Known->Virtual [6/10] rate=0.000% prob_mean=0.010172 margin_mean=0.870191
+Val-LogitMargin [6/10] TrueKnown-VMax mean=5.4446 std=1.2017 p10=3.8427 p50=5.5750 p90=6.9914
+
+Test-  OSR [6/10] LR=0.0000625 ACC=55.857 F1=63.548 Rec=74.476 Prec=60.739 UNK=0.000 OS*=89.371 HOS=0.000 AUROC=33.347 AUPR=35.614 OSCR=31.763
+Test-Close [6/10] LR=0.0000625 loss=1.932 ACC=89.371 F1=89.261 Rec=89.371 Prec=89.986
+Test-Virtual [6/10] CloseK->V=0.000% Open->V=0.000% OpenVEntropy=0.000000 CloseHist=[0, 0, 0] OpenHist=[0, 0, 0]
+Test-LogitMargin [6/10] CloseTrue-VMax mean=5.4608 std=1.1705 p10=3.9282 p50=5.5664 p90=6.9567 | OpenKnown-VMax mean=5.5234 std=1.7408 p10=2.6717 p50=6.2181 p90=7.3000
+AnchorDiag [6/10] VNorm=[1.0000001192092896, 1.0, 0.9999999403953552] VDriftMax=0.000000 Vcos(max/mean)=(0.0000/-0.0000) KVcos(max/mean)=(0.0135/-0.0003) ValK->V=0.00% CloseK->V=0.00% Open->V=0.00% OpenVEntropy=0.0000
+>> New learning Rate: 3.125e-05
+Train Client0 [7/10] LR=0.0000313 loss=0.628 ACC=88.631 F1=68.721 Rec=68.247 Prec=69.329
+Train Client1 [7/10] LR=0.0000313 loss=0.426 ACC=92.792 F1=82.726 Rec=81.733 Prec=85.252
+Train Client2 [7/10] LR=0.0000313 loss=0.298 ACC=93.821 F1=84.555 Rec=86.649 Prec=82.685
+Train Client3 [7/10] LR=0.0000313 loss=0.858 ACC=83.523 F1=76.408 Rec=85.416 Prec=74.176
+Train Client4 [7/10] LR=0.0000313 loss=0.254 ACC=94.817 F1=69.589 Rec=77.585 Prec=66.013
+Train Client5 [7/10] LR=0.0000313 loss=0.646 ACC=86.071 F1=73.710 Rec=82.997 Prec=72.464
+Train Client6 [7/10] LR=0.0000313 loss=0.708 ACC=85.556 F1=72.320 Rec=84.246 Prec=67.361
+Train Client7 [7/10] LR=0.0000313 loss=0.576 ACC=88.030 F1=71.115 Rec=73.197 Prec=69.429

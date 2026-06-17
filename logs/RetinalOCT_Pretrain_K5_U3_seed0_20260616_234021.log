@@ -1,0 +1,35 @@
+Logging to: ./logs/RetinalOCT_Pretrain_K5_U3_seed0_20260616_234021.log
+==> Preparing data..
+Protocol mode: easy
+Fixed known classes: ['CNV', 'DME', 'DR', 'DRUSEN', 'NORMAL']
+Fixed unknown classes: ['AMD', 'CSR', 'MH']
+Known class list: [1 3 4 5 7] Unknown class list [0 2 6]
+Total images — Train: 18400, Val: 2800, Test: 2800
+{1: 0, 3: 1, 4: 2, 5: 3, 7: 4} {0: 5, 2: 6, 6: 7}
+Known origin: [1 3 4 5 7] , new: [0 1 2 3 4]
+Unknown origin: [0 2 6] , new: [5 6 7]
+Known/Unknown in Train: 11500/6900
+Known/Unknown in Val:   1750/1050
+Known/Unknown in Test:  1750/1050
+Client0 sample num: 1861
+Client1 sample num: 2876
+Client2 sample num: 2109
+Client3 sample num: 533
+Client4 sample num: 1312
+Client5 sample num: 1125
+Client6 sample num: 362
+Client7 sample num: 1322
+
+>>> Setting up
+==> Using device: cuda:1
+==> Building [Resnet18] model..
+154
+120
+Train Client0 [0/2] LR=0.0005000 loss=2.266 (CE=1.166 VIR=0.188 wVIR=0.094 AUX=1.006 w=0.500) ACC=60.399 F1=38.205 Rec=37.842 Prec=41.233
+Train Client1 [0/2] LR=0.0005000 loss=1.653 (CE=0.868 VIR=0.107 wVIR=0.054 AUX=0.732 w=0.500) ACC=70.508 F1=52.964 Rec=52.221 Prec=53.938
+Train Client2 [0/2] LR=0.0005000 loss=1.311 (CE=0.680 VIR=0.092 wVIR=0.046 AUX=0.585 w=0.500) ACC=78.184 F1=37.535 Rec=38.886 Prec=37.591
+Train Client3 [0/2] LR=0.0005000 loss=3.158 (CE=1.783 VIR=0.454 wVIR=0.227 AUX=1.148 w=0.500) ACC=42.424 F1=34.559 Rec=34.243 Prec=34.913
+Train Client4 [0/2] LR=0.0005000 loss=1.297 (CE=0.719 VIR=0.207 wVIR=0.104 AUX=0.474 w=0.500) ACC=81.707 F1=41.673 Rec=40.996 Prec=45.393
+Train Client5 [0/2] LR=0.0005000 loss=2.239 (CE=1.192 VIR=0.222 wVIR=0.111 AUX=0.935 w=0.500) ACC=58.036 F1=39.862 Rec=40.247 Prec=39.852
+Train Client6 [0/2] LR=0.0005000 loss=2.759 (CE=1.486 VIR=0.663 wVIR=0.331 AUX=0.942 w=0.500) ACC=60.556 F1=25.688 Rec=25.857 Prec=25.621
+Train Client7 [0/2] LR=0.0005000 loss=2.055 (CE=1.112 VIR=0.265 wVIR=0.133 AUX=0.810 w=0.500) ACC=64.242 F1=36.293 Rec=35.173 Prec=38.064

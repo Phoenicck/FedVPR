@@ -1,0 +1,71 @@
+Logging to: ./logs/RetinalOCT_Pretrain_K5_U3_seed0_20260616_205112.log
+==> Preparing data..
+Protocol mode: easy
+Fixed known classes: ['CNV', 'DME', 'DR', 'DRUSEN', 'NORMAL']
+Fixed unknown classes: ['AMD', 'CSR', 'MH']
+Known class list: [1 3 4 5 7] Unknown class list [0 2 6]
+Total images — Train: 18400, Val: 2800, Test: 2800
+{1: 0, 3: 1, 4: 2, 5: 3, 7: 4} {0: 5, 2: 6, 6: 7}
+Known origin: [1 3 4 5 7] , new: [0 1 2 3 4]
+Unknown origin: [0 2 6] , new: [5 6 7]
+Known/Unknown in Train: 11500/6900
+Known/Unknown in Val:   1750/1050
+Known/Unknown in Test:  1750/1050
+Client0 sample num: 1861
+Client1 sample num: 2876
+Client2 sample num: 2109
+Client3 sample num: 533
+Client4 sample num: 1312
+Client5 sample num: 1125
+Client6 sample num: 362
+Client7 sample num: 1322
+
+>>> Setting up
+==> Using device: cuda:0
+==> Building [Resnet18] model..
+154
+120
+>> New learning Rate: 0.00025
+Train Client0 [0/6] LR=0.0002500 loss=2.129 ACC=62.500 F1=43.217 Rec=43.186 Prec=43.377
+Train Client1 [0/6] LR=0.0002500 loss=1.573 ACC=71.623 F1=54.322 Rec=53.706 Prec=55.059
+Train Client2 [0/6] LR=0.0002500 loss=1.210 ACC=79.753 F1=42.448 Rec=43.404 Prec=42.742
+Train Client3 [0/6] LR=0.0002500 loss=2.770 ACC=48.295 F1=40.426 Rec=39.842 Prec=41.052
+Train Client4 [0/6] LR=0.0002500 loss=1.086 ACC=82.393 F1=43.311 Rec=45.205 Prec=42.457
+Train Client5 [0/6] LR=0.0002500 loss=2.026 ACC=63.214 F1=46.754 Rec=46.806 Prec=46.730
+Train Client6 [0/6] LR=0.0002500 loss=2.278 ACC=63.056 F1=33.913 Rec=34.613 Prec=34.222
+Train Client7 [0/6] LR=0.0002500 loss=1.714 ACC=68.333 F1=43.222 Rec=42.277 Prec=44.557
+
+Val    [0/6] LR=0.0002500 loss=2.693 ACC=61.143 F1=56.795 Rec=61.143 Prec=70.550
+Val-Known->Virtual [0/6] rate=0.000% prob_mean=0.036434 margin_mean=0.404573
+
+Test-  OSR [0/6] LR=0.0002500 ACC=37.643 F1=36.647 Rec=50.190 Prec=43.313 UNK=0.000 OS*=60.229 HOS=0.000 AUROC=54.795 AUPR=46.691 OSCR=38.562
+Test-Close [0/6] LR=0.0002500 loss=2.705 ACC=60.229 F1=56.363 Rec=60.229 Prec=69.505
+Test-Virtual [0/6] CloseK->V=0.000% Open->V=0.000% OpenVEntropy=0.000000 CloseHist=[0, 0, 0] OpenHist=[0, 0, 0]
+AnchorDiag [0/6] VNorm=[1.0000001192092896, 0.9999999403953552, 0.9999999403953552] VDriftMax=0.000000 Vcos(max/mean)=(0.0000/-0.0000) KVcos(max/mean)=(0.0010/-0.0002) ValK->V=0.00% CloseK->V=0.00% Open->V=0.00% OpenVEntropy=0.0000
+Saving best model . . . . . . . .
+
+>> New learning Rate: 0.000125
+Train Client0 [1/6] LR=0.0001250 loss=1.304 ACC=75.431 F1=55.573 Rec=55.128 Prec=56.309
+Train Client1 [1/6] LR=0.0001250 loss=0.980 ACC=80.954 F1=64.497 Rec=64.636 Prec=64.405
+Train Client2 [1/6] LR=0.0001250 loss=0.809 ACC=84.838 F1=58.969 Rec=58.597 Prec=59.650
+Train Client3 [1/6] LR=0.0001250 loss=1.605 ACC=70.833 F1=63.869 Rec=65.566 Prec=62.757
+Train Client4 [1/6] LR=0.0001250 loss=0.634 ACC=89.177 F1=51.604 Rec=51.629 Prec=52.053
+Train Client5 [1/6] LR=0.0001250 loss=1.280 ACC=75.625 F1=58.800 Rec=58.202 Prec=59.683
+Train Client6 [1/6] LR=0.0001250 loss=1.333 ACC=76.667 F1=53.246 Rec=56.687 Prec=51.088
+Train Client7 [1/6] LR=0.0001250 loss=1.058 ACC=77.652 F1=58.848 Rec=59.593 Prec=58.241
+
+Val    [1/6] LR=0.0001250 loss=2.175 ACC=75.543 F1=72.182 Rec=75.543 Prec=82.803
+Val-Known->Virtual [1/6] rate=0.000% prob_mean=0.011901 margin_mean=0.757295
+
+Test-  OSR [1/6] LR=0.0001250 ACC=47.750 F1=49.931 Rec=63.667 Prec=53.289 UNK=0.000 OS*=76.400 HOS=0.000 AUROC=41.740 AUPR=35.877 OSCR=36.969
+Test-Close [1/6] LR=0.0001250 loss=2.162 ACC=76.400 F1=73.358 Rec=76.400 Prec=81.482
+Test-Virtual [1/6] CloseK->V=0.000% Open->V=0.000% OpenVEntropy=0.000000 CloseHist=[0, 0, 0] OpenHist=[0, 0, 0]
+AnchorDiag [1/6] VNorm=[1.0000001192092896, 0.9999999403953552, 0.9999999403953552] VDriftMax=0.000000 Vcos(max/mean)=(0.0000/-0.0000) KVcos(max/mean)=(0.0018/0.0000) ValK->V=0.00% CloseK->V=0.00% Open->V=0.00% OpenVEntropy=0.0000
+>> New learning Rate: 6.25e-05
+Train Client0 [2/6] LR=0.0000625 loss=1.144 ACC=78.394 F1=58.504 Rec=57.886 Prec=59.455
+Train Client1 [2/6] LR=0.0000625 loss=0.757 ACC=85.272 F1=69.962 Rec=69.573 Prec=73.619
+Train Client2 [2/6] LR=0.0000625 loss=0.687 ACC=86.977 F1=69.848 Rec=70.554 Prec=69.699
+Train Client3 [2/6] LR=0.0000625 loss=1.341 ACC=73.106 F1=68.576 Rec=74.498 Prec=65.901
+Train Client4 [2/6] LR=0.0000625 loss=0.450 ACC=92.607 F1=59.684 Rec=61.992 Prec=59.843
+Train Client5 [2/6] LR=0.0000625 loss=0.989 ACC=78.661 F1=65.252 Rec=66.996 Prec=64.631
+Train Client6 [2/6] LR=0.0000625 loss=1.036 ACC=84.167 F1=67.263 Rec=75.492 Prec=63.267
