@@ -66,45 +66,46 @@ if [[ "${STAGE}" == "all" || "${STAGE}" == "pretrain" ]]; then
         --save_interval=5 \
         --max_train_batches=${MAX_TRAIN_BATCHES} \
         --max_eval_batches=${MAX_EVAL_BATCHES} \
-        --log_dir='./logs'
+        --log_dir='./logs' \
+        --device_id=1
 fi
 
 # Stage 2: Finetune with LUPS diagonal sampling and ranking regularization.
-if [[ "${STAGE}" == "all" || "${STAGE}" == "finetune" ]]; then
-    $PYTHON main.py \
-        --data_root="${DATA_ROOT}" \
-        --lr=1e-4 \
-        --backbone='Resnet18' \
-        --dataset='Bloodmnist' \
-        --known_class=${KNOWN} \
-        --unknown_class=${UNKNOWN} \
-        --virtue_num=${VIRTUAL} \
-        --seed=${SEED} \
-        --batchsize=${BATCHSIZE} \
-        --epoches=${FINETUNE_EPOCHS} \
-        --client_num=${CLIENTS} \
-        --worker_steps=1 \
-        --mode='Finetune' \
-        --eps=0.1 \
-        --num_steps=1 \
-        --dirichlet=${DIRICHLET} \
-        --start_epoch="${START_EPOCH}" \
-        --sample_from=${SAMPLE_FROM} \
-        --lups_mode='diag' \
-        --lups_space='pooled' \
-        --lups_pool_size=2 \
-        --lups_min_count=${LUPS_MIN_COUNT} \
-        --lups_min_var=1e-4 \
-        --lups_var_scale=1.0 \
-        --lups_candidates=${LUPS_CANDIDATES} \
-        --lups_sample_strategy='low_density' \
-        --lups_local_weight=0.1 \
-        --lups_global_weight=0.01 \
-        --rank_weight=0.05 \
-        --rank_margin=0.2 \
-        --max_train_batches=${MAX_TRAIN_BATCHES} \
-        --max_eval_batches=${MAX_EVAL_BATCHES} \
-        --log_dir='./logs'
+# if [[ "${STAGE}" == "all" || "${STAGE}" == "finetune" ]]; then
+#     $PYTHON main.py \
+#         --data_root="${DATA_ROOT}" \
+#         --lr=1e-4 \
+#         --backbone='Resnet18' \
+#         --dataset='Bloodmnist' \
+#         --known_class=${KNOWN} \
+#         --unknown_class=${UNKNOWN} \
+#         --virtue_num=${VIRTUAL} \
+#         --seed=${SEED} \
+#         --batchsize=${BATCHSIZE} \
+#         --epoches=${FINETUNE_EPOCHS} \
+#         --client_num=${CLIENTS} \
+#         --worker_steps=1 \
+#         --mode='Finetune' \
+#         --eps=0.1 \
+#         --num_steps=1 \
+#         --dirichlet=${DIRICHLET} \
+#         --start_epoch="${START_EPOCH}" \
+#         --sample_from=${SAMPLE_FROM} \
+#         --lups_mode='diag' \
+#         --lups_space='pooled' \
+#         --lups_pool_size=2 \
+#         --lups_min_count=${LUPS_MIN_COUNT} \
+#         --lups_min_var=1e-4 \
+#         --lups_var_scale=1.0 \
+#         --lups_candidates=${LUPS_CANDIDATES} \
+#         --lups_sample_strategy='low_density' \
+#         --lups_local_weight=0.1 \
+#         --lups_global_weight=0.01 \
+#         --rank_weight=0.05 \
+#         --rank_margin=0.2 \
+#         --max_train_batches=${MAX_TRAIN_BATCHES} \
+#         --max_eval_batches=${MAX_EVAL_BATCHES} \
+#         --log_dir='./logs'
 fi
 
 echo ""

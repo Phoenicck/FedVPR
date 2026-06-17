@@ -70,8 +70,8 @@ if __name__=="__main__":
                         help='stage-1 virtual loss weight before warmup boundary')
     parser.add_argument('--vir_weight_main', default=0.01, type=float,
                         help='stage-1 virtual loss weight after warmup boundary')
-    parser.add_argument('--protocol_mode', default='random', choices=['random', 'easy'],
-                        help='class protocol mode: random selection or fixed easy protocol')
+    parser.add_argument('--protocol_mode', default='random', choices=['random', 'easy', 'hard'],
+                        help='class protocol mode: random selection, fixed practical-easy protocol, or fixed hard protocol')
     parser.add_argument('--anchor_log_interval', default=1, type=int,
                         help='log virtual-anchor diagnostics every N epochs during pretrain')
     parser.add_argument('--anchor_log_file', default='anchor_diagnostics.jsonl', type=str,

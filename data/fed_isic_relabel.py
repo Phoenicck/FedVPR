@@ -21,8 +21,14 @@ TOTAL_CLASS = 8
 
 ISIC_PROTOCOLS = {
     'easy': {
+        # Practical-easy: keep the five major classes in known for stable stage-1 training.
         'known': ['MEL', 'NV', 'BCC', 'AK', 'BKL'],
         'unknown': ['DF', 'VASC', 'SCC'],
+    },
+    'hard': {
+        # Hard: hold out the tight carcinoma/keratosis cluster.
+        'known': ['MEL', 'NV', 'BKL', 'DF', 'VASC'],
+        'unknown': ['BCC', 'AK', 'SCC'],
     },
 }
 
@@ -45,16 +51,16 @@ def resolve_protocol(param):
     known_class = param['Known_class']
     unknown_class = param['unKnown_class']
 
-    if protocol_mode == 'easy':
-        spec = ISIC_PROTOCOLS['easy']
+    if protocol_mode in ISIC_PROTOCOLS:
+        spec = ISIC_PROTOCOLS[protocol_mode]
         known_class_list = np.array([ISIC_CLASSES.index(name) for name in spec['known']], dtype=np.int64)
         unknown_class_list = np.array([ISIC_CLASSES.index(name) for name in spec['unknown']], dtype=np.int64)
         if len(known_class_list) != known_class or len(unknown_class_list) != unknown_class:
             raise ValueError(
-                f"ISIC easy protocol expects K={len(known_class_list)}, U={len(unknown_class_list)} "
+                f"ISIC {protocol_mode} protocol expects K={len(known_class_list)}, U={len(unknown_class_list)} "
                 f"but got K={known_class}, U={unknown_class}"
             )
-        print('Protocol mode: easy')
+        print(f'Protocol mode: {protocol_mode}')
         print('Fixed known classes:', spec['known'])
         print('Fixed unknown classes:', spec['unknown'])
         return known_class_list, unknown_class_list
