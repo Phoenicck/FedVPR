@@ -11,6 +11,7 @@ echo ""
 #     --lr=5e-4 \
 #     --backbone='Resnet18' \
 #     --dataset='RetinalOCT' \
+#     --protocol_mode='hard' \
 #     --known_class=5 \
 #     --unknown_class=3 \
 #     --seed=0 \
@@ -29,6 +30,7 @@ python main.py \
     --lr=1e-4 \
     --backbone='Resnet18' \
     --dataset='RetinalOCT' \
+    --protocol_mode='hard' \
     --known_class=5 \
     --unknown_class=3 \
     --seed=0 \

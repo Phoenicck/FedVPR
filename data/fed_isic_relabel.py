@@ -19,6 +19,19 @@ from collections import Counter
 ISIC_CLASSES = ['MEL', 'NV', 'BCC', 'AK', 'BKL', 'DF', 'VASC', 'SCC']
 TOTAL_CLASS = 8
 
+ISIC_PROTOCOLS = {
+    'easy': {
+        # Practical-easy: keep the five major classes in known for stable stage-1 training.
+        'known': ['MEL', 'NV', 'BCC', 'AK', 'BKL'],
+        'unknown': ['DF', 'VASC', 'SCC'],
+    },
+    'hard': {
+        # Hard: hold out the tight carcinoma/keratosis cluster.
+        'known': ['MEL', 'NV', 'BKL', 'DF', 'VASC'],
+        'unknown': ['BCC', 'AK', 'SCC'],
+    },
+}
+
 
 def dirichlet_split_noniid(train_labels, alpha, n_clients, state):
     n_classes = train_labels.max() + 1
@@ -33,10 +46,38 @@ def dirichlet_split_noniid(train_labels, alpha, n_clients, state):
     return client_idcs
 
 
+def resolve_protocol(param):
+    protocol_mode = param.get('protocol_mode', 'random')
+    known_class = param['Known_class']
+    unknown_class = param['unKnown_class']
+
+    if protocol_mode in ISIC_PROTOCOLS:
+        spec = ISIC_PROTOCOLS[protocol_mode]
+        known_class_list = np.array([ISIC_CLASSES.index(name) for name in spec['known']], dtype=np.int64)
+        unknown_class_list = np.array([ISIC_CLASSES.index(name) for name in spec['unknown']], dtype=np.int64)
+        if len(known_class_list) != known_class or len(unknown_class_list) != unknown_class:
+            raise ValueError(
+                f"ISIC {protocol_mode} protocol expects K={len(known_class_list)}, U={len(unknown_class_list)} "
+                f"but got K={known_class}, U={unknown_class}"
+            )
+        print(f'Protocol mode: {protocol_mode}')
+        print('Fixed known classes:', spec['known'])
+        print('Fixed unknown classes:', spec['unknown'])
+        return known_class_list, unknown_class_list
+
+    class_candidates = np.arange(TOTAL_CLASS)
+    np.random.shuffle(class_candidates)
+    known_class_list = class_candidates[:known_class]
+    unknown_class_list = class_candidates[known_class:known_class + unknown_class]
+    print('Protocol mode: random')
+    return known_class_list, unknown_class_list
+
+
 def get_dataloaders(client_num, data_root, seed, param=None):
     if param is None:
         param = {'Known_class': 5, 'unKnown_class': 3, 'Rotation': 45,
-                 'Resize': 144, 'CropSize': 128, 'Batchsize': 8, 'dirichlet': 0.5}
+                 'Resize': 144, 'CropSize': 128, 'Batchsize': 8, 'dirichlet': 0.5,
+                 'protocol_mode': 'random'}
 
     known_class = param['Known_class']
     unknown_class = param['unKnown_class']
@@ -47,12 +88,7 @@ def get_dataloaders(client_num, data_root, seed, param=None):
     np.random.seed(seed)
     state = np.random.get_state()
 
-    # Randomly pick known and unknown classes
-    class_candidates = np.arange(TOTAL_CLASS)
-    np.random.shuffle(class_candidates)
-    known_class_list = class_candidates[:known_class]
-    unknown_class_list = class_candidates[known_class:known_class + unknown_class]
-
+    known_class_list, unknown_class_list = resolve_protocol(param)
     print('Known class list:', known_class_list, 'Unknown class list', unknown_class_list)
 
     # Read CSV ground truth

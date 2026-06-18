@@ -70,6 +70,8 @@ if __name__=="__main__":
     parser.add_argument('--mode', type=str, default='Pretrain', help='Pretrain, Finetune')
 
     parser.add_argument('--dirichlet', type=float, default=0.5,help='dirichlet alpha')
+    parser.add_argument('--protocol_mode', default='random', choices=['random', 'easy', 'hard'],
+                        help='class protocol mode for the current dataset loaders')
 
     #Attack
     parser.add_argument('--eps', type=float, default=1.,help='eps')
