@@ -69,7 +69,15 @@ if __name__=="__main__":
     parser.add_argument('--vir_weight_warmup', default=0.5, type=float,
                         help='stage-1 virtual loss weight before warmup boundary')
     parser.add_argument('--vir_weight_main', default=0.01, type=float,
-                        help='stage-1 virtual loss weight after warmup boundary')
+                        help='stage-1 virtual loss weight after annealing finishes')
+    parser.add_argument('--vir_warmup_epochs', default=4, type=int,
+                        help='number of epochs to keep the warmup virtual-loss weight before annealing')
+    parser.add_argument('--vir_anneal_epochs', default=0, type=int,
+                        help='number of epochs to linearly anneal virtual-loss weight from warmup to main (0 keeps the legacy hard switch)')
+    parser.add_argument('--vir_margin', default=1.0, type=float,
+                        help='target margin between the true known logit and the strongest virtual logit during stage-1')
+    parser.add_argument('--vir_margin_weight', default=0.0, type=float,
+                        help='extra weight for the stage-1 virtual margin term (0 disables the margin add-on)')
     parser.add_argument('--protocol_mode', default='random', choices=['random', 'easy', 'hard'],
                         help='class protocol mode: random selection, fixed practical-easy protocol, or fixed hard protocol')
     parser.add_argument('--anchor_log_interval', default=1, type=int,

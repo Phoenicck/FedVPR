@@ -17,11 +17,17 @@ python main.py \
     --virtue_num=3 \
     --seed=0 \
     --batchsize=8 \
-    --epoches=50 \
+    --epoches=100 \
     --client_num=8 \
     --worker_steps=1 \
     --mode='Pretrain' \
     --dirichlet=0.5 \
+    --vir_weight_warmup=0.5 \
+    --vir_weight_main=0.03 \
+    --vir_warmup_epochs=4 \
+    --vir_anneal_epochs=0 \
+    --vir_margin=1.0 \
+    --vir_margin_weight=0.25 \
     --save_interval=5 \
     --log_dir='./logs'
 

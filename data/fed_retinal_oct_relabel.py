@@ -22,6 +22,10 @@ OCT_PROTOCOLS = {
         'known': ['CNV', 'DME', 'DR', 'DRUSEN', 'NORMAL'],
         'unknown': ['AMD', 'CSR', 'MH'],
     },
+    'hard': {
+        'known': ['CSR', 'DR', 'DRUSEN', 'MH', 'NORMAL'],
+        'unknown': ['AMD', 'CNV', 'DME'],
+    },
 }
 
 
@@ -43,16 +47,16 @@ def resolve_protocol(param):
     known_class = param['Known_class']
     unknown_class = param['unKnown_class']
 
-    if protocol_mode == 'easy':
-        spec = OCT_PROTOCOLS['easy']
+    if protocol_mode in OCT_PROTOCOLS:
+        spec = OCT_PROTOCOLS[protocol_mode]
         known_class_list = np.array([OCT_CLASSES.index(name) for name in spec['known']], dtype=np.int64)
         unknown_class_list = np.array([OCT_CLASSES.index(name) for name in spec['unknown']], dtype=np.int64)
         if len(known_class_list) != known_class or len(unknown_class_list) != unknown_class:
             raise ValueError(
-                f"RetinalOCT easy protocol expects K={len(known_class_list)}, U={len(unknown_class_list)} "
+                f"RetinalOCT {protocol_mode} protocol expects K={len(known_class_list)}, U={len(unknown_class_list)} "
                 f"but got K={known_class}, U={unknown_class}"
             )
-        print('Protocol mode: easy')
+        print(f'Protocol mode: {protocol_mode}')
         print('Fixed known classes:', spec['known'])
         print('Fixed unknown classes:', spec['unknown'])
         return known_class_list, unknown_class_list

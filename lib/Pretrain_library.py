@@ -70,6 +70,21 @@ def _margin_summary(values):
     }
 
 
+def _get_virtual_loss_weight(args, epoch):
+    warmup_epochs = max(0, int(getattr(args, 'vir_warmup_epochs', 4)))
+    anneal_epochs = max(0, int(getattr(args, 'vir_anneal_epochs', 0)))
+    warmup_weight = float(getattr(args, 'vir_weight_warmup', 0.5))
+    main_weight = float(getattr(args, 'vir_weight_main', 0.01))
+
+    if epoch < warmup_epochs:
+        return warmup_weight
+    if anneal_epochs <= 0:
+        return main_weight
+
+    progress = min(1.0, max(0.0, (epoch - warmup_epochs) / float(anneal_epochs)))
+    return main_weight + (warmup_weight - main_weight) * (1.0 - progress)
+
+
 def train(args, device, epoch, net, trainloader, optimizer):
     net.train()
     train_loss = 0
@@ -98,17 +113,17 @@ def train(args, device, epoch, net, trainloader, optimizer):
         # 2. Standard CrossEntropy on Known Classes
         loss_ce = criterion(known_logits, targets)
 
-        # 3. Virtual Softmax Loss
+        # 3. Virtual Softmax Loss plus a small margin add-on.
         true_class_logits = known_logits.gather(1, targets.unsqueeze(1))  # [B, 1]
         vir_loss_input = torch.cat([true_class_logits, virtual_logits], dim=1)  # [B, 1 + M]
         vir_loss_targets = torch.zeros(inputs.size(0), dtype=torch.long, device=device)
-        loss_vir = criterion(vir_loss_input, vir_loss_targets)
+        loss_vir_ce = criterion(vir_loss_input, vir_loss_targets)
+        max_virtual_logits = virtual_logits.max(1, keepdim=True)[0]
+        loss_vir_margin = torch.relu(args.vir_margin - (true_class_logits - max_virtual_logits)).mean()
+        loss_vir = loss_vir_ce + args.vir_margin_weight * loss_vir_margin
 
         # Total loss with a configurable virtual-loss schedule.
-        if epoch < 4:
-            vir_weight = args.vir_weight_warmup
-        else:
-            vir_weight = args.vir_weight_main
+        vir_weight = _get_virtual_loss_weight(args, epoch)
         weighted_loss_vir = vir_weight * loss_vir
         loss = loss_ce + weighted_loss_vir
         # Add Aux Loss

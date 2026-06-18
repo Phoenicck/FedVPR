@@ -16,6 +16,10 @@
 - 已知类：`CNV, DME, DR, DRUSEN, NORMAL`
 - 未知类：`AMD, CSR, MH`
 
+当前固定 `hard protocol`：
+- 已知类：`CSR, DR, DRUSEN, MH, NORMAL`
+- 未知类：`AMD, CNV, DME`
+
 ## 2. 当前已完成的代码修改
 
 ### 2.1 固定 easy protocol
@@ -23,10 +27,15 @@
 新增了 `--protocol_mode` 参数，支持：
 - `random`
 - `easy`
+- `hard`
 
-并将固定 `easy protocol` 接入：
+并将固定 protocol 接入：
 - `FedVPR/data/fed_retinal_oct_relabel.py`
 - `FedVPR/data/fed_isic_relabel.py`
+
+其中：
+- `RetinalOCT` 的 `hard protocol` 已在本轮补齐
+- 之前一段时间里，`RetinalOCT` 的脚本虽然传了 `--protocol_mode='hard'`，但数据代码没有实现该分支，实际会回退到 `random`
 
 ### 2.2 虚拟锚点诊断日志
 
@@ -204,6 +213,24 @@
 - 因此“权重尺度偏小”确实是问题的一部分
 - 但考虑到把 `vir_weight_main` 提高到 `0.1` 后仍未激活 virtual prediction，说明“尺度问题”并不是全部问题
 
+### 3.8 关于 `OCT hard` 的重要更正
+
+需要明确收回之前的一条错误结论：
+- 我们之前曾把若干 `RetinalOCT` run 当成了 `hard protocol`
+- 但事后检查代码发现，当时 `FedVPR/data/fed_retinal_oct_relabel.py` 实际只实现了 `easy`
+- 因此脚本里即使写了 `--protocol_mode='hard'`，运行时也会自动落回 `random`
+
+受影响的代表性日志包括：
+- `/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260617_171039.log`
+- `/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260618_110540.log`
+- `/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260618_115434.log`
+- `/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260618_151117.log`
+
+修正后的解释应为：
+- 上述 run 只能证明 `OCT random` 下，stage-1 有时能激活一定程度的 virtual prediction
+- 它们不能作为 `OCT hard` 已经跑通的证据
+- 真正的 `OCT hard` 实验，应从本次补齐 `hard protocol` 代码之后重新开始统计
+
 ## 4. 当前基于证据的结论
 
 ### 4.1 已经确认有效的部分
@@ -219,10 +246,10 @@
 3. 在 easy protocol 下，known-class 性能是可以接受的。
 - stage-1 没有把 known 分类能力拖垮。
 
-4. 在 `OCT hard` 上，virtual branch 已经出现持续激活，而不是单点偶然现象。
-- 中后期 `Open->V` 可持续维持在大约 `18% - 27%`。
-- 同时 `CloseK->V` 仍然很低，通常在 `0% - 0.34%`。
-- `Test-Close ACC` 仍稳定在 `96%+`。
+4. 在 `OCT random` 上，virtual branch 曾出现过持续激活信号。
+- 代表性 run 中，中后期 `Open->V` 可持续维持在大约 `18% - 27%`。
+- 同时 `CloseK->V` 仍然较低。
+- 这说明方法方向可能成立，但这还不是 `hard protocol` 证据。
 
 ### 4.2 当前仍未解决的问题
 
@@ -238,6 +265,10 @@
 - `Open->V` 在中后期仍有明显波动和上升空间。
 - 因此“训练不充分”仍是一个实际存在的瓶颈。
 
+4. `OCT hard` 仍缺乏真实证据。
+- 之前引用的强结果后来证实属于 `random`
+- 因此 `hard protocol` 下的 stage-1 行为目前仍需要重新实验确认
+
 ### 4.3 当前最可能的诊断
 
 当前 stage-1 的目标函数本质上仍更像是在鼓励：
@@ -246,7 +277,7 @@
 这足以做到：
 - 让 known 样本远离 virtual anchors
 - 让 reserved directions 稳定存在
-- 让一部分 hard unknown 开始越过边界进入 virtual space
+- 让一部分更接近边界的 open 样本开始越过边界进入 virtual space
 
 但它仍不足以保证：
 - 大多数 open 样本都会自然靠近 virtual anchors
@@ -263,7 +294,7 @@
 
 - known-class 性能基本保持
 - virtual anchors 稳定且分散
-- 在 `OCT hard` 上，virtual branch 已出现持续激活的积极信号
+- 在 `OCT random` 上，virtual branch 已出现持续激活的积极信号
 
 ### 5.2 部分满足但尚未完成
 
@@ -275,7 +306,7 @@
 
 更准确的结论应当是：
 
-`FedVPR stage-1 已经提供了明确的积极信号，说明方法方向是可行的；但当前结果属于 positive-yet-incomplete，还不能宣称第一阶段已经完全学成。`
+`FedVPR stage-1 已经在 RetinalOCT random protocol 上提供了明确的积极信号，说明方法方向可能可行；但当前结果仍属于 positive-yet-incomplete，而且真正的 OCT hard protocol 还需要重新验证。`
 
 ## 6. 统一修正版下一步优化表
 
