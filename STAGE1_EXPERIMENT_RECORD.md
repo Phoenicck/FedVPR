@@ -216,40 +216,46 @@
 - 无塌缩
 - 无 virtual-to-virtual cosine 爆炸
 
-3. easy protocol 下的 known-class 性能是可以接受的。
-- stage-1 没有把 known 分类能力拖垮
+3. 在 easy protocol 下，known-class 性能是可以接受的。
+- stage-1 没有把 known 分类能力拖垮。
+
+4. 在 `OCT hard` 上，virtual branch 已经出现持续激活，而不是单点偶然现象。
+- 中后期 `Open->V` 可持续维持在大约 `18% - 27%`。
+- 同时 `CloseK->V` 仍然很低，通常在 `0% - 0.34%`。
+- `Test-Close ACC` 仍稳定在 `96%+`。
 
 ### 4.2 当前仍未解决的问题
 
-1. Stage-1 仍然没有显式用上 virtual anchors。
-- `Open->V = 0%`
-- `UNK = 0`
-- open 样本的 virtual histograms 基本为零
+1. 当前激活仍然是“部分成功”，不是完整成功。
+- 不是所有 open 样本都被 virtual space 接住。
+- `OpenKnown-VMax` 的中位数通常仍为正，说明大多数 open 样本整体仍偏向 known logits。
 
-2. Open 样本仍然被 known classifier 压住。
-- `OpenKnown-VMax` 始终为正
-- 说明 open 样本在 logit 空间里依然更靠近 known directions
+2. 单锚点使用塌缩仍然存在。
+- `OpenHist` 常呈现类似 `[0, 217, 10]`、`[0, 223, 20]` 的模式。
+- 说明现在塌缩的不是 anchor 几何，而是 anchor assignment / usage。
 
-3. 单纯提高 post-warmup 的 virtual loss 权重不足以解决问题。
-- `vir_weight_main = 0.1` 没有本质改善 virtual activation
+3. 一阶段训练到 `50 epoch` 时仍未明显进入 plateau。
+- `Open->V` 在中后期仍有明显波动和上升空间。
+- 因此“训练不充分”仍是一个实际存在的瓶颈。
 
 ### 4.3 当前最可能的诊断
 
-当前 stage-1 的目标函数本质上更像是在鼓励：
+当前 stage-1 的目标函数本质上仍更像是在鼓励：
 - `true known logit > virtual logits`
 
 这足以做到：
 - 让 known 样本远离 virtual anchors
 - 让 reserved directions 稳定存在
+- 让一部分 hard unknown 开始越过边界进入 virtual space
 
-但它不足以保证：
-- open 样本会自然靠近 virtual anchors
-- unseen 样本会显式预测到 virtual classes
+但它仍不足以保证：
+- 大多数 open 样本都会自然靠近 virtual anchors
+- 多个 virtual anchors 会自动形成良好的分工结构
 
 因此，当前问题不只是 `loss_vir` 数值偏小。
 更深层的问题是：
 
-`当前 stage-1 目标方向本身，可能并不足以形成一个真正可用的 unknown-reserved region。`
+`当前 stage-1 已经能部分激活 virtual space，但仍缺乏让 boundary/open-like samples 更充分、更均衡地占用多个 virtual anchors 的机制。`
 
 ## 5. 目前相对于第一阶段验收标准的状态
 
@@ -257,30 +263,55 @@
 
 - known-class 性能基本保持
 - virtual anchors 稳定且分散
+- 在 `OCT hard` 上，virtual branch 已出现持续激活的积极信号
 
-### 5.2 尚未满足
+### 5.2 部分满足但尚未完成
 
-- open 样本还没有明显更靠近 virtual space
-- virtual branch 在预测层面还没有被真正激活
-- 尚不能宣称 stage-1 已经形成可用的 reserved unknown space
+- 一部分 open 样本已经更靠近 virtual space，并被 virtual 预测接住
+- 但大多数 open 样本整体仍然更偏 known space
+- 尚未形成理想的多锚点 unknown-reserved structure
 
-## 6. 当前建议的下一步
+### 5.3 当前判断
 
-当前建议优先级：
+更准确的结论应当是：
 
-1. 不建议继续只做 `loss_vir` 的线性调权。
-- `0.01 -> 0.1` 的对照已经说明这条路的信息增益开始变低
+`FedVPR stage-1 已经提供了明确的积极信号，说明方法方向是可行的；但当前结果属于 positive-yet-incomplete，还不能宣称第一阶段已经完全学成。`
 
-2. 保留现有诊断和实验记录，作为后续对照基线。
+## 6. 统一修正版下一步优化表
 
-3. 下一步更值得尝试的是修改 stage-1 的目标本身，例如：
-- 为 stage-1 注入更直接的 boundary / open-like 信号
-- 让 virtual anchors 与 harder synthetic / boundary features 发生更直接的作用
-- 重新思考目标是否应该只把 known 推离 virtual，还是还应显式把 ambiguous/open-like samples 拉向 virtual space
+下面这张表是当前更推荐的统一执行顺序。原则是：
+- 先做低风险、信息增益高的训练配方优化
+- 再做目标函数增强
+- 最后再碰多锚点分工与 pseudo-open 方向
 
-4. 保留这些日志作为 proposal 证据链。
-- 目前这条证据链已经支持一个很有价值的论点：
-  `仅有稳定的 virtual anchors 还不够，目标函数还必须真正激活它们。`
+| 优先级 | 方向 | 建议动作 | 预期收益 | 风险判断 | 当前建议 |
+|---|---|---|---|---|---|
+| 1 | 训练配方优化 | 把 `vir_weight` 从“epoch 4 硬切 `0.5 -> 0.01`”改成平滑衰减；建议衰减到 `0.05` 或 `0.1`，并把 `pretrain` 延长到 `80-100 epoch` | 提高 `Open->V`，验证当前曲线是否还能继续上升 | 低 | 最先做 |
+| 2 | `loss_vir` 增强 | 不建议用 margin loss 直接替换 CE；更建议 `CE + margin` 组合，让排序与距离约束同时存在 | 有机会把 `OpenKnown-VMax` 继续往 `0` 拉近 | 中 | 第二步做 |
+| 3 | 多锚点利用 | 不建议先做 anchor-geometry 正则；更建议做 `assignment balance`，约束 boundary-like 样本在 virtual anchors 上的使用分布不要塌到单个锚点 | 缓解 `OpenHist` 单锚点占用 | 中 | 第三步做 |
+| 4 | 更长远的 pseudo-open 方向 | 不建议直接把高熵 known 样本当 open；若要尝试，应更偏向 boundary-like proxy，并且只施加很弱的引导 | 可能带来结构性突破 | 高 | 暂缓，后做 |
+
+### 6.1 对另一个 agent 提案的统一修正
+
+以下几条判断目前认为是合理的：
+- `vir_weight` 平滑衰减是合理的
+- `epoch` 提升到 `80-100` 是合理的
+- 当前瓶颈里，“信号偏弱”“单锚点使用塌缩”“训练尚未充分”三条判断整体成立
+
+以下几条需要修正后再做：
+- 不建议直接把 `loss_vir` 从 CE 全替成 margin loss，而是建议做 `CE + margin`
+- 不建议当前优先做 temperature annealing，因为它可能进一步强化“单锚点赢者通吃”
+- 不建议当前优先做 `virtue_num = 5`，因为大概率会从“1 个活锚点 + 2 个死锚点”变成“1 个活锚点 + 4 个死锚点”
+- 不建议把高熵 known 直接当 pseudo-open，这很容易误伤 hard known
+
+### 6.2 推荐执行顺序
+
+建议后续按下面顺序推进：
+
+1. 先做 `平滑 vir_weight + 更长训练`。
+2. 再做 `CE + margin` 的增量式 loss 改造。
+3. 再做 `assignment balance` 来缓解单锚点使用塌缩。
+4. 最后再决定是否进入 `pseudo-open proxy` 类实验。
 
 ## 7. 当前阶段重要日志索引
 
@@ -292,3 +323,4 @@
 - `/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260616_213239.log`
 - `/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260616_215620.log`
 - `/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260616_234021.log`
+- `/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260617_171039.log`
