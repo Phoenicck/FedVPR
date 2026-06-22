@@ -10,7 +10,7 @@ python main.py \
     --lr=5e-4 \
     --backbone='Resnet18' \
     --dataset='RetinalOCT' \
-    --protocol_mode='easy' \
+    --protocol_mode='hard' \
     --known_class=5 \
     --unknown_class=3 \
     --virtue_num=3 \

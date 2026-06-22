@@ -84,6 +84,10 @@ if __name__=="__main__":
                         help='log virtual-anchor diagnostics every N epochs during pretrain')
     parser.add_argument('--anchor_log_file', default='anchor_diagnostics.jsonl', type=str,
                         help='jsonl file for per-epoch virtual-anchor diagnostics')
+    parser.add_argument('--stage1_boundary_quantile', default=0.2, type=float,
+                        help='fraction of lowest known-logit-margin validation samples treated as boundary-like for stage-1 diagnostics')
+    parser.add_argument('--stage1_diag_eps', default=1e-12, type=float,
+                        help='small epsilon used in stage-1 compactness diagnostics')
 
     #Attack
     parser.add_argument('--eps', type=float, default=1.,help='eps')

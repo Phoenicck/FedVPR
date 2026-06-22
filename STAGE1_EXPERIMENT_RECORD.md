@@ -355,3 +355,171 @@
 - `/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260616_215620.log`
 - `/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260616_234021.log`
 - `/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260617_171039.log`
+
+## 5. 阶段性实验总结
+
+这一阶段的实验，已经足够支持我们对 `FedVPR Stage-1` 做一次重新定性：
+
+- `Stage-1` 不是“直接学会开放集拒识”的阶段。
+- `Stage-1` 更像是“known 边界整形 + virtual 坐标系稳定化”的阶段。
+- `Stage-2` 才应该承担“利用边界样本 / 伪未知样本真正训练开放集边界”的职责。
+
+换句话说，过去这段时间最重要的进展，不是把 `Open->V` 一路拉高，而是把我们对方法职责的理解校正清楚了。
+
+### 5.1 目前已经可以确认的发现
+
+#### A. 代码逻辑层面：当前主训练逻辑是可信的
+
+- 经过 `random protocol` 复现实验，可以确认近期加入的日志、协议接线和诊断代码没有破坏主训练循环。
+- 修复 client-side virtual anchor freeze bug 之后，`VDriftMax` 稳定为 `0`，`VNorm` 维持在 `1` 附近，说明 virtual anchors 的“乱跑”问题已经基本解决。
+
+这意味着：
+
+- 现在日志里看到的现象，大体反映的是方法本身的行为，而不是明显的实现错误。
+
+#### B. 现象层面：known 边界收紧是真实存在的
+
+在 `OCT hard` 当前策略日志中：
+
+- [RetinalOCT_Pretrain_K5_U3_seed0_20260620_205250.log](/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260620_205250.log)
+
+可以看到：
+
+- `Compact` 从 `0.278206` 下降到前中期约 `0.19 - 0.23`
+- 后期大多维持在约 `0.26`
+- `KnownTrue-Other mean` 从接近 `0` 提升到后期 `10+`
+- `CloseTrue-VMax mean` 后期稳定在 `8+`
+
+这说明：
+
+- known 类内部确实被压紧了
+- known 类之间的 margin 被明显拉开了
+- known 样本与 virtual logits 的间隔很大
+
+因此，`Stage-1` 的“边界收紧”目标不是空的，已经有比较明确的实验支持。
+
+#### C. virtual 分支并不是完全没用，但它的激活高度依赖协议难度
+
+在 `OCT easy` 当前策略日志中：
+
+- [RetinalOCT_Pretrain_K5_U3_seed0_20260620_214513.log](/workspace/Phoenic/claude0527/FedVPR/logs/RetinalOCT_Pretrain_K5_U3_seed0_20260620_214513.log)
+
+可以看到：
+
+- `Compact` 早期从 `0.500270` 下降到 `0.265014`
+- 中后期 `Open->V` 可以到 `9% - 15%`
+- 代表性 epoch：
+  - `35/50`: `Open->V=9.143%`
+  - `38/50`: `Open->V=14.762%`
+  - `49/50`: `Open->V=12.762%`
+
+这说明：
+
+- 当 unknown 相对容易时，virtual branch 的确可能接住一部分 open 样本
+- 所以“virtual reserved space 完全不成立”这个结论并不准确
+
+但同一份日志也同时表明：
+
+- `CloseK->V` 会升到 `1% - 2%`
+- `OpenHist` 仍明显偏向单一锚点
+- `OpenVEntropy` 总体偏低
+
+所以这更像是“部分激活”，不是“成熟机制”。
+
+#### D. `hard protocol` 与 `easy protocol` 给出了互补信息
+
+这段时间最有价值的一个认识是：
+
+- `easy` 更容易看到 virtual 激活信号
+- `hard` 更能检验边界收紧是否扎实
+
+具体地说：
+
+- `easy` 结果更适合回答：“virtual branch 有没有工作起来？”
+- `hard` 结果更适合回答：“仅靠 Stage-1，面对困难 unknown 时到底能做到什么程度？”
+
+目前答案是：
+
+- `easy` 下，virtual 有一定激活
+- `hard` 下，known 边界更稳，但 `Open->V` 很弱
+
+这说明 `known 收紧` 不会自动推出 `hard unknown 被 virtual 接住`。
+
+### 5.2 目前已经被证伪或被修正的判断
+
+#### A. 之前若干所谓的 `OCT hard` 结论无效
+
+之前曾误以为若干 `RetinalOCT` 训练是 `hard protocol`，但后来检查发现当时数据代码并未真正实现 `hard` 分支，实际会回退到 `random`。
+
+因此，过去一部分“`hard` 也出现不错 virtual 信号”的结论需要收回。那批 run 只能说明：
+
+- `random` 下，方法有时能出现比较积极的 virtual 激活
+- 不能说明真实 `hard protocol` 已经跑通
+
+#### B. 单纯调大 `vir_weight_main` 不是根本解法
+
+提高 `vir_weight_main` 后，virtual 分支并没有因此稳定地被激活，说明问题不只是“loss 太弱”，更可能是：
+
+- Stage-1 本身没有真实 unknown 监督
+- 仅靠 known-vs-virtual 的排斥，不足以让 hard unknown 自然落入 virtual
+
+#### C. 不能再把 `Open->V` 当成 Stage-1 的唯一成败标准
+
+这段时间最重要的认知修正之一是：
+
+- `Open->V` 低，不代表 `Stage-1` 完全失败
+- 尤其在 `hard protocol` 下，`Open->V` 低更可能意味着：Stage-2 必须承担更强的伪未知生成职责
+
+因此后续判断标准应该改成：
+
+- `Stage-1` 是否提供了更紧的 known 边界
+- virtual anchors 是否稳定、可控、不塌缩
+- 是否存在可供二阶段利用的边界样本和边界趋势
+
+而不是继续要求：
+
+- `Stage-1` 单独完成强开放集拒识
+
+### 5.3 当前最稳妥的方法结论
+
+到目前为止，最稳妥、最符合证据的总结是：
+
+1. `FedVPR` 的整体想法还没有被证伪。
+2. 但原先如果把 `Stage-1` 理解为“直接学会 unknown rejection”，这个期待过高了。
+3. 当前实验更支持这样一种两阶段分工：
+   - `Stage-1`：收紧 known 边界，稳定 virtual 坐标系，筛出边界种子
+   - `Stage-2`：利用边界样本或边界附近特征生成伪未知，真正训练开放集边界
+
+也就是说，当前最合理的解释不是“方法错了”，而是：
+
+- 方法的阶段职责需要重新定义
+- `Stage-1` 已经完成了它的一部分任务
+- 真正决定方法成败的重点，正在逐步转向 `Stage-2`
+
+### 5.4 后续实验的直接指导意义
+
+基于这段时间的结果，后续工作不应再长期停留在“继续死磕把 `Stage-1 Open->V` 拉高”上，而应该转向：
+
+1. 用 `hard protocol` 继续保留 `Stage-1 diagnostics`，但把主要目标改为验证：
+   - known 边界是否稳定收紧
+   - boundary candidate 是否足够可用
+   - virtual anchors 是否保持稳定
+
+2. 尽快进入 `Stage-2` 设计与验证，重点看：
+   - 如何筛边界样本
+   - 如何生成伪未知特征
+   - 生成后的样本是否真的降低 known confidence、提升 virtual / unknown 侧响应
+
+3. `easy` 结果保留为机制佐证：
+   - 它说明 virtual branch 不是完全无效
+   - 但不应再把它当成最终主结论
+
+## 6. 一句话结论
+
+过去这段时间的实验整体上支持这样一个判断：
+
+```text
+FedVPR 的 Stage-1 更像“边界整形器”，而不是“直接开放集识别器”。
+它已经证明了 known 边界可以被收紧、virtual anchors 可以被稳定；
+但 hard unknown 不会仅凭 Stage-1 自动落入 virtual，因此 Stage-2 的伪未知生成与边界学习是方法成败的关键。
+```

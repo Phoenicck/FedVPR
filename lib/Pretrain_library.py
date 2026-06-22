@@ -6,6 +6,7 @@ Created on Tue Aug 23 00:03:23 2022
 """
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import numpy as np
 from sklearn import metrics
 
@@ -69,6 +70,104 @@ def _margin_summary(values):
         'max': float(arr.max()),
     }
 
+
+
+
+def _feature_tensor_to_numpy(feats):
+    if feats.dim() == 4:
+        feats = F.adaptive_avg_pool2d(feats, 1).flatten(1)
+    elif feats.dim() > 2:
+        feats = feats.flatten(1)
+    return feats.detach().cpu().numpy().astype(np.float32)
+
+
+def _build_stage1_geometry_summary(features, labels, margin_values, args):
+    features = np.asarray(features, dtype=np.float32)
+    labels = np.asarray(labels, dtype=np.int64)
+    margin_values = np.asarray(margin_values, dtype=np.float32).reshape(-1)
+    eps = float(getattr(args, 'stage1_diag_eps', 1e-12))
+
+    if features.size == 0 or labels.size == 0:
+        empty_boundary = {
+            'count': 0,
+            'rate': 0.0,
+            'threshold': 0.0,
+            'hist': [0 for _ in range(args.known_class)],
+            'mean_margin': 0.0,
+        }
+        return {
+            'feature_dim': 0,
+            'class_count': 0,
+            'intra_class_variance_mean': 0.0,
+            'inter_class_center_distance_mean': 0.0,
+            'center_norm_mean': 0.0,
+            'compactness_ratio': 0.0,
+            'known_true_other_margin': _margin_summary([]),
+            'boundary_candidate': empty_boundary,
+        }
+
+    unique_labels = np.unique(labels)
+    class_centers = []
+    intra_vars = []
+    center_norms = []
+    for cls in unique_labels:
+        cls_feats = features[labels == cls]
+        if cls_feats.shape[0] == 0:
+            continue
+        center = cls_feats.mean(axis=0)
+        class_centers.append(center)
+        center_norms.append(float(np.linalg.norm(center)))
+        sq_dist = np.sum((cls_feats - center) ** 2, axis=1)
+        intra_vars.append(float(sq_dist.mean()) if sq_dist.size > 0 else 0.0)
+
+    if class_centers:
+        centers = np.stack(class_centers, axis=0)
+        if centers.shape[0] > 1:
+            diff = centers[:, None, :] - centers[None, :, :]
+            dists = np.sqrt(np.sum(diff ** 2, axis=2))
+            mask = ~np.eye(centers.shape[0], dtype=bool)
+            inter_vals = dists[mask]
+            inter_mean = float(inter_vals.mean()) if inter_vals.size > 0 else 0.0
+        else:
+            inter_mean = 0.0
+    else:
+        inter_mean = 0.0
+
+    intra_mean = float(np.mean(intra_vars)) if intra_vars else 0.0
+    compactness = float(intra_mean / max(inter_mean, eps)) if inter_mean > 0 else 0.0
+
+    boundary_quantile = float(np.clip(getattr(args, 'stage1_boundary_quantile', 0.2), 0.0, 1.0))
+    if margin_values.size == 0:
+        boundary_mask = np.zeros(labels.shape[0], dtype=bool)
+        boundary_threshold = 0.0
+    elif boundary_quantile <= 0.0:
+        boundary_mask = np.zeros_like(margin_values, dtype=bool)
+        boundary_threshold = float(margin_values.min())
+    elif boundary_quantile >= 1.0:
+        boundary_mask = np.ones_like(margin_values, dtype=bool)
+        boundary_threshold = float(margin_values.max())
+    else:
+        boundary_threshold = float(np.quantile(margin_values, boundary_quantile))
+        boundary_mask = margin_values <= boundary_threshold
+
+    boundary_hist = np.bincount(labels[boundary_mask], minlength=args.known_class).tolist() if labels.size > 0 else [0 for _ in range(args.known_class)]
+
+    return {
+        'feature_dim': int(features.shape[1]),
+        'class_count': int(len(unique_labels)),
+        'intra_class_variance_mean': intra_mean,
+        'inter_class_center_distance_mean': inter_mean,
+        'center_norm_mean': float(np.mean(center_norms)) if center_norms else 0.0,
+        'compactness_ratio': compactness,
+        'known_true_other_margin': _margin_summary(margin_values),
+        'boundary_candidate': {
+            'count': int(boundary_mask.sum()),
+            'rate': float(boundary_mask.mean() * 100.0) if boundary_mask.size > 0 else 0.0,
+            'threshold': boundary_threshold,
+            'hist': boundary_hist,
+            'mean_margin': float(margin_values[boundary_mask].mean()) if boundary_mask.any() else 0.0,
+        },
+    }
 
 def _get_virtual_loss_weight(args, epoch):
     warmup_epochs = max(0, int(getattr(args, 'vir_warmup_epochs', 4)))
@@ -179,8 +278,11 @@ def val(args, device, epoch, net, valloader):
     criterion = nn.CrossEntropyLoss()
     known_virtual_margin = []
     known_true_virtual_logit_margin = []
+    known_true_other_margin = []
     virtual_prob_sum = []
     virtual_pred_flags = []
+    val_features = []
+    val_feature_labels = []
     with torch.no_grad():
         for batch_idx, (inputs, targets, img_dirs) in enumerate(valloader):
             inputs, targets = inputs.to(device), targets.long().to(device)
@@ -193,6 +295,8 @@ def val(args, device, epoch, net, valloader):
             _, predicted = outputs[:, :args.known_class].max(1)
             pred_list.extend(predicted.cpu().numpy().tolist())
             label_list.extend(targets.cpu().numpy().tolist())
+            val_features.append(_feature_tensor_to_numpy(outs['discrete_feats']))
+            val_feature_labels.append(targets.cpu().numpy())
 
             prob = torch.nn.functional.softmax(outputs, dim=-1).cpu().numpy()
             stats = _virtual_stats_from_prob(prob, args.known_class)
@@ -205,6 +309,12 @@ def val(args, device, epoch, net, valloader):
                 true_logits = outputs.gather(1, targets.unsqueeze(1)).squeeze(1).detach().cpu().numpy()
                 virtual_max_logit = outputs[:, args.known_class:].max(1)[0].detach().cpu().numpy()
                 known_true_virtual_logit_margin.append(true_logits - virtual_max_logit)
+            known_only_logits = outputs[:, :args.known_class]
+            true_known_logits = known_only_logits.gather(1, targets.unsqueeze(1)).squeeze(1)
+            masked_known_logits = known_only_logits.clone()
+            masked_known_logits.scatter_(1, targets.unsqueeze(1), float('-inf'))
+            max_other_known_logits = masked_known_logits.max(1)[0]
+            known_true_other_margin.append((true_known_logits - max_other_known_logits).detach().cpu().numpy())
 
         loss_avg = val_loss/(batch_idx+1)
         mean_acc = 100*metrics.accuracy_score(label_list, pred_list)
@@ -217,6 +327,10 @@ def val(args, device, epoch, net, valloader):
         virtual_pred_flags = np.concatenate(virtual_pred_flags) if virtual_pred_flags else np.zeros(0, dtype=bool)
         known_virtual_margin = np.concatenate(known_virtual_margin) if known_virtual_margin else np.zeros(0, dtype=np.float32)
         known_true_virtual_logit_margin = np.concatenate(known_true_virtual_logit_margin) if known_true_virtual_logit_margin else np.zeros(0, dtype=np.float32)
+        known_true_other_margin = np.concatenate(known_true_other_margin) if known_true_other_margin else np.zeros(0, dtype=np.float32)
+        val_features = np.concatenate(val_features, axis=0) if val_features else np.zeros((0, 0), dtype=np.float32)
+        val_feature_labels = np.concatenate(val_feature_labels) if val_feature_labels else np.zeros(0, dtype=np.int64)
+        stage1_geometry = _build_stage1_geometry_summary(val_features, val_feature_labels, known_true_other_margin, args)
 
         result = {'loss':loss_avg,
                       'acc':mean_acc,
@@ -228,6 +342,8 @@ def val(args, device, epoch, net, valloader):
                       'known_virtual_prob_mean': float(virtual_prob_sum.mean()) if len(virtual_prob_sum) > 0 else 0.0,
                       'known_virtual_margin_mean': float(known_virtual_margin.mean()) if len(known_virtual_margin) > 0 else 0.0,
                       'known_true_virtual_logit_margin': _margin_summary(known_true_virtual_logit_margin),
+                      'known_true_other_logit_margin': _margin_summary(known_true_other_margin),
+                      'stage1_geometry': stage1_geometry,
                       }
     return result
 

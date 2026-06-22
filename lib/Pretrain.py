@@ -88,6 +88,8 @@ def _build_anchor_diagnostics(args, epoch, server_model, initial_virtual_weights
         'val_known_virtual_prob_mean': float(val_result.get('known_virtual_prob_mean', 0.0)),
         'val_known_virtual_margin_mean': float(val_result.get('known_virtual_margin_mean', 0.0)),
         'val_known_true_virtual_logit_margin': val_result.get('known_true_virtual_logit_margin', {}),
+        'val_known_true_other_logit_margin': val_result.get('known_true_other_logit_margin', {}),
+        'stage1_geometry': val_result.get('stage1_geometry', {}),
         'test_close_virtual_pred_rate': float(osr_result.get('close_virtual_pred_rate', 0.0)),
         'test_close_virtual_prob_mean': float(osr_result.get('close_virtual_prob_mean', 0.0)),
         'test_close_known_virtual_margin_mean': float(osr_result.get('close_known_virtual_margin_mean', 0.0)),
@@ -119,6 +121,27 @@ def _print_anchor_diagnostics(epoch, args, diagnostics):
         f"CloseK->V={diagnostics['test_close_virtual_pred_rate']:.2f}% "
         f"Open->V={diagnostics['test_open_virtual_pred_rate']:.2f}% "
         f"OpenVEntropy={diagnostics['test_open_virtual_entropy']:.4f}"
+    )
+
+
+def _print_stage1_diagnostics(epoch, args, val_result):
+    stage1_geometry = val_result.get('stage1_geometry', {})
+    margin_stats = stage1_geometry.get('known_true_other_margin', {})
+    boundary = stage1_geometry.get('boundary_candidate', {})
+    print(
+        f"Stage1Diag [{epoch}/{args.epoches}] "
+        f"FeatDim={stage1_geometry.get('feature_dim', 0)} "
+        f"IntraVar={stage1_geometry.get('intra_class_variance_mean', 0.0):.6f} "
+        f"InterDist={stage1_geometry.get('inter_class_center_distance_mean', 0.0):.6f} "
+        f"Compact={stage1_geometry.get('compactness_ratio', 0.0):.6f} "
+        f"CenterNorm={stage1_geometry.get('center_norm_mean', 0.0):.6f}"
+    )
+    print(
+        f"Stage1Boundary [{epoch}/{args.epoches}] "
+        f"KnownTrue-Other mean={margin_stats.get('mean', 0.0):.4f} std={margin_stats.get('std', 0.0):.4f} "
+        f"p10={margin_stats.get('p10', 0.0):.4f} p50={margin_stats.get('p50', 0.0):.4f} p90={margin_stats.get('p90', 0.0):.4f} | "
+        f"BoundaryRate={boundary.get('rate', 0.0):.3f}% count={boundary.get('count', 0)} "
+        f"thr={boundary.get('threshold', 0.0):.4f} hist={boundary.get('hist', [])}"
     )
 
 
@@ -183,6 +206,7 @@ def run(args):
             f"p10={val_logit_margin.get('p10', 0.0):.4f} p50={val_logit_margin.get('p50', 0.0):.4f} "
             f"p90={val_logit_margin.get('p90', 0.0):.4f}"
         )
+        _print_stage1_diagnostics(epoch, args, val_result)
         print()
 
         osr_result, close_test_result = test(args, device, epoch, server_model, closerloader, openloader)
