@@ -305,7 +305,7 @@ class ResNet(nn.Module):
         x = torch.flatten(x, 1)
         outputs = self.main_cls(x)
         
-        out = {'outputs':outputs, 'aux_out':aux_out['aux_out'], 'boundary_feats': boundary_feats, 'discrete_feats':discrete_feats} 
+        out = {'outputs':outputs, 'aux_out':aux_out['aux_out'], 'boundary_feats': boundary_feats, 'discrete_feats':discrete_feats, 'feature': x} 
 
         return out
 

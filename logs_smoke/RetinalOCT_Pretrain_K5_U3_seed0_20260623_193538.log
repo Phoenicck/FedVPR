@@ -1,0 +1,64 @@
+Logging to: /workspace/Phoenic/claude0527/FedVPR/logs_smoke/RetinalOCT_Pretrain_K5_U3_seed0_20260623_193538.log
+==> Preparing data..
+Protocol mode: hard
+Fixed known classes: ['CSR', 'DR', 'DRUSEN', 'MH', 'NORMAL']
+Fixed unknown classes: ['AMD', 'CNV', 'DME']
+Known class list: [2 4 5 6 7] Unknown class list [0 1 3]
+Total images — Train: 48, Val: 16, Test: 16
+{np.int64(2): 0, np.int64(4): 1, np.int64(5): 2, np.int64(6): 3, np.int64(7): 4} {np.int64(0): 5, np.int64(1): 6, np.int64(3): 7}
+Known origin: [2 4 5 6 7] , new: [0 1 2 3 4]
+Unknown origin: [0 1 3] , new: [5 6 7]
+Known/Unknown in Train: 30/18
+Known/Unknown in Val:   10/6
+Known/Unknown in Test:  10/6
+Client0 sample num: 13
+Client1 sample num: 17
+
+>>> Setting up
+==> Using device: cpu
+==> Building [Resnet18] model..
+154
+120
+Train Client0 [0/2] LR=0.0005000 loss=1.627 (Known=1.627 Reserve=0.000) ACC=25.000 F1=10.714 Rec=18.750 Prec=7.500
+Train Client1 [0/2] LR=0.0005000 loss=1.655 (Known=1.655 Reserve=0.000) ACC=18.750 F1=14.667 Rec=14.000 Prec=26.667
+
+Val    [0/2] LR=0.0005000 loss=1.687 ACC=30.000 F1=18.889 Rec=30.000 Prec=15.714
+Val-KV [0/2] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [0/2] FeatDim=512 IntraVar=123.399963 InterDist=19.479263 Compact=6.334940 CenterNorm=28.517112
+Stage1Boundary [0/2] KnownTrue-Other mean=-0.6430 std=1.3790 p10=-2.4139 p50=-0.5266 p90=1.1387 | BoundaryRate=20.000% count=2 thr=-1.5870 hist=[0, 0, 0, 0, 2]
+
+Initialized fixed virtual anchors and saved metadata to results/MPretrain-DRetinalOCT-Msoftmax-BResnet18/LR0.0005-K5-U3-Seed0-RsvW1-V3/stage1_anchor_init.json
+Anchor V0: pair=['CSR', 'DR'] score=0.716866 conf=0.500000 proto=0.933731
+Anchor V1: pair=['DR', 'NORMAL'] score=0.712055 conf=0.500000 proto=0.924111
+Anchor V2: pair=['CSR', 'MH'] score=0.592387 conf=0.250000 proto=0.934775
+Anchor pairwise cosine: [[1.0, 0.9383982419967651, 0.983295738697052], [0.9383982419967651, 1.0, 0.9230459332466125], [0.983295738697052, 0.9230459332466125, 1.0]]
+ReserveDiag [0/2] ValACC=30.000 ValF1=18.889 Compact=6.334940 KVMargin=0.000000 CloseK->V=0.000%
+ReserveAnchors [0/2] [{'pair': [0, 1], 'pair_names': ['CSR', 'DR'], 'pair_score': 0.7168656885623932, 'sym_confusion': 0.5, 'prototype_similarity': 0.9337313771247864}, {'pair': [1, 4], 'pair_names': ['DR', 'NORMAL'], 'pair_score': 0.7120553553104401, 'sym_confusion': 0.5, 'prototype_similarity': 0.9241107106208801}, {'pair': [0, 3], 'pair_names': ['CSR', 'MH'], 'pair_score': 0.5923872888088226, 'sym_confusion': 0.25, 'prototype_similarity': 0.9347745776176453}]
+ReserveCosine [0/2] [[1.0, 0.9383982419967651, 0.983295738697052], [0.9383982419967651, 1.0, 0.9230459332466125], [0.983295738697052, 0.9230459332466125, 1.0]]
+ReserveDensity [0/2] {}
+Saving best model by known validation F1 . . . . . . . .
+
+Saving model at epoch 0 . . . . . . . .
+
+Train Client0 [1/2] LR=0.0005000 loss=3.170 (Known=1.995 Reserve=11.757) ACC=33.333 F1=29.167 Rec=30.833 Prec=31.250
+Train Client1 [1/2] LR=0.0005000 loss=3.136 (Known=1.940 Reserve=11.956) ACC=31.250 F1=18.333 Rec=18.333 Prec=18.333
+
+Val    [1/2] LR=0.0005000 loss=1.775 ACC=30.000 F1=16.889 Rec=30.000 Prec=12.381
+Val-KV [1/2] CloseK->V=100.000% KVMargin=-11.941616
+Stage1Diag [1/2] FeatDim=512 IntraVar=92.190881 InterDist=19.423904 Compact=4.746259 CenterNorm=26.034593
+Stage1Boundary [1/2] KnownTrue-Other mean=-0.7554 std=0.8932 p10=-1.8279 p50=-0.6776 p90=0.3823 | BoundaryRate=20.000% count=2 thr=-1.4728 hist=[0, 1, 0, 0, 1]
+
+ReserveDiag [1/2] ValACC=30.000 ValF1=16.889 Compact=4.746259 KVMargin=-11.941616 CloseK->V=100.000%
+ReserveAnchors [1/2] [{'pair': [0, 1], 'pair_names': ['CSR', 'DR'], 'pair_score': 0.7168656885623932, 'sym_confusion': 0.5, 'prototype_similarity': 0.9337313771247864}, {'pair': [1, 4], 'pair_names': ['DR', 'NORMAL'], 'pair_score': 0.7120553553104401, 'sym_confusion': 0.5, 'prototype_similarity': 0.9241107106208801}, {'pair': [0, 3], 'pair_names': ['CSR', 'MH'], 'pair_score': 0.5923872888088226, 'sym_confusion': 0.25, 'prototype_similarity': 0.9347745776176453}]
+ReserveCosine [1/2] [[1.0, 0.9383982419967651, 0.983295738697052], [0.9383982419967651, 1.0, 0.9230459332466125], [0.983295738697052, 0.9230459332466125, 1.0]]
+ReserveDensity [1/2] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving model at epoch 1 . . . . . . . .
+
+------>Best performance (by known validation F1)--->>>>>>>
+
+Best epoch: 0/2
+Val    ACC=30.000 F1=18.889 Rec=30.000 Prec=15.714
+Test-Close ACC=20.000 F1=10.000 Rec=20.000 Prec=6.667
+Test-Virtual CloseK->V=100.000% Open->V=100.000% CloseHist=[5, 4, 1] OpenHist=[2, 4, 0]
+=====================================================================================================================================
+The ending time ：2026-06-23 19:36:06

@@ -8,7 +8,16 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from sklearn import metrics
+from . import simple_metrics as metrics
+
+from .stage1_reserve import (
+    close_open_virtual_eval,
+    compute_anchor_density,
+    compute_known_logits,
+    compute_virtual_logits,
+    known_virtual_stats,
+    margin_summary,
+)
 
 
 def _virtual_stats_from_prob(prob, known_class):
@@ -69,8 +78,6 @@ def _margin_summary(values):
         'p90': float(np.percentile(arr, 90)),
         'max': float(arr.max()),
     }
-
-
 
 
 def _feature_tensor_to_numpy(feats):
@@ -169,6 +176,7 @@ def _build_stage1_geometry_summary(features, labels, margin_values, args):
         },
     }
 
+
 def _get_virtual_loss_weight(args, epoch):
     warmup_epochs = max(0, int(getattr(args, 'vir_warmup_epochs', 4)))
     anneal_epochs = max(0, int(getattr(args, 'vir_anneal_epochs', 0)))
@@ -184,7 +192,69 @@ def _get_virtual_loss_weight(args, epoch):
     return main_weight + (warmup_weight - main_weight) * (1.0 - progress)
 
 
-def train(args, device, epoch, net, trainloader, optimizer):
+def _train_reserve(args, device, epoch, net, trainloader, optimizer, stage1_state=None):
+    net.train()
+    train_loss = 0.0
+    train_loss_known = 0.0
+    train_loss_reserve = 0.0
+    pred_list = []
+    label_list = []
+    criterion = nn.CrossEntropyLoss()
+    anchors = None
+    reserve_ready = bool(stage1_state and stage1_state.get('initialized', False))
+    if reserve_ready:
+        anchors = stage1_state['virtual_anchors'].to(device)
+
+    for batch_idx, (inputs, targets, img_dirs) in enumerate(trainloader):
+        inputs, targets = inputs.to(device), targets.long().to(device)
+        optimizer.zero_grad()
+        outs = net(inputs)
+        features = outs['feature']
+        known_logits = compute_known_logits(features, net.main_cls.weight[:args.known_class], args.cosine_scale)
+        loss_known = criterion(known_logits, targets)
+        if reserve_ready:
+            virtual_logits = compute_virtual_logits(features, anchors, args.cosine_scale)
+            reserve_logits = torch.cat([known_logits, virtual_logits], dim=1)
+            loss_reserve = criterion(reserve_logits, targets)
+            loss = loss_known + args.lambda_reserve * loss_reserve
+        else:
+            loss_reserve = known_logits.new_tensor(0.0)
+            loss = loss_known
+        loss.backward()
+        optimizer.step()
+
+        train_loss += loss.item()
+        train_loss_known += loss_known.item()
+        train_loss_reserve += loss_reserve.item()
+        _, predicted = known_logits.max(1)
+        pred_list.extend(predicted.cpu().numpy().tolist())
+        label_list.extend(targets.cpu().numpy().tolist())
+
+        if args.max_train_batches > 0 and batch_idx + 1 >= args.max_train_batches:
+            break
+
+    loss_avg = train_loss/(batch_idx+1)
+    loss_known_avg = train_loss_known/(batch_idx+1)
+    loss_reserve_avg = train_loss_reserve/(batch_idx+1)
+    mean_acc = 100*metrics.accuracy_score(label_list, pred_list)
+    precision = 100*metrics.precision_score(label_list, pred_list, average='macro', zero_division=0)
+    recall_macro = 100*metrics.recall_score(y_true=label_list, y_pred=pred_list, average='macro', zero_division=0)
+    f1_macro = 100*metrics.f1_score(y_true=label_list, y_pred=pred_list, average='macro', zero_division=0)
+    return {
+        'loss': loss_avg,
+        'loss_known': loss_known_avg,
+        'loss_reserve': loss_reserve_avg,
+        'acc': mean_acc,
+        'f1': f1_macro,
+        'recall': recall_macro,
+        'precision': precision,
+    }
+
+
+def train(args, device, epoch, net, trainloader, optimizer, stage1_state=None):
+    if getattr(args, 'stage1_reserve_enable', False):
+        return _train_reserve(args, device, epoch, net, trainloader, optimizer, stage1_state=stage1_state)
+
     net.train()
     train_loss = 0
     train_loss_ce = 0
@@ -193,7 +263,6 @@ def train(args, device, epoch, net, trainloader, optimizer):
     train_loss_aux = 0
     pred_list = []
     label_list = []
-    output_list = []
     criterion = nn.CrossEntropyLoss()
 
     for batch_idx, (inputs, targets, img_dirs) in enumerate(trainloader):
@@ -202,36 +271,27 @@ def train(args, device, epoch, net, trainloader, optimizer):
         outs = net(inputs)
         outputs = outs['outputs']
         aux_outputs = outs['aux_out']
-        # Stage 1: Pre-training with Space Reservation
-        # L_Stage1 = L_CE(W_known) + lambda * L_vir(W_known U W_vir)
 
-        # 1. Split outputs into known and virtual logits
         known_logits = outputs[:, :args.known_class]
         virtual_logits = outputs[:, args.known_class:]
 
-        # 2. Standard CrossEntropy on Known Classes
         loss_ce = criterion(known_logits, targets)
 
-        # 3. Virtual Softmax Loss plus a small margin add-on.
-        true_class_logits = known_logits.gather(1, targets.unsqueeze(1))  # [B, 1]
-        vir_loss_input = torch.cat([true_class_logits, virtual_logits], dim=1)  # [B, 1 + M]
+        true_class_logits = known_logits.gather(1, targets.unsqueeze(1))
+        vir_loss_input = torch.cat([true_class_logits, virtual_logits], dim=1)
         vir_loss_targets = torch.zeros(inputs.size(0), dtype=torch.long, device=device)
         loss_vir_ce = criterion(vir_loss_input, vir_loss_targets)
         max_virtual_logits = virtual_logits.max(1, keepdim=True)[0]
         loss_vir_margin = torch.relu(args.vir_margin - (true_class_logits - max_virtual_logits)).mean()
         loss_vir = loss_vir_ce + args.vir_margin_weight * loss_vir_margin
 
-        # Total loss with a configurable virtual-loss schedule.
         vir_weight = _get_virtual_loss_weight(args, epoch)
         weighted_loss_vir = vir_weight * loss_vir
         loss = loss_ce + weighted_loss_vir
-        # Add Aux Loss
         loss_aux = criterion(aux_outputs, targets)
         loss += loss_aux
         loss.backward()
         if args.virtue_num > 0 and net.main_cls.weight.grad is not None:
-            # deepcopy() drops the constructor-registered grad hook, so clamp
-            # virtual anchor rows explicitly on every client update.
             net.main_cls.weight.grad[args.known_class:] = 0
         optimizer.step()
         train_loss += loss.item()
@@ -243,7 +303,9 @@ def train(args, device, epoch, net, trainloader, optimizer):
 
         pred_list.extend(predicted.cpu().numpy().tolist())
         label_list.extend(targets.cpu().numpy().tolist())
-        output_list.append(torch.nn.functional.softmax(outputs, dim=-1).cpu().detach().numpy())
+
+        if args.max_train_batches > 0 and batch_idx + 1 >= args.max_train_batches:
+            break
 
     loss_avg = train_loss/(batch_idx+1)
     loss_ce_avg = train_loss_ce/(batch_idx+1)
@@ -251,9 +313,9 @@ def train(args, device, epoch, net, trainloader, optimizer):
     loss_vir_weighted_avg = train_loss_vir_weighted/(batch_idx+1)
     loss_aux_avg = train_loss_aux/(batch_idx+1)
     mean_acc = 100*metrics.accuracy_score(label_list, pred_list)
-    precision = 100*metrics.precision_score(label_list, pred_list, average='macro')
-    recall_macro = 100*metrics.recall_score(y_true=label_list, y_pred=pred_list, average='macro')
-    f1_macro = 100*metrics.f1_score(y_true=label_list, y_pred=pred_list, average='macro')
+    precision = 100*metrics.precision_score(label_list, pred_list, average='macro', zero_division=0)
+    recall_macro = 100*metrics.recall_score(y_true=label_list, y_pred=pred_list, average='macro', zero_division=0)
+    f1_macro = 100*metrics.f1_score(y_true=label_list, y_pred=pred_list, average='macro', zero_division=0)
 
     result = {'loss':loss_avg,
               'loss_ce': loss_ce_avg,
@@ -269,7 +331,84 @@ def train(args, device, epoch, net, trainloader, optimizer):
     return result
 
 
-def val(args, device, epoch, net, valloader):
+def _val_reserve(args, device, epoch, net, valloader, stage1_state=None):
+    net.eval()
+    val_loss = 0.0
+    pred_list = []
+    label_list = []
+    criterion = nn.CrossEntropyLoss()
+    known_true_other_margin = []
+    kv_margin = []
+    pred_is_virtual = []
+    val_features = []
+    val_feature_labels = []
+    anchors = stage1_state['virtual_anchors'].to(device) if stage1_state and stage1_state.get('initialized', False) else None
+
+    with torch.no_grad():
+        for batch_idx, (inputs, targets, img_dirs) in enumerate(valloader):
+            inputs, targets = inputs.to(device), targets.long().to(device)
+            outs = net(inputs)
+            features = outs['feature']
+            known_logits = compute_known_logits(features, net.main_cls.weight[:args.known_class], args.cosine_scale)
+            loss = criterion(known_logits, targets)
+            val_loss += loss.item()
+            _, predicted = known_logits.max(1)
+            pred_list.extend(predicted.cpu().numpy().tolist())
+            label_list.extend(targets.cpu().numpy().tolist())
+            val_features.append(_feature_tensor_to_numpy(features))
+            val_feature_labels.append(targets.cpu().numpy())
+
+            true_known_logits = known_logits.gather(1, targets.unsqueeze(1)).squeeze(1)
+            masked_known_logits = known_logits.clone()
+            masked_known_logits.scatter_(1, targets.unsqueeze(1), float('-inf'))
+            max_other_known_logits = masked_known_logits.max(1)[0]
+            known_true_other_margin.append((true_known_logits - max_other_known_logits).detach().cpu().numpy())
+
+            if anchors is not None:
+                virtual_logits = compute_virtual_logits(features, anchors, args.cosine_scale)
+                stats = known_virtual_stats(known_logits, virtual_logits, targets, args.known_class)
+                pred_is_virtual.append(stats['pred_is_virtual'])
+                kv_margin.append(stats['true_virtual_margin'])
+
+            if args.max_eval_batches > 0 and batch_idx + 1 >= args.max_eval_batches:
+                break
+
+    loss_avg = val_loss/(batch_idx+1)
+    mean_acc = 100*metrics.accuracy_score(label_list, pred_list)
+    precision = 100*metrics.precision_score(label_list, pred_list, average='macro', zero_division=0)
+    recall_macro = 100*metrics.recall_score(y_true=label_list, y_pred=pred_list, average='macro', zero_division=0)
+    f1_macro = 100*metrics.f1_score(y_true=label_list, y_pred=pred_list, average='macro', zero_division=0)
+    confusion_matrix = metrics.confusion_matrix(y_true=label_list, y_pred=pred_list, labels=list(range(args.known_class)))
+
+    known_true_other_margin = np.concatenate(known_true_other_margin) if known_true_other_margin else np.zeros(0, dtype=np.float32)
+    kv_margin = np.concatenate(kv_margin) if kv_margin else np.zeros(0, dtype=np.float32)
+    pred_is_virtual = np.concatenate(pred_is_virtual) if pred_is_virtual else np.zeros(0, dtype=bool)
+    val_features = np.concatenate(val_features, axis=0) if val_features else np.zeros((0, 0), dtype=np.float32)
+    val_feature_labels = np.concatenate(val_feature_labels) if val_feature_labels else np.zeros(0, dtype=np.int64)
+    stage1_geometry = _build_stage1_geometry_summary(val_features, val_feature_labels, known_true_other_margin, args)
+    density = compute_anchor_density(val_features, stage1_state['virtual_anchors'] if anchors is not None else None, args.anchor_density_angles) if anchors is not None else {}
+
+    return {
+        'loss':loss_avg,
+        'acc':mean_acc,
+        'f1': f1_macro,
+        'recall':recall_macro,
+        'precision': precision,
+        'confusion_matrix':confusion_matrix,
+        'known_virtual_pred_rate': float(pred_is_virtual.mean() * 100.0) if pred_is_virtual.size > 0 else 0.0,
+        'known_virtual_prob_mean': 0.0,
+        'known_virtual_margin_mean': float(kv_margin.mean()) if kv_margin.size > 0 else 0.0,
+        'known_true_virtual_logit_margin': margin_summary(kv_margin),
+        'known_true_other_logit_margin': _margin_summary(known_true_other_margin),
+        'stage1_geometry': stage1_geometry,
+        'anchor_density': density,
+    }
+
+
+def val(args, device, epoch, net, valloader, stage1_state=None):
+    if getattr(args, 'stage1_reserve_enable', False):
+        return _val_reserve(args, device, epoch, net, valloader, stage1_state=stage1_state)
+
     net.eval()
 
     val_loss = 0
@@ -295,7 +434,7 @@ def val(args, device, epoch, net, valloader):
             _, predicted = outputs[:, :args.known_class].max(1)
             pred_list.extend(predicted.cpu().numpy().tolist())
             label_list.extend(targets.cpu().numpy().tolist())
-            val_features.append(_feature_tensor_to_numpy(outs['discrete_feats']))
+            val_features.append(_feature_tensor_to_numpy(outs['feature']))
             val_feature_labels.append(targets.cpu().numpy())
 
             prob = torch.nn.functional.softmax(outputs, dim=-1).cpu().numpy()
@@ -316,11 +455,14 @@ def val(args, device, epoch, net, valloader):
             max_other_known_logits = masked_known_logits.max(1)[0]
             known_true_other_margin.append((true_known_logits - max_other_known_logits).detach().cpu().numpy())
 
+            if args.max_eval_batches > 0 and batch_idx + 1 >= args.max_eval_batches:
+                break
+
         loss_avg = val_loss/(batch_idx+1)
         mean_acc = 100*metrics.accuracy_score(label_list, pred_list)
-        precision = 100*metrics.precision_score(label_list, pred_list, average='macro')
-        recall_macro = 100*metrics.recall_score(y_true=label_list, y_pred=pred_list, average='macro')
-        f1_macro = 100*metrics.f1_score(y_true=label_list, y_pred=pred_list, average='macro')
+        precision = 100*metrics.precision_score(label_list, pred_list, average='macro', zero_division=0)
+        recall_macro = 100*metrics.recall_score(y_true=label_list, y_pred=pred_list, average='macro', zero_division=0)
+        f1_macro = 100*metrics.f1_score(y_true=label_list, y_pred=pred_list, average='macro', zero_division=0)
         confusion_matrix = metrics.confusion_matrix(y_true=label_list, y_pred=pred_list)
 
         virtual_prob_sum = np.concatenate(virtual_prob_sum) if virtual_prob_sum else np.zeros(0, dtype=np.float32)
@@ -348,7 +490,10 @@ def val(args, device, epoch, net, valloader):
     return result
 
 
-def test(args, device, epoch, net, closerloader, openloader, threshold=0):
+def test(args, device, epoch, net, closerloader, openloader, threshold=0, stage1_state=None):
+    if getattr(args, 'stage1_reserve_enable', False):
+        return close_open_virtual_eval(args, net, device, closerloader, openloader, stage1_state)
+
     net.eval()
 
     temperature = 1.
@@ -372,12 +517,14 @@ def test(args, device, epoch, net, closerloader, openloader, threshold=0):
             _, predicted = outputs[:, :args.known_class].max(1)
             pred_list_temp.extend(predicted.cpu().numpy().tolist())
             label_list_temp.extend(targets.cpu().numpy().tolist())
+            if args.max_eval_batches > 0 and batch_idx + 1 >= args.max_eval_batches:
+                break
 
         loss_avg = test_loss/(batch_idx+1)
         mean_acc = 100*metrics.accuracy_score(label_list_temp, pred_list_temp)
-        precision = 100*metrics.precision_score(label_list_temp, pred_list_temp, average='macro')
-        recall_macro = 100*metrics.recall_score(y_true=label_list_temp, y_pred=pred_list_temp, average='macro')
-        f1_macro = 100*metrics.f1_score(y_true=label_list_temp, y_pred=pred_list_temp, average='macro')
+        precision = 100*metrics.precision_score(label_list_temp, pred_list_temp, average='macro', zero_division=0)
+        recall_macro = 100*metrics.recall_score(y_true=label_list_temp, y_pred=pred_list_temp, average='macro', zero_division=0)
+        f1_macro = 100*metrics.f1_score(y_true=label_list_temp, y_pred=pred_list_temp, average='macro', zero_division=0)
         confusion_matrix = metrics.confusion_matrix(y_true=label_list_temp, y_pred=pred_list_temp)
 
         close_test_result = {'loss':loss_avg,
@@ -413,6 +560,8 @@ def test(args, device, epoch, net, closerloader, openloader, threshold=0):
                 true_logits = outputs.gather(1, targets.unsqueeze(1)).squeeze(1).detach().cpu().numpy()
                 virtual_max_logit = outputs[:, args.known_class:].max(1)[0].detach().cpu().numpy()
                 close_true_virtual_logit_margin.append(true_logits - virtual_max_logit)
+            if args.max_eval_batches > 0 and batch_idx + 1 >= args.max_eval_batches:
+                break
 
         open_prob_known_list = []
         open_virtual_prob_sum = []
@@ -436,6 +585,8 @@ def test(args, device, epoch, net, closerloader, openloader, threshold=0):
                 known_max_logit = outputs[:, :args.known_class].max(1)[0].detach().cpu().numpy()
                 virtual_max_logit = outputs[:, args.known_class:].max(1)[0].detach().cpu().numpy()
                 open_known_virtual_logit_margin.append(known_max_logit - virtual_max_logit)
+            if args.max_eval_batches > 0 and batch_idx + 1 >= args.max_eval_batches:
+                break
 
         close_prob_known_array = np.concatenate(close_prob_known_list) if close_prob_known_list else np.zeros(0, dtype=np.float32)
         open_prob_known_array = np.concatenate(open_prob_known_list) if open_prob_known_list else np.zeros(0, dtype=np.float32)
@@ -455,10 +606,8 @@ def test(args, device, epoch, net, closerloader, openloader, threshold=0):
         targets_list = np.concatenate([close_targets, open_targets])
         pred_list = np.concatenate([close_raw_preds, open_raw_preds])
 
-        # Calculate binary labels: 0 for known, 1 for unknown
         binary_labels = (targets_list == args.known_class).astype(int)
 
-        # Calculate AUROC and AUPR
         try:
             auroc = 100.0 * metrics.roc_auc_score(binary_labels, 1 - prob_known_array)
             precision_curve, recall_curve, _ = metrics.precision_recall_curve(binary_labels, 1 - prob_known_array)
@@ -467,14 +616,12 @@ def test(args, device, epoch, net, closerloader, openloader, threshold=0):
             auroc = 0.0
             aupr = 0.0
 
-        # Calculate UNK: Average unknown recall
         unknown_mask = targets_list == args.known_class
         if np.sum(unknown_mask) > 0:
             unk_recall = 100.0 * np.mean(pred_list[unknown_mask] >= args.known_class)
         else:
             unk_recall = 0.0
 
-        # Calculate OS*: Average per-class recall for known classes
         known_mask = targets_list < args.known_class
         try:
             known_labels = list(range(args.known_class))
@@ -493,13 +640,11 @@ def test(args, device, epoch, net, closerloader, openloader, threshold=0):
         except:
             os_star = 0.0
 
-        # Calculate HOS (Harmonic Open-Set)
         if (os_star + unk_recall) > 0:
             hos = 2 * os_star * unk_recall / (os_star + unk_recall)
         else:
             hos = 0.0
 
-        # Calculate OSCR (Open Set Classification Rate)
         try:
             prob_known = np.array(prob_known_array)
             targets = np.array(targets_list)
@@ -522,21 +667,17 @@ def test(args, device, epoch, net, closerloader, openloader, threshold=0):
                 fpr = np.concatenate([[0.0], fpr, [1.0]])
                 ccr = np.concatenate([[0.0], ccr, [ccr[-1]]])
                 oscr = 100.0 * metrics.auc(fpr, ccr)
-                del prob_known, targets, is_known, is_unknown, correct
-                del sorted_idx, correct_sorted, unknown_sorted
-                del tp_cum, fp_cum, ccr, fpr
         except Exception as e:
             print(f"Warning: OSCR calculation failed: {e}")
             oscr = 0.0
 
-        # Map all virtual class predictions to known_class for ACC/F1/Precision/Recall
         pred_list_mapped = pred_list.copy()
         pred_list_mapped[pred_list_mapped >= args.known_class] = args.known_class
 
         mean_acc = 100.0 * metrics.accuracy_score(targets_list, pred_list_mapped)
-        precision = 100*metrics.precision_score(targets_list, pred_list_mapped, average='macro')
-        recall_macro = 100.0*metrics.recall_score(y_true=targets_list, y_pred=pred_list_mapped, average='macro')
-        f1_macro = 100*metrics.f1_score(y_true=targets_list, y_pred=pred_list_mapped, average='macro')
+        precision = 100*metrics.precision_score(targets_list, pred_list_mapped, average='macro', zero_division=0)
+        recall_macro = 100.0*metrics.recall_score(y_true=targets_list, y_pred=pred_list_mapped, average='macro', zero_division=0)
+        f1_macro = 100*metrics.f1_score(y_true=targets_list, y_pred=pred_list_mapped, average='macro', zero_division=0)
 
         close_virtual_hist = np.bincount(close_raw_preds[close_raw_preds >= args.known_class] - args.known_class, minlength=args.virtue_num) if len(close_raw_preds) > 0 and args.virtue_num > 0 else np.zeros(args.virtue_num, dtype=np.int64)
         open_virtual_hist = np.bincount(open_raw_preds[open_raw_preds >= args.known_class] - args.known_class, minlength=args.virtue_num) if len(open_raw_preds) > 0 and args.virtue_num > 0 else np.zeros(args.virtue_num, dtype=np.int64)

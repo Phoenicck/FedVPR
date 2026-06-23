@@ -153,6 +153,8 @@ def get_dataloaders(client_num, data_root, seed, param=None):
     print('Known/Unknown in Test:  {}/{}'.format(len(test_known_idx), len(test_unknown_idx)))
 
     assert len(test_unknown_idx) + len(test_known_idx) == len(testy)
+    assert np.all(trainy[train_known_idx] < known_class), 'Train loader contains unknown labels.'
+    assert np.all(valy[val_known_idx] < known_class), 'Validation loader contains unknown labels.'
 
     num_workers = 0 if platform.system() == 'Windows' else 4
 

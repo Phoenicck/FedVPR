@@ -1,0 +1,26 @@
+data_root: /workspace/Phoenic/claude0527/FedOSS/datasets/RetinalOCT_Dataset
+lr: 0.0005
+backbone: Resnet18
+dataset: RetinalOCT
+protocol_mode: hard
+known_class: 5
+unknown_class: 3
+virtue_num: 3
+seed: 0
+batchsize: 8
+epoches: 50
+client_num: 8
+worker_steps: 1
+mode: Pretrain
+dirichlet: 0.5
+save_interval: 5
+log_dir: ./logs
+stage1_reserve_enable: true
+stage1_warmup_rounds: 15
+lambda_reserve: 0.1
+cosine_scale: 16.0
+anchor_freeze: true
+anchor_similarity_threshold: 0.95
+anchor_density_angles: [15, 20, 25]
+anchor_log_interval: 1
+anchor_log_file: stage1_diagnostics.jsonl

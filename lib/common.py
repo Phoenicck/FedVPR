@@ -37,13 +37,13 @@ def setup(args, trainloaders):
     if args.mode == 'Pretrain':
          if args.backbone== 'Resnet18':
             from models.ResNet_FedOSR_Pretrain import resnet18
-            server_model=resnet18(pretrained=pretrained, num_classes=args.known_class, num_virtual=args.virtue_num)
+            server_model=resnet18(pretrained=pretrained, num_classes=args.known_class, num_virtual=(0 if getattr(args, 'stage1_reserve_enable', False) else args.virtue_num))
          if args.backbone== 'Resnet34':
             from models.ResNet_FedOSR_Pretrain import resnet34
-            server_model=resnet34(pretrained=pretrained, num_classes=args.known_class, num_virtual=args.virtue_num)
+            server_model=resnet34(pretrained=pretrained, num_classes=args.known_class, num_virtual=(0 if getattr(args, 'stage1_reserve_enable', False) else args.virtue_num))
          if args.backbone== 'Resnet18_3D':
             from models.ResNet_FedOSR_Pretrain import resnet18
-            server_model=resnet18(pretrained=pretrained, num_classes=args.known_class, num_virtual=args.virtue_num)
+            server_model=resnet18(pretrained=pretrained, num_classes=args.known_class, num_virtual=(0 if getattr(args, 'stage1_reserve_enable', False) else args.virtue_num))
             #https://discuss.pytorch.org/t/inconsistent-results-with-3d-maxpool-on-gpu/38558/3
             #torch.nn.MaxPool3d(kernel_size=3, stride=2, padding=1) leads to non-deterministic results
             server_model.maxpool = torch.nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
@@ -57,7 +57,7 @@ def setup(args, trainloaders):
             base2 = 'LR'+str(0.0005)+'-K'+str(args.known_class)+'-U'+str(args.unknown_class)+'-Seed'+str(args.seed)
             server = 'best_ckpt_Pretrain_known_class_'+str(args.known_class)+'_unknown_class_'+str(args.unknown_class)+'_seed_'+str(args.seed)+'.pth'
             pretrained = os.path.join(base0, base1, base2, server)
-            server_model=resnet18(pretrained=pretrained, num_classes=args.known_class, num_virtual=args.virtue_num)
+            server_model=resnet18(pretrained=pretrained, num_classes=args.known_class, num_virtual=(0 if getattr(args, 'stage1_reserve_enable', False) else args.virtue_num))
             models = []
             for client_idx in range(args.client_num):
                 client = 'best_ckpt_Pretrain_known_class_'+str(args.known_class)+'_unknown_class_'+str(args.unknown_class)+'_seed_'+str(args.seed)+'_C_'+str(client_idx)+'.pth'

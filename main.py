@@ -13,6 +13,7 @@ import numpy as np
 import torch
 import random
 import warnings
+import yaml
 from models.utils import pprint, ensure_path
 from utils import Tee
 warnings.filterwarnings('ignore')
@@ -37,10 +38,50 @@ def set_seed(seed):
     random.seed(seed)
 
 
+def _str2bool(value):
+    if isinstance(value, bool):
+        return value
+    value = str(value).strip().lower()
+    if value in {'1', 'true', 'yes', 'y', 'on'}:
+        return True
+    if value in {'0', 'false', 'no', 'n', 'off'}:
+        return False
+    raise argparse.ArgumentTypeError(f'Cannot parse boolean value from: {value}')
+
+
+def _load_config_defaults(argv):
+    pre_parser = argparse.ArgumentParser(add_help=False)
+    pre_parser.add_argument('--config', type=str, default='')
+    pre_args, _ = pre_parser.parse_known_args(argv)
+    if not pre_args.config:
+        return {}
+    with open(pre_args.config, 'r') as f:
+        config = yaml.safe_load(f) or {}
+    if not isinstance(config, dict):
+        raise ValueError(f'Config file must contain a mapping: {pre_args.config}')
+    return config
+
+
+def _normalize_args(args):
+    if isinstance(args.anchor_density_angles, str):
+        args.anchor_density_angles = [float(item.strip()) for item in args.anchor_density_angles.split(',') if item.strip()]
+    elif isinstance(args.anchor_density_angles, (list, tuple)):
+        args.anchor_density_angles = [float(item) for item in args.anchor_density_angles]
+    else:
+        args.anchor_density_angles = [15.0, 20.0, 25.0]
+    args.anchor_freeze = _str2bool(args.anchor_freeze)
+    if args.stage1_reserve_enable and args.mode != 'Pretrain':
+        raise ValueError('stage1_reserve_enable is only supported in Pretrain mode.')
+    return args
+
+
 if __name__=="__main__":
+    config_defaults = _load_config_defaults(sys.argv[1:])
     parser = argparse.ArgumentParser(description='PyTorch Training')
+    parser.add_argument('--config', default='', type=str, help='optional YAML config file')
     parser.add_argument('--lr', default=5e-4, type=float, help='learning rate')
     parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
+    parser.add_argument('--resume_path', default='', type=str, help='checkpoint path for resume')
     parser.add_argument('--model_type', default='softmax', type=str, help='Recognition Method')
     parser.add_argument('--backbone', default='Resnet18', type=str, help='Backbone type.')
     parser.add_argument('--dataset', default='Hyperkvasir',type=str,help='dataset configuration')
@@ -89,6 +130,23 @@ if __name__=="__main__":
     parser.add_argument('--stage1_diag_eps', default=1e-12, type=float,
                         help='small epsilon used in stage-1 compactness diagnostics')
 
+    parser.add_argument('--stage1_reserve_enable', default=False, type=_str2bool,
+                        help='enable warm-up + fixed virtual-anchor reserve training')
+    parser.add_argument('--stage1_warmup_rounds', default=25, type=int,
+                        help='warm-up communication rounds before initializing reserve anchors')
+    parser.add_argument('--lambda_reserve', default=0.1, type=float,
+                        help='reserve loss weight after anchor initialization')
+    parser.add_argument('--cosine_scale', default=16.0, type=float,
+                        help='cosine logit scale for known and virtual anchor logits')
+    parser.add_argument('--anchor_freeze', default=True, type=_str2bool,
+                        help='freeze virtual anchors after server-side initialization')
+    parser.add_argument('--anchor_similarity_threshold', default=0.95, type=float,
+                        help='max allowed cosine similarity between selected reserve anchors')
+    parser.add_argument('--anchor_density_angles', default='15,20,25', type=str,
+                        help='comma-separated angle thresholds for anchor density diagnostics')
+    parser.add_argument('--anchor_init_file', default='stage1_anchor_init.json', type=str,
+                        help='json file storing initialized anchor metadata')
+
     #Attack
     parser.add_argument('--eps', type=float, default=1.,help='eps')
     parser.add_argument('--num_steps', type=int, default=10,help='num_steps')
@@ -111,10 +169,13 @@ if __name__=="__main__":
     parser.add_argument('--lups_local_weight', default=0.1, type=float, help='local i-DUS loss weight')
     parser.add_argument('--lups_global_weight', default=0.01, type=float, help='global LUPS loss weight')
 
+    parser.set_defaults(**config_defaults)
+
     import time
     now = time.strftime("%Y-%m-%d %H:%M:%S")
     print('The starting time ：{}'.format(now))
     args = parser.parse_args()
+    args = _normalize_args(args)
     client_names = ['Client'+str(i) for i in range(args.client_num)]
     args.client_names = client_names
 
@@ -125,16 +186,16 @@ if __name__=="__main__":
 
     pprint(vars(args))
 
-    #os.environ['CUDA_VISIBLE_DEVICES'] =args.gpu
     set_seed(args.seed)
 
     save_path1 = osp.join('results','M{}-D{}-M{}-B{}'.format(args.mode, args.dataset,args.model_type, args.backbone))
     save_path2 = 'LR{}-K{}-U{}-Seed{}'.format(str(args.lr),str(args.known_class),str(args.unknown_class),str(args.seed))
+    if args.stage1_reserve_enable and args.mode == 'Pretrain':
+        save_path2 += '-RsvW{}-V{}'.format(str(args.stage1_warmup_rounds), str(args.virtue_num))
     args.save_path = osp.join(save_path1, save_path2)
     ensure_path(save_path1, remove=False)
     ensure_path(args.save_path, remove=False)
 
-    # Setup logging: duplicate stdout to log file
     tee = None
     if args.log_dir:
         os.makedirs(args.log_dir, exist_ok=True)

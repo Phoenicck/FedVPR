@@ -1,0 +1,27 @@
+{
+  "checkpoint": "/workspace/Phoenic/claude0527/FedVPR/results/MPretrain-DRetinalOCT-Msoftmax-BResnet18/LR0.0005-K5-U3-Seed0-RsvW15-V3/best_ckpt_Pretrain_known_class_5_unknown_class_3_seed_0.pth",
+  "overview_png": "/workspace/Phoenic/claude0527/FedVPR/visualize/stage1_reserve_20260623_194334/retinaloct_stage1_reserve_overview_pca.png",
+  "focus_png": "/workspace/Phoenic/claude0527/FedVPR/visualize/stage1_reserve_20260623_194334/retinaloct_stage1_reserve_open_virtual_focus_pca.png",
+  "explained_variance_ratio": [
+    0.3710135221481323,
+    0.2300427258014679
+  ],
+  "close_sample_counts": {
+    "0": 120,
+    "1": 120,
+    "2": 120,
+    "3": 120,
+    "4": 120
+  },
+  "open_sample_counts": {
+    "5": 120,
+    "6": 120,
+    "7": 120
+  },
+  "open_virtual_rate_percent": 10.555555555555555,
+  "open_virtual_hist": [
+    31,
+    7,
+    0
+  ]
+}
