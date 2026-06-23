@@ -1,0 +1,97 @@
+{
+  "checkpoint": "/workspace/Phoenic/claude0527/FedVPR/results/MPretrain-DRetinalOCT-Msoftmax-BResnet18/LR0.0005-K5-U3-Seed0-RsvW15-V3/best_ckpt_Pretrain_known_class_5_unknown_class_3_seed_0.pth",
+  "known_names": [
+    "MH",
+    "CSR",
+    "CNV",
+    "NORMAL",
+    "DME"
+  ],
+  "unknown_names": [
+    "AMD",
+    "DRUSEN",
+    "DR"
+  ],
+  "selected_anchor_pairs": [
+    {
+      "pair": [
+        3,
+        4
+      ],
+      "pair_names": [
+        "K3",
+        "K4"
+      ],
+      "pair_score": 0.47333305563245504,
+      "sym_confusion": 0.07857142857142858,
+      "prototype_similarity": 0.8680946826934814
+    },
+    {
+      "pair": [
+        2,
+        4
+      ],
+      "pair_names": [
+        "K2",
+        "K4"
+      ],
+      "pair_score": 0.46176616498402184,
+      "sym_confusion": 0.032857142857142856,
+      "prototype_similarity": 0.8906751871109009
+    },
+    {
+      "pair": [
+        2,
+        3
+      ],
+      "pair_names": [
+        "K2",
+        "K3"
+      ],
+      "pair_score": 0.4280242088011333,
+      "sym_confusion": 0.008571428571428572,
+      "prototype_similarity": 0.847476989030838
+    }
+  ],
+  "anchor_pairwise_cosine": [
+    [
+      1.0,
+      0.9133538603782654,
+      0.936342716217041
+    ],
+    [
+      0.9133538603782654,
+      1.0,
+      0.9243972897529602
+    ],
+    [
+      0.936342716217041,
+      0.9243972897529602,
+      1.000000238418579
+    ]
+  ],
+  "overview_png": "/workspace/Phoenic/claude0527/FedVPR/visualize/stage1_reserve_random_20260623_215018/retinaloct_random_reserve_overview_pca.png",
+  "focus_png": "/workspace/Phoenic/claude0527/FedVPR/visualize/stage1_reserve_random_20260623_215018/retinaloct_random_reserve_open_virtual_focus_pca.png",
+  "explained_variance_ratio": [
+    0.45624080300331116,
+    0.16593419015407562
+  ],
+  "close_sample_counts": {
+    "0": 120,
+    "1": 120,
+    "2": 120,
+    "3": 120,
+    "4": 120
+  },
+  "open_sample_counts": {
+    "5": 120,
+    "6": 120,
+    "7": 120
+  },
+  "open_virtual_rate_percent": 6.111111111111111,
+  "open_virtual_hist": [
+    1,
+    0,
+    21
+  ]
+}

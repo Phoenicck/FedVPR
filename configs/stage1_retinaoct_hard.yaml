@@ -2,7 +2,7 @@ data_root: /workspace/Phoenic/claude0527/FedOSS/datasets/RetinalOCT_Dataset
 lr: 0.0005
 backbone: Resnet18
 dataset: RetinalOCT
-protocol_mode: hard
+protocol_mode: random
 known_class: 5
 unknown_class: 3
 virtue_num: 3
