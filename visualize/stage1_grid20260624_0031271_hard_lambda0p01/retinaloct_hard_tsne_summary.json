@@ -1,0 +1,67 @@
+{
+  "checkpoint": "/workspace/Phoenic/claude0527/FedVPR/results_stage1_grid/20260624_003127/1_hard_lambda0p01/result_dir_snapshot/best_ckpt_Pretrain_known_class_5_unknown_class_3_seed_0.pth",
+  "protocol_mode": "hard",
+  "anchor_source": "fixed",
+  "projection_method_requested": "tsne",
+  "projection_method_used": "tsne",
+  "projection_meta": {
+    "perplexity": 30.0
+  },
+  "focus_projection_meta": {
+    "perplexity": 20.0
+  },
+  "overview_png": "./visualize_output/retinaloct_hard_tsne_overview.png",
+  "focus_png": "./visualize_output/retinaloct_hard_tsne_open_virtual_focus.png",
+  "close_sample_counts": {
+    "0": 120,
+    "1": 120,
+    "2": 120,
+    "3": 120,
+    "4": 120
+  },
+  "open_sample_counts": {
+    "5": 120,
+    "6": 120,
+    "7": 120
+  },
+  "open_virtual_count": 256,
+  "open_virtual_hist": {
+    "0": 236,
+    "1": 18,
+    "2": 2
+  },
+  "virtual_anchor_cosine_matrix": [
+    [
+      1.0,
+      0.5135648250579834,
+      0.5460439324378967
+    ],
+    [
+      0.5135648250579834,
+      1.000000238418579,
+      0.8456514477729797
+    ],
+    [
+      0.546043872833252,
+      0.8456514477729797,
+      1.0000001192092896
+    ]
+  ],
+  "known_names": [
+    "CSR",
+    "DR",
+    "DRUSEN",
+    "MH",
+    "NORMAL"
+  ],
+  "unknown_names": [
+    "AMD",
+    "CNV",
+    "DME"
+  ],
+  "virtual_anchor_names": [
+    "V0:DRUSEN+NORMAL",
+    "V1:CSR+DR",
+    "V2:DR+MH"
+  ]
+}
