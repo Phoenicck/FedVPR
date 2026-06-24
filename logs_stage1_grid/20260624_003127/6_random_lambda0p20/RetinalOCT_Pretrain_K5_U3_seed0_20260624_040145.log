@@ -1,0 +1,946 @@
+Logging to: ./logs_stage1_grid/20260624_003127/6_random_lambda0p20/RetinalOCT_Pretrain_K5_U3_seed0_20260624_040145.log
+==> Preparing data..
+Protocol mode: random
+Known class list: [6 2 1 7 3] Unknown class list [0 5 4]
+Total images — Train: 18400, Val: 2800, Test: 2800
+{6: 0, 2: 1, 1: 2, 7: 3, 3: 4} {0: 5, 5: 6, 4: 7}
+Known origin: [6 2 1 7 3] , new: [0 1 2 3 4]
+Unknown origin: [0 5 4] , new: [5 6 7]
+Known/Unknown in Train: 11500/6900
+Known/Unknown in Val:   1750/1050
+Known/Unknown in Test:  1750/1050
+Client0 sample num: 1861
+Client1 sample num: 2876
+Client2 sample num: 2109
+Client3 sample num: 533
+Client4 sample num: 1312
+Client5 sample num: 1125
+Client6 sample num: 362
+Client7 sample num: 1322
+
+>>> Setting up
+==> Using device: cuda:0
+==> Building [Resnet18] model..
+154
+120
+Train Client0 [0/50] LR=0.0005000 loss=0.815 (Known=0.815 Reserve=0.000) ACC=69.397 F1=62.767 Rec=62.255 Prec=63.507
+Train Client1 [0/50] LR=0.0005000 loss=0.678 (Known=0.678 Reserve=0.000) ACC=75.905 F1=46.990 Rec=46.741 Prec=48.901
+Train Client2 [0/50] LR=0.0005000 loss=0.680 (Known=0.680 Reserve=0.000) ACC=78.137 F1=49.103 Rec=49.545 Prec=49.982
+Train Client3 [0/50] LR=0.0005000 loss=1.143 (Known=1.143 Reserve=0.000) ACC=62.689 F1=41.085 Rec=41.230 Prec=41.524
+Train Client4 [0/50] LR=0.0005000 loss=0.573 (Known=0.573 Reserve=0.000) ACC=82.393 F1=37.170 Rec=37.420 Prec=37.185
+Train Client5 [0/50] LR=0.0005000 loss=0.862 (Known=0.862 Reserve=0.000) ACC=69.018 F1=49.116 Rec=49.067 Prec=49.257
+Train Client6 [0/50] LR=0.0005000 loss=1.068 (Known=1.068 Reserve=0.000) ACC=68.056 F1=28.419 Rec=28.987 Prec=28.445
+Train Client7 [0/50] LR=0.0005000 loss=0.786 (Known=0.786 Reserve=0.000) ACC=73.258 F1=41.601 Rec=41.179 Prec=43.384
+
+Val    [0/50] LR=0.0005000 loss=1.331 ACC=40.629 F1=28.211 Rec=40.629 Prec=37.489
+Val-KV [0/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [0/50] FeatDim=512 IntraVar=1.585861 InterDist=2.652461 Compact=0.597883 CenterNorm=14.323774
+Stage1Boundary [0/50] KnownTrue-Other mean=-0.3030 std=1.0348 p10=-1.6655 p50=-0.4724 p90=1.1621 | BoundaryRate=20.000% count=350 thr=-1.2842 hist=[0, 0, 349, 0, 1]
+
+Saving best model by known validation F1 . . . . . . . .
+
+Saving model at epoch 0 . . . . . . . .
+
+Train Client0 [1/50] LR=0.0005000 loss=0.576 (Known=0.576 Reserve=0.000) ACC=77.371 F1=58.371 Rec=58.098 Prec=58.787
+Train Client1 [1/50] LR=0.0005000 loss=0.553 (Known=0.553 Reserve=0.000) ACC=81.720 F1=55.813 Rec=55.196 Prec=57.317
+Train Client2 [1/50] LR=0.0005000 loss=0.592 (Known=0.592 Reserve=0.000) ACC=80.798 F1=53.851 Rec=54.479 Prec=54.622
+Train Client3 [1/50] LR=0.0005000 loss=0.727 (Known=0.727 Reserve=0.000) ACC=76.515 F1=63.036 Rec=61.332 Prec=65.759
+Train Client4 [1/50] LR=0.0005000 loss=0.459 (Known=0.459 Reserve=0.000) ACC=85.976 F1=40.032 Rec=39.964 Prec=45.295
+Train Client5 [1/50] LR=0.0005000 loss=0.672 (Known=0.672 Reserve=0.000) ACC=75.357 F1=56.461 Rec=56.253 Prec=56.719
+Train Client6 [1/50] LR=0.0005000 loss=0.793 (Known=0.793 Reserve=0.000) ACC=78.611 F1=43.572 Rec=43.997 Prec=47.328
+Train Client7 [1/50] LR=0.0005000 loss=0.656 (Known=0.656 Reserve=0.000) ACC=76.894 F1=47.099 Rec=46.383 Prec=48.343
+
+Val    [1/50] LR=0.0005000 loss=0.869 ACC=59.657 F1=53.060 Rec=59.657 Prec=59.637
+Val-KV [1/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [1/50] FeatDim=512 IntraVar=4.730592 InterDist=9.939404 Compact=0.475943 CenterNorm=18.869814
+Stage1Boundary [1/50] KnownTrue-Other mean=0.1513 std=0.8797 p10=-1.1729 p50=0.4016 p90=0.9804 | BoundaryRate=20.000% count=350 thr=-0.7253 hist=[6, 0, 344, 0, 0]
+
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [2/50] LR=0.0005000 loss=0.506 (Known=0.506 Reserve=0.000) ACC=79.849 F1=61.403 Rec=61.283 Prec=61.608
+Train Client1 [2/50] LR=0.0005000 loss=0.487 (Known=0.487 Reserve=0.000) ACC=83.914 F1=59.836 Rec=58.910 Prec=65.115
+Train Client2 [2/50] LR=0.0005000 loss=0.484 (Known=0.484 Reserve=0.000) ACC=82.747 F1=61.836 Rec=60.510 Prec=65.870
+Train Client3 [2/50] LR=0.0005000 loss=0.625 (Known=0.625 Reserve=0.000) ACC=81.818 F1=61.498 Rec=61.056 Prec=62.483
+Train Client4 [2/50] LR=0.0005000 loss=0.413 (Known=0.413 Reserve=0.000) ACC=87.500 F1=47.977 Rec=46.998 Prec=50.406
+Train Client5 [2/50] LR=0.0005000 loss=0.462 (Known=0.462 Reserve=0.000) ACC=84.821 F1=65.570 Rec=65.168 Prec=66.084
+Train Client6 [2/50] LR=0.0005000 loss=0.752 (Known=0.752 Reserve=0.000) ACC=75.000 F1=41.859 Rec=41.501 Prec=43.536
+Train Client7 [2/50] LR=0.0005000 loss=0.522 (Known=0.522 Reserve=0.000) ACC=82.197 F1=56.012 Rec=54.213 Prec=58.592
+
+Val    [2/50] LR=0.0005000 loss=0.664 ACC=65.829 F1=63.295 Rec=65.829 Prec=82.638
+Val-KV [2/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [2/50] FeatDim=512 IntraVar=13.866953 InterDist=12.151574 Compact=1.141165 CenterNorm=21.477047
+Stage1Boundary [2/50] KnownTrue-Other mean=0.8849 std=1.5200 p10=-1.0711 p50=1.2739 p90=2.1661 | BoundaryRate=20.000% count=350 thr=-0.6457 hist=[51, 0, 93, 0, 206]
+
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [3/50] LR=0.0005000 loss=0.374 (Known=0.374 Reserve=0.000) ACC=84.591 F1=65.451 Rec=65.354 Prec=65.631
+Train Client1 [3/50] LR=0.0005000 loss=0.393 (Known=0.393 Reserve=0.000) ACC=86.664 F1=63.283 Rec=62.841 Prec=64.294
+Train Client2 [3/50] LR=0.0005000 loss=0.442 (Known=0.442 Reserve=0.000) ACC=84.981 F1=64.584 Rec=64.766 Prec=65.432
+Train Client3 [3/50] LR=0.0005000 loss=0.548 (Known=0.548 Reserve=0.000) ACC=81.818 F1=61.711 Rec=61.652 Prec=62.139
+Train Client4 [3/50] LR=0.0005000 loss=0.307 (Known=0.307 Reserve=0.000) ACC=89.939 F1=47.929 Rec=47.514 Prec=49.118
+Train Client5 [3/50] LR=0.0005000 loss=0.417 (Known=0.417 Reserve=0.000) ACC=85.446 F1=66.476 Rec=66.651 Prec=66.304
+Train Client6 [3/50] LR=0.0005000 loss=0.677 (Known=0.677 Reserve=0.000) ACC=76.389 F1=48.666 Rec=49.988 Prec=51.460
+Train Client7 [3/50] LR=0.0005000 loss=0.490 (Known=0.490 Reserve=0.000) ACC=84.091 F1=55.966 Rec=55.041 Prec=58.298
+
+Val    [3/50] LR=0.0005000 loss=0.446 ACC=85.143 F1=84.949 Rec=85.143 Prec=88.356
+Val-KV [3/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [3/50] FeatDim=512 IntraVar=31.307085 InterDist=22.357656 Compact=1.400285 CenterNorm=26.519617
+Stage1Boundary [3/50] KnownTrue-Other mean=1.2494 std=1.1320 p10=-0.5286 p50=1.5367 p90=2.2703 | BoundaryRate=20.000% count=350 thr=0.4150 hist=[105, 2, 68, 0, 175]
+
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [4/50] LR=0.0005000 loss=0.420 (Known=0.420 Reserve=0.000) ACC=84.375 F1=65.609 Rec=65.783 Prec=65.502
+Train Client1 [4/50] LR=0.0005000 loss=0.313 (Known=0.313 Reserve=0.000) ACC=89.728 F1=71.455 Rec=69.591 Prec=76.502
+Train Client2 [4/50] LR=0.0005000 loss=0.388 (Known=0.388 Reserve=0.000) ACC=87.405 F1=72.924 Rec=71.229 Prec=75.837
+Train Client3 [4/50] LR=0.0005000 loss=0.450 (Known=0.450 Reserve=0.000) ACC=85.038 F1=70.463 Rec=68.678 Prec=75.652
+Train Client4 [4/50] LR=0.0005000 loss=0.262 (Known=0.262 Reserve=0.000) ACC=91.921 F1=57.635 Rec=55.876 Prec=60.700
+Train Client5 [4/50] LR=0.0005000 loss=0.331 (Known=0.331 Reserve=0.000) ACC=87.768 F1=69.120 Rec=69.262 Prec=68.997
+Train Client6 [4/50] LR=0.0005000 loss=0.478 (Known=0.478 Reserve=0.000) ACC=83.611 F1=66.618 Rec=69.079 Prec=68.290
+Train Client7 [4/50] LR=0.0005000 loss=0.410 (Known=0.410 Reserve=0.000) ACC=84.394 F1=72.538 Rec=78.112 Prec=70.578
+
+Val    [4/50] LR=0.0005000 loss=0.272 ACC=91.257 F1=91.143 Rec=91.257 Prec=92.354
+Val-KV [4/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [4/50] FeatDim=512 IntraVar=37.788662 InterDist=23.507511 Compact=1.607514 CenterNorm=25.952000
+Stage1Boundary [4/50] KnownTrue-Other mean=2.2456 std=1.6194 p10=0.1874 p50=2.2609 p90=4.3122 | BoundaryRate=20.000% count=350 thr=1.3386 hist=[52, 3, 80, 42, 173]
+
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [5/50] LR=0.0005000 loss=0.349 (Known=0.349 Reserve=0.000) ACC=85.453 F1=66.937 Rec=67.319 Prec=66.646
+Train Client1 [5/50] LR=0.0005000 loss=0.257 (Known=0.257 Reserve=0.000) ACC=91.783 F1=74.704 Rec=73.041 Prec=78.980
+Train Client2 [5/50] LR=0.0005000 loss=0.322 (Known=0.322 Reserve=0.000) ACC=89.306 F1=74.332 Rec=73.336 Prec=77.078
+Train Client3 [5/50] LR=0.0005000 loss=0.416 (Known=0.416 Reserve=0.000) ACC=87.879 F1=72.534 Rec=70.522 Prec=78.485
+Train Client4 [5/50] LR=0.0005000 loss=0.248 (Known=0.248 Reserve=0.000) ACC=92.226 F1=59.446 Rec=57.758 Prec=62.230
+Train Client5 [5/50] LR=0.0005000 loss=0.237 (Known=0.237 Reserve=0.000) ACC=91.964 F1=72.970 Rec=73.030 Prec=72.913
+Train Client6 [5/50] LR=0.0005000 loss=0.405 (Known=0.405 Reserve=0.000) ACC=85.278 F1=69.479 Rec=71.132 Prec=70.408
+Train Client7 [5/50] LR=0.0005000 loss=0.412 (Known=0.412 Reserve=0.000) ACC=86.212 F1=62.878 Rec=60.736 Prec=66.213
+
+Val    [5/50] LR=0.0005000 loss=0.248 ACC=91.257 F1=91.064 Rec=91.257 Prec=92.231
+Val-KV [5/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [5/50] FeatDim=512 IntraVar=45.743648 InterDist=26.112909 Compact=1.751764 CenterNorm=27.274311
+Stage1Boundary [5/50] KnownTrue-Other mean=2.6486 std=1.7768 p10=0.3526 p50=2.7566 p90=4.8910 | BoundaryRate=20.000% count=350 thr=1.7162 hist=[33, 60, 64, 14, 179]
+
+Saving model at epoch 5 . . . . . . . .
+
+Train Client0 [6/50] LR=0.0005000 loss=0.319 (Known=0.319 Reserve=0.000) ACC=87.284 F1=68.270 Rec=68.029 Prec=68.568
+Train Client1 [6/50] LR=0.0005000 loss=0.261 (Known=0.261 Reserve=0.000) ACC=91.435 F1=74.106 Rec=72.595 Prec=77.255
+Train Client2 [6/50] LR=0.0005000 loss=0.302 (Known=0.302 Reserve=0.000) ACC=89.971 F1=75.683 Rec=74.531 Prec=78.662
+Train Client3 [6/50] LR=0.0005000 loss=0.334 (Known=0.334 Reserve=0.000) ACC=88.826 F1=77.457 Rec=74.730 Prec=82.598
+Train Client4 [6/50] LR=0.0005000 loss=0.194 (Known=0.194 Reserve=0.000) ACC=93.826 F1=64.987 Rec=64.019 Prec=66.250
+Train Client5 [6/50] LR=0.0005000 loss=0.281 (Known=0.281 Reserve=0.000) ACC=90.625 F1=78.444 Rec=76.934 Prec=81.628
+Train Client6 [6/50] LR=0.0005000 loss=0.448 (Known=0.448 Reserve=0.000) ACC=83.333 F1=63.340 Rec=63.295 Prec=64.114
+Train Client7 [6/50] LR=0.0005000 loss=0.388 (Known=0.388 Reserve=0.000) ACC=86.439 F1=62.068 Rec=61.012 Prec=63.419
+
+Val    [6/50] LR=0.0005000 loss=0.275 ACC=89.943 F1=89.666 Rec=89.943 Prec=91.746
+Val-KV [6/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [6/50] FeatDim=512 IntraVar=44.588178 InterDist=22.736492 Compact=1.961084 CenterNorm=25.261105
+Stage1Boundary [6/50] KnownTrue-Other mean=2.9833 std=2.1415 p10=-0.0066 p50=3.1703 p90=6.0216 | BoundaryRate=20.000% count=350 thr=1.9733 hist=[31, 30, 59, 6, 224]
+
+Train Client0 [7/50] LR=0.0005000 loss=0.306 (Known=0.306 Reserve=0.000) ACC=87.608 F1=69.052 Rec=69.179 Prec=68.947
+Train Client1 [7/50] LR=0.0005000 loss=0.229 (Known=0.229 Reserve=0.000) ACC=92.584 F1=80.800 Rec=79.176 Prec=83.715
+Train Client2 [7/50] LR=0.0005000 loss=0.283 (Known=0.283 Reserve=0.000) ACC=91.017 F1=79.649 Rec=77.991 Prec=82.618
+Train Client3 [7/50] LR=0.0005000 loss=0.247 (Known=0.247 Reserve=0.000) ACC=91.477 F1=89.052 Rec=90.656 Prec=87.689
+Train Client4 [7/50] LR=0.0005000 loss=0.197 (Known=0.197 Reserve=0.000) ACC=93.598 F1=71.745 Rec=70.306 Prec=73.617
+Train Client5 [7/50] LR=0.0005000 loss=0.248 (Known=0.248 Reserve=0.000) ACC=92.321 F1=72.939 Rec=73.309 Prec=72.599
+Train Client6 [7/50] LR=0.0005000 loss=0.478 (Known=0.478 Reserve=0.000) ACC=83.333 F1=65.883 Rec=65.207 Prec=68.548
+Train Client7 [7/50] LR=0.0005000 loss=0.336 (Known=0.336 Reserve=0.000) ACC=88.561 F1=65.459 Rec=64.295 Prec=66.782
+
+Val    [7/50] LR=0.0005000 loss=0.252 ACC=91.714 F1=91.619 Rec=91.714 Prec=92.811
+Val-KV [7/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [7/50] FeatDim=512 IntraVar=46.505562 InterDist=23.075090 Compact=2.015401 CenterNorm=25.320211
+Stage1Boundary [7/50] KnownTrue-Other mean=3.2581 std=2.3020 p10=0.5582 p50=3.3350 p90=6.7743 | BoundaryRate=20.000% count=350 thr=2.0104 hist=[14, 43, 112, 11, 170]
+
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [8/50] LR=0.0005000 loss=0.255 (Known=0.255 Reserve=0.000) ACC=89.440 F1=70.681 Rec=70.691 Prec=70.684
+Train Client1 [8/50] LR=0.0005000 loss=0.196 (Known=0.196 Reserve=0.000) ACC=93.698 F1=76.496 Rec=75.860 Prec=78.035
+Train Client2 [8/50] LR=0.0005000 loss=0.278 (Known=0.278 Reserve=0.000) ACC=91.302 F1=78.269 Rec=77.136 Prec=81.222
+Train Client3 [8/50] LR=0.0005000 loss=0.306 (Known=0.306 Reserve=0.000) ACC=90.530 F1=82.745 Rec=80.702 Prec=85.868
+Train Client4 [8/50] LR=0.0005000 loss=0.178 (Known=0.178 Reserve=0.000) ACC=94.207 F1=69.379 Rec=68.741 Prec=70.165
+Train Client5 [8/50] LR=0.0005000 loss=0.238 (Known=0.238 Reserve=0.000) ACC=92.143 F1=72.669 Rec=72.804 Prec=72.539
+Train Client6 [8/50] LR=0.0005000 loss=0.409 (Known=0.409 Reserve=0.000) ACC=83.333 F1=70.455 Rec=73.740 Prec=68.279
+Train Client7 [8/50] LR=0.0005000 loss=0.331 (Known=0.331 Reserve=0.000) ACC=89.773 F1=77.823 Rec=86.235 Prec=76.502
+
+Val    [8/50] LR=0.0005000 loss=0.181 ACC=93.371 F1=93.329 Rec=93.371 Prec=93.849
+Val-KV [8/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [8/50] FeatDim=512 IntraVar=46.373971 InterDist=24.053661 Compact=1.927938 CenterNorm=25.693304
+Stage1Boundary [8/50] KnownTrue-Other mean=3.6417 std=2.0833 p10=1.2634 p50=3.6160 p90=6.3106 | BoundaryRate=20.000% count=350 thr=2.4816 hist=[23, 11, 106, 80, 130]
+
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [9/50] LR=0.0005000 loss=0.251 (Known=0.251 Reserve=0.000) ACC=90.194 F1=71.140 Rec=71.142 Prec=71.150
+Train Client1 [9/50] LR=0.0005000 loss=0.168 (Known=0.168 Reserve=0.000) ACC=94.533 F1=81.625 Rec=79.599 Prec=85.344
+Train Client2 [9/50] LR=0.0005000 loss=0.247 (Known=0.247 Reserve=0.000) ACC=91.778 F1=80.594 Rec=79.173 Prec=83.334
+Train Client3 [9/50] LR=0.0005000 loss=0.317 (Known=0.317 Reserve=0.000) ACC=91.288 F1=86.172 Rec=86.816 Prec=85.953
+Train Client4 [9/50] LR=0.0005000 loss=0.167 (Known=0.167 Reserve=0.000) ACC=95.046 F1=69.279 Rec=68.714 Prec=70.279
+Train Client5 [9/50] LR=0.0005000 loss=0.207 (Known=0.207 Reserve=0.000) ACC=92.946 F1=74.239 Rec=74.266 Prec=74.214
+Train Client6 [9/50] LR=0.0005000 loss=0.396 (Known=0.396 Reserve=0.000) ACC=85.000 F1=74.210 Rec=73.330 Prec=76.191
+Train Client7 [9/50] LR=0.0005000 loss=0.376 (Known=0.376 Reserve=0.000) ACC=88.712 F1=65.964 Rec=65.336 Prec=66.687
+
+Val    [9/50] LR=0.0005000 loss=0.212 ACC=92.686 F1=92.559 Rec=92.686 Prec=93.620
+Val-KV [9/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [9/50] FeatDim=512 IntraVar=41.225951 InterDist=23.389011 Compact=1.762621 CenterNorm=25.639740
+Stage1Boundary [9/50] KnownTrue-Other mean=3.4123 std=2.0360 p10=1.1466 p50=3.5317 p90=5.9542 | BoundaryRate=20.000% count=350 thr=2.4803 hist=[23, 12, 101, 28, 186]
+
+Train Client0 [10/50] LR=0.0005000 loss=0.227 (Known=0.227 Reserve=0.000) ACC=91.487 F1=72.312 Rec=72.463 Prec=72.165
+Train Client1 [10/50] LR=0.0005000 loss=0.169 (Known=0.169 Reserve=0.000) ACC=94.708 F1=83.101 Rec=81.753 Prec=85.146
+Train Client2 [10/50] LR=0.0005000 loss=0.224 (Known=0.224 Reserve=0.000) ACC=92.966 F1=83.793 Rec=82.427 Prec=85.716
+Train Client3 [10/50] LR=0.0005000 loss=0.283 (Known=0.283 Reserve=0.000) ACC=91.477 F1=83.811 Rec=80.089 Prec=90.976
+Train Client4 [10/50] LR=0.0005000 loss=0.171 (Known=0.171 Reserve=0.000) ACC=94.360 F1=70.471 Rec=70.190 Prec=70.808
+Train Client5 [10/50] LR=0.0005000 loss=0.180 (Known=0.180 Reserve=0.000) ACC=94.018 F1=75.015 Rec=75.352 Prec=74.692
+Train Client6 [10/50] LR=0.0005000 loss=0.341 (Known=0.341 Reserve=0.000) ACC=87.778 F1=78.284 Rec=79.236 Prec=77.857
+Train Client7 [10/50] LR=0.0005000 loss=0.287 (Known=0.287 Reserve=0.000) ACC=90.606 F1=70.457 Rec=68.558 Prec=72.897
+
+Val    [10/50] LR=0.0005000 loss=0.217 ACC=92.571 F1=92.520 Rec=92.571 Prec=93.460
+Val-KV [10/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [10/50] FeatDim=512 IntraVar=39.696827 InterDist=23.120369 Compact=1.716963 CenterNorm=25.376120
+Stage1Boundary [10/50] KnownTrue-Other mean=3.3751 std=2.0588 p10=1.0871 p50=3.3862 p90=5.8596 | BoundaryRate=20.000% count=350 thr=2.3934 hist=[24, 6, 146, 27, 147]
+
+Saving model at epoch 10 . . . . . . . .
+
+>> New learning Rate: 0.00025
+Train Client0 [11/50] LR=0.0002500 loss=0.174 (Known=0.174 Reserve=0.000) ACC=94.181 F1=75.088 Rec=75.152 Prec=75.029
+Train Client1 [11/50] LR=0.0002500 loss=0.100 (Known=0.100 Reserve=0.000) ACC=96.727 F1=88.838 Rec=88.171 Prec=89.589
+Train Client2 [11/50] LR=0.0002500 loss=0.149 (Known=0.149 Reserve=0.000) ACC=95.722 F1=91.150 Rec=90.678 Prec=91.868
+Train Client3 [11/50] LR=0.0002500 loss=0.199 (Known=0.199 Reserve=0.000) ACC=93.561 F1=89.153 Rec=88.714 Prec=89.640
+Train Client4 [11/50] LR=0.0002500 loss=0.151 (Known=0.151 Reserve=0.000) ACC=94.893 F1=73.523 Rec=75.202 Prec=72.197
+Train Client5 [11/50] LR=0.0002500 loss=0.109 (Known=0.109 Reserve=0.000) ACC=96.518 F1=83.053 Rec=82.475 Prec=83.874
+Train Client6 [11/50] LR=0.0002500 loss=0.317 (Known=0.317 Reserve=0.000) ACC=89.167 F1=81.784 Rec=86.339 Prec=78.278
+Train Client7 [11/50] LR=0.0002500 loss=0.223 (Known=0.223 Reserve=0.000) ACC=94.167 F1=94.091 Rec=93.576 Prec=94.723
+
+Val    [11/50] LR=0.0002500 loss=0.148 ACC=95.029 F1=94.989 Rec=95.029 Prec=95.372
+Val-KV [11/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [11/50] FeatDim=512 IntraVar=41.973076 InterDist=23.551193 Compact=1.782206 CenterNorm=25.489231
+Stage1Boundary [11/50] KnownTrue-Other mean=4.1768 std=2.0087 p10=2.3261 p50=4.2594 p90=6.5319 | BoundaryRate=20.000% count=350 thr=3.2865 hist=[19, 23, 69, 99, 140]
+
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [12/50] LR=0.0002500 loss=0.173 (Known=0.173 Reserve=0.000) ACC=93.481 F1=74.535 Rec=75.011 Prec=74.133
+Train Client1 [12/50] LR=0.0002500 loss=0.092 (Known=0.092 Reserve=0.000) ACC=96.971 F1=89.885 Rec=89.707 Prec=90.075
+Train Client2 [12/50] LR=0.0002500 loss=0.160 (Known=0.160 Reserve=0.000) ACC=95.485 F1=90.349 Rec=89.197 Prec=91.922
+Train Client3 [12/50] LR=0.0002500 loss=0.166 (Known=0.166 Reserve=0.000) ACC=94.886 F1=91.535 Rec=93.618 Prec=90.260
+Train Client4 [12/50] LR=0.0002500 loss=0.115 (Known=0.115 Reserve=0.000) ACC=96.418 F1=83.413 Rec=85.446 Prec=81.765
+Train Client5 [12/50] LR=0.0002500 loss=0.107 (Known=0.107 Reserve=0.000) ACC=96.429 F1=81.256 Rec=82.290 Prec=80.561
+Train Client6 [12/50] LR=0.0002500 loss=0.326 (Known=0.326 Reserve=0.000) ACC=89.444 F1=84.826 Rec=86.642 Prec=83.342
+Train Client7 [12/50] LR=0.0002500 loss=0.245 (Known=0.245 Reserve=0.000) ACC=92.803 F1=92.233 Rec=91.580 Prec=92.946
+
+Val    [12/50] LR=0.0002500 loss=0.145 ACC=94.629 F1=94.529 Rec=94.629 Prec=94.939
+Val-KV [12/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [12/50] FeatDim=512 IntraVar=36.083731 InterDist=22.507204 Compact=1.603208 CenterNorm=24.738106
+Stage1Boundary [12/50] KnownTrue-Other mean=4.2549 std=2.0837 p10=2.0747 p50=4.4839 p90=6.7995 | BoundaryRate=20.000% count=350 thr=3.0908 hist=[11, 7, 34, 135, 163]
+
+Train Client0 [13/50] LR=0.0002500 loss=0.169 (Known=0.169 Reserve=0.000) ACC=94.235 F1=93.893 Rec=94.470 Prec=93.380
+Train Client1 [13/50] LR=0.0002500 loss=0.080 (Known=0.080 Reserve=0.000) ACC=97.354 F1=90.500 Rec=90.610 Prec=90.396
+Train Client2 [13/50] LR=0.0002500 loss=0.162 (Known=0.162 Reserve=0.000) ACC=95.437 F1=89.841 Rec=89.019 Prec=90.889
+Train Client3 [13/50] LR=0.0002500 loss=0.178 (Known=0.178 Reserve=0.000) ACC=94.886 F1=91.267 Rec=90.623 Prec=92.027
+Train Client4 [13/50] LR=0.0002500 loss=0.114 (Known=0.114 Reserve=0.000) ACC=96.723 F1=83.876 Rec=84.735 Prec=83.112
+Train Client5 [13/50] LR=0.0002500 loss=0.107 (Known=0.107 Reserve=0.000) ACC=96.964 F1=83.535 Rec=82.977 Prec=84.335
+Train Client6 [13/50] LR=0.0002500 loss=0.305 (Known=0.305 Reserve=0.000) ACC=89.444 F1=82.120 Rec=82.914 Prec=81.664
+Train Client7 [13/50] LR=0.0002500 loss=0.221 (Known=0.221 Reserve=0.000) ACC=93.182 F1=86.988 Rec=93.469 Prec=83.849
+
+Val    [13/50] LR=0.0002500 loss=0.166 ACC=94.286 F1=94.245 Rec=94.286 Prec=94.614
+Val-KV [13/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [13/50] FeatDim=512 IntraVar=45.364024 InterDist=25.208099 Compact=1.799581 CenterNorm=26.687522
+Stage1Boundary [13/50] KnownTrue-Other mean=4.4926 std=2.2150 p10=2.4418 p50=4.5269 p90=7.0142 | BoundaryRate=20.000% count=350 thr=3.5859 hist=[13, 6, 126, 75, 130]
+
+Train Client0 [14/50] LR=0.0002500 loss=0.157 (Known=0.157 Reserve=0.000) ACC=94.397 F1=75.209 Rec=75.658 Prec=74.821
+Train Client1 [14/50] LR=0.0002500 loss=0.085 (Known=0.085 Reserve=0.000) ACC=97.354 F1=90.344 Rec=89.890 Prec=90.819
+Train Client2 [14/50] LR=0.0002500 loss=0.127 (Known=0.127 Reserve=0.000) ACC=96.625 F1=93.184 Rec=92.725 Prec=93.684
+Train Client3 [14/50] LR=0.0002500 loss=0.160 (Known=0.160 Reserve=0.000) ACC=95.644 F1=93.574 Rec=94.794 Prec=92.606
+Train Client4 [14/50] LR=0.0002500 loss=0.097 (Known=0.097 Reserve=0.000) ACC=97.561 F1=87.176 Rec=91.964 Prec=83.693
+Train Client5 [14/50] LR=0.0002500 loss=0.088 (Known=0.088 Reserve=0.000) ACC=97.321 F1=82.477 Rec=82.978 Prec=82.089
+Train Client6 [14/50] LR=0.0002500 loss=0.319 (Known=0.319 Reserve=0.000) ACC=88.889 F1=80.883 Rec=83.071 Prec=79.096
+Train Client7 [14/50] LR=0.0002500 loss=0.196 (Known=0.196 Reserve=0.000) ACC=95.152 F1=94.732 Rec=94.202 Prec=95.303
+
+Val    [14/50] LR=0.0002500 loss=0.137 ACC=95.143 F1=95.102 Rec=95.143 Prec=95.440
+Val-KV [14/50] CloseK->V=0.000% KVMargin=0.000000
+Stage1Diag [14/50] FeatDim=512 IntraVar=38.063350 InterDist=24.805571 Compact=1.534468 CenterNorm=26.047149
+Stage1Boundary [14/50] KnownTrue-Other mean=4.4444 std=2.0195 p10=2.6444 p50=4.4205 p90=6.7048 | BoundaryRate=20.000% count=350 thr=3.5957 hist=[16, 0, 90, 95, 149]
+
+Initialized fixed virtual anchors and saved metadata to results/MPretrain-DRetinalOCT-Msoftmax-BResnet18/LR0.0005-K5-U3-Seed0-RsvW15-V3/stage1_anchor_init.json
+Anchor V0: pair=['K3', 'K4'] score=0.473333 conf=0.078571 proto=0.868095
+Anchor V1: pair=['K2', 'K4'] score=0.461766 conf=0.032857 proto=0.890675
+Anchor V2: pair=['K2', 'K3'] score=0.428024 conf=0.008571 proto=0.847477
+Anchor pairwise cosine: [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDiag [14/50] ValACC=95.143 ValF1=95.102 Compact=1.534468 KVMargin=0.000000 CloseK->V=0.000%
+ReserveAnchors [14/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [14/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [14/50] {}
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [15/50] LR=0.0002500 loss=1.920 (Known=0.235 Reserve=8.421) ACC=92.619 F1=73.515 Rec=73.997 Prec=73.069
+Train Client1 [15/50] LR=0.0002500 loss=1.274 (Known=0.156 Reserve=5.590) ACC=95.613 F1=84.678 Rec=82.259 Prec=89.082
+Train Client2 [15/50] LR=0.0002500 loss=2.041 (Known=0.279 Reserve=8.809) ACC=93.394 F1=86.458 Rec=85.924 Prec=87.749
+Train Client3 [15/50] LR=0.0002500 loss=2.677 (Known=0.162 Reserve=12.575) ACC=95.644 F1=93.553 Rec=92.016 Prec=95.396
+Train Client4 [15/50] LR=0.0002500 loss=1.780 (Known=0.157 Reserve=8.116) ACC=95.579 F1=75.211 Rec=73.942 Prec=76.720
+Train Client5 [15/50] LR=0.0002500 loss=2.163 (Known=0.178 Reserve=9.922) ACC=96.429 F1=77.233 Rec=77.267 Prec=77.202
+Train Client6 [15/50] LR=0.0002500 loss=4.095 (Known=0.425 Reserve=18.349) ACC=87.778 F1=78.465 Rec=86.347 Prec=73.187
+Train Client7 [15/50] LR=0.0002500 loss=2.957 (Known=0.307 Reserve=13.250) ACC=92.424 F1=72.140 Rec=73.125 Prec=71.298
+
+Val    [15/50] LR=0.0002500 loss=0.210 ACC=95.143 F1=95.131 Rec=95.143 Prec=95.354
+Val-KV [15/50] CloseK->V=79.029% KVMargin=-4.539417
+Stage1Diag [15/50] FeatDim=512 IntraVar=51.132217 InterDist=25.905380 Compact=1.973807 CenterNorm=19.892314
+Stage1Boundary [15/50] KnownTrue-Other mean=6.1187 std=2.7021 p10=4.1312 p50=6.7942 p90=8.0399 | BoundaryRate=20.000% count=350 thr=5.6769 hist=[25, 102, 59, 36, 128]
+
+ReserveDiag [15/50] ValACC=95.143 ValF1=95.131 Compact=1.973807 KVMargin=-4.539417 CloseK->V=79.029%
+ReserveAnchors [15/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [15/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [15/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving best model by known validation F1 . . . . . . . .
+
+Saving model at epoch 15 . . . . . . . .
+
+Train Client0 [16/50] LR=0.0002500 loss=1.066 (Known=0.243 Reserve=4.115) ACC=92.080 F1=73.150 Rec=73.856 Prec=72.542
+Train Client1 [16/50] LR=0.0002500 loss=0.660 (Known=0.144 Reserve=2.580) ACC=96.100 F1=85.544 Rec=84.373 Prec=87.052
+Train Client2 [16/50] LR=0.0002500 loss=1.133 (Known=0.273 Reserve=4.303) ACC=93.298 F1=86.330 Rec=86.076 Prec=86.786
+Train Client3 [16/50] LR=0.0002500 loss=1.527 (Known=0.276 Reserve=6.256) ACC=93.561 F1=89.815 Rec=89.654 Prec=89.993
+Train Client4 [16/50] LR=0.0002500 loss=0.858 (Known=0.159 Reserve=3.493) ACC=95.274 F1=75.596 Rec=73.986 Prec=78.093
+Train Client5 [16/50] LR=0.0002500 loss=1.020 (Known=0.243 Reserve=3.881) ACC=95.000 F1=83.218 Rec=85.956 Prec=81.655
+Train Client6 [16/50] LR=0.0002500 loss=2.303 (Known=0.676 Reserve=8.138) ACC=82.222 F1=71.003 Rec=87.448 Prec=62.979
+Train Client7 [16/50] LR=0.0002500 loss=1.854 (Known=0.393 Reserve=7.303) ACC=92.121 F1=79.607 Rec=91.645 Prec=76.629
+
+Val    [16/50] LR=0.0002500 loss=0.210 ACC=94.971 F1=94.934 Rec=94.971 Prec=95.372
+Val-KV [16/50] CloseK->V=30.229% KVMargin=0.039914
+Stage1Diag [16/50] FeatDim=512 IntraVar=143.338496 InterDist=31.727716 Compact=4.517769 CenterNorm=23.500658
+Stage1Boundary [16/50] KnownTrue-Other mean=7.2854 std=3.1237 p10=4.9130 p50=7.6884 p90=9.6497 | BoundaryRate=20.000% count=350 thr=6.7227 hist=[23, 57, 45, 95, 130]
+
+ReserveDiag [16/50] ValACC=94.971 ValF1=94.934 Compact=4.517769 KVMargin=0.039914 CloseK->V=30.229%
+ReserveAnchors [16/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [16/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [16/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [48, 0, 1]}
+Train Client0 [17/50] LR=0.0002500 loss=0.631 (Known=0.246 Reserve=1.922) ACC=93.588 F1=74.512 Rec=75.203 Prec=73.918
+Train Client1 [17/50] LR=0.0002500 loss=0.347 (Known=0.106 Reserve=1.204) ACC=96.866 F1=89.525 Rec=89.331 Prec=89.749
+Train Client2 [17/50] LR=0.0002500 loss=0.675 (Known=0.247 Reserve=2.142) ACC=93.774 F1=86.567 Rec=86.011 Prec=87.494
+Train Client3 [17/50] LR=0.0002500 loss=0.670 (Known=0.212 Reserve=2.289) ACC=95.833 F1=92.339 Rec=91.915 Prec=92.804
+Train Client4 [17/50] LR=0.0002500 loss=0.512 (Known=0.127 Reserve=1.926) ACC=96.189 F1=80.432 Rec=84.914 Prec=77.446
+Train Client5 [17/50] LR=0.0002500 loss=0.551 (Known=0.196 Reserve=1.772) ACC=95.982 F1=76.998 Rec=76.857 Prec=77.143
+Train Client6 [17/50] LR=0.0002500 loss=1.484 (Known=0.603 Reserve=4.407) ACC=86.111 F1=74.053 Rec=86.136 Prec=67.677
+Train Client7 [17/50] LR=0.0002500 loss=0.972 (Known=0.322 Reserve=3.249) ACC=93.106 F1=92.563 Rec=92.654 Prec=92.589
+
+Val    [17/50] LR=0.0002500 loss=0.209 ACC=95.314 F1=95.295 Rec=95.314 Prec=95.703
+Val-KV [17/50] CloseK->V=19.886% KVMargin=1.994115
+Stage1Diag [17/50] FeatDim=512 IntraVar=339.791694 InterDist=42.376965 Compact=8.018311 CenterNorm=30.070544
+Stage1Boundary [17/50] KnownTrue-Other mean=7.8115 std=3.3094 p10=5.5763 p50=8.3146 p90=10.7922 | BoundaryRate=20.000% count=350 thr=6.9501 hist=[38, 1, 80, 114, 117]
+
+ReserveDiag [17/50] ValACC=95.314 ValF1=95.295 Compact=8.018311 KVMargin=1.994115 CloseK->V=19.886%
+ReserveAnchors [17/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [17/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [17/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [24, 0, 0]}
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [18/50] LR=0.0002500 loss=0.445 (Known=0.244 Reserve=1.003) ACC=93.103 F1=74.035 Rec=74.602 Prec=73.551
+Train Client1 [18/50] LR=0.0002500 loss=0.213 (Known=0.118 Reserve=0.475) ACC=97.075 F1=90.885 Rec=91.488 Prec=90.359
+Train Client2 [18/50] LR=0.0002500 loss=0.497 (Known=0.243 Reserve=1.267) ACC=94.392 F1=87.939 Rec=87.678 Prec=88.589
+Train Client3 [18/50] LR=0.0002500 loss=0.473 (Known=0.237 Reserve=1.179) ACC=94.508 F1=92.291 Rec=93.401 Prec=91.429
+Train Client4 [18/50] LR=0.0002500 loss=0.334 (Known=0.129 Reserve=1.025) ACC=96.570 F1=80.159 Rec=82.083 Prec=78.788
+Train Client5 [18/50] LR=0.0002500 loss=0.364 (Known=0.206 Reserve=0.788) ACC=95.357 F1=88.332 Rec=91.405 Prec=86.265
+Train Client6 [18/50] LR=0.0002500 loss=1.091 (Known=0.570 Reserve=2.605) ACC=87.778 F1=76.511 Rec=81.413 Prec=72.693
+Train Client7 [18/50] LR=0.0002500 loss=0.694 (Known=0.317 Reserve=1.883) ACC=93.712 F1=92.861 Rec=93.373 Prec=92.464
+
+Val    [18/50] LR=0.0002500 loss=0.181 ACC=94.629 F1=94.588 Rec=94.629 Prec=95.193
+Val-KV [18/50] CloseK->V=13.543% KVMargin=2.781581
+Stage1Diag [18/50] FeatDim=512 IntraVar=476.853419 InterDist=48.407932 Compact=9.850729 CenterNorm=34.532340
+Stage1Boundary [18/50] KnownTrue-Other mean=7.2503 std=3.3332 p10=4.0999 p50=7.8857 p90=10.6549 | BoundaryRate=20.000% count=350 thr=5.7121 hist=[5, 4, 70, 121, 150]
+
+ReserveDiag [18/50] ValACC=94.629 ValF1=94.588 Compact=9.850729 KVMargin=2.781581 CloseK->V=13.543%
+ReserveAnchors [18/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [18/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [18/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [19/50] LR=0.0002500 loss=0.316 (Known=0.199 Reserve=0.585) ACC=93.588 F1=74.466 Rec=75.275 Prec=73.786
+Train Client1 [19/50] LR=0.0002500 loss=0.136 (Known=0.084 Reserve=0.258) ACC=97.876 F1=92.699 Rec=92.757 Prec=92.652
+Train Client2 [19/50] LR=0.0002500 loss=0.329 (Known=0.181 Reserve=0.739) ACC=95.342 F1=88.868 Rec=88.955 Prec=88.975
+Train Client3 [19/50] LR=0.0002500 loss=0.324 (Known=0.203 Reserve=0.605) ACC=95.076 F1=91.857 Rec=93.807 Prec=90.880
+Train Client4 [19/50] LR=0.0002500 loss=0.286 (Known=0.150 Reserve=0.680) ACC=95.960 F1=79.857 Rec=84.176 Prec=76.889
+Train Client5 [19/50] LR=0.0002500 loss=0.180 (Known=0.111 Reserve=0.349) ACC=97.500 F1=84.771 Rec=88.009 Prec=83.200
+Train Client6 [19/50] LR=0.0002500 loss=0.928 (Known=0.546 Reserve=1.911) ACC=86.389 F1=77.653 Rec=88.483 Prec=70.681
+Train Client7 [19/50] LR=0.0002500 loss=0.574 (Known=0.273 Reserve=1.506) ACC=93.485 F1=93.292 Rec=93.345 Prec=93.324
+
+Val    [19/50] LR=0.0002500 loss=0.164 ACC=94.400 F1=94.327 Rec=94.400 Prec=95.073
+Val-KV [19/50] CloseK->V=0.000% KVMargin=3.422168
+Stage1Diag [19/50] FeatDim=512 IntraVar=187.174530 InterDist=40.335281 Compact=4.640467 CenterNorm=29.358898
+Stage1Boundary [19/50] KnownTrue-Other mean=6.4287 std=2.9213 p10=3.8057 p50=7.1479 p90=9.2163 | BoundaryRate=20.000% count=350 thr=4.9933 hist=[15, 4, 45, 137, 149]
+
+ReserveDiag [19/50] ValACC=94.400 ValF1=94.327 Compact=4.640467 KVMargin=3.422168 CloseK->V=0.000%
+ReserveAnchors [19/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [19/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [19/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [20/50] LR=0.0002500 loss=0.237 (Known=0.161 Reserve=0.382) ACC=94.881 F1=75.603 Rec=75.882 Prec=75.347
+Train Client1 [20/50] LR=0.0002500 loss=0.121 (Known=0.078 Reserve=0.215) ACC=97.458 F1=91.101 Rec=91.328 Prec=90.881
+Train Client2 [20/50] LR=0.0002500 loss=0.294 (Known=0.178 Reserve=0.584) ACC=95.580 F1=91.203 Rec=90.720 Prec=91.940
+Train Client3 [20/50] LR=0.0002500 loss=0.251 (Known=0.152 Reserve=0.494) ACC=95.076 F1=92.598 Rec=93.728 Prec=91.816
+Train Client4 [20/50] LR=0.0002500 loss=0.173 (Known=0.101 Reserve=0.361) ACC=97.409 F1=87.534 Rec=90.094 Prec=85.313
+Train Client5 [20/50] LR=0.0002500 loss=0.142 (Known=0.086 Reserve=0.279) ACC=96.964 F1=89.365 Rec=92.059 Prec=87.686
+Train Client6 [20/50] LR=0.0002500 loss=0.639 (Known=0.405 Reserve=1.168) ACC=89.167 F1=77.678 Rec=81.596 Prec=74.510
+Train Client7 [20/50] LR=0.0002500 loss=0.438 (Known=0.231 Reserve=1.036) ACC=94.773 F1=94.875 Rec=94.864 Prec=94.942
+
+Val    [20/50] LR=0.0002500 loss=0.152 ACC=94.914 F1=94.833 Rec=94.914 Prec=95.460
+Val-KV [20/50] CloseK->V=0.000% KVMargin=3.577658
+Stage1Diag [20/50] FeatDim=512 IntraVar=151.727799 InterDist=39.118877 Compact=3.878634 CenterNorm=28.620745
+Stage1Boundary [20/50] KnownTrue-Other mean=6.2157 std=2.8431 p10=3.2025 p50=6.9871 p90=9.0322 | BoundaryRate=20.000% count=350 thr=4.6129 hist=[12, 0, 35, 139, 164]
+
+ReserveDiag [20/50] ValACC=94.914 ValF1=94.833 Compact=3.878634 KVMargin=3.577658 CloseK->V=0.000%
+ReserveAnchors [20/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [20/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [20/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving model at epoch 20 . . . . . . . .
+
+Train Client0 [21/50] LR=0.0002500 loss=0.251 (Known=0.178 Reserve=0.365) ACC=94.127 F1=75.117 Rec=75.911 Prec=74.432
+Train Client1 [21/50] LR=0.0002500 loss=0.137 (Known=0.095 Reserve=0.212) ACC=97.354 F1=90.206 Rec=90.272 Prec=90.145
+Train Client2 [21/50] LR=0.0002500 loss=0.257 (Known=0.161 Reserve=0.483) ACC=95.342 F1=89.912 Rec=90.135 Prec=89.794
+Train Client3 [21/50] LR=0.0002500 loss=0.209 (Known=0.146 Reserve=0.315) ACC=95.265 F1=94.398 Rec=94.015 Prec=94.812
+Train Client4 [21/50] LR=0.0002500 loss=0.189 (Known=0.121 Reserve=0.341) ACC=97.332 F1=85.469 Rec=90.330 Prec=82.235
+Train Client5 [21/50] LR=0.0002500 loss=0.173 (Known=0.116 Reserve=0.281) ACC=96.607 F1=81.983 Rec=82.471 Prec=81.609
+Train Client6 [21/50] LR=0.0002500 loss=0.763 (Known=0.508 Reserve=1.276) ACC=86.944 F1=77.898 Rec=86.816 Prec=72.317
+Train Client7 [21/50] LR=0.0002500 loss=0.395 (Known=0.221 Reserve=0.870) ACC=94.318 F1=86.577 Rec=93.113 Prec=83.492
+
+Val    [21/50] LR=0.0002500 loss=0.152 ACC=94.800 F1=94.720 Rec=94.800 Prec=95.312
+Val-KV [21/50] CloseK->V=0.057% KVMargin=3.400905
+Stage1Diag [21/50] FeatDim=512 IntraVar=236.618286 InterDist=42.761669 Compact=5.533420 CenterNorm=32.133147
+Stage1Boundary [21/50] KnownTrue-Other mean=6.0118 std=2.6924 p10=3.0764 p50=6.5698 p90=8.4273 | BoundaryRate=20.000% count=350 thr=4.7926 hist=[3, 7, 53, 91, 196]
+
+ReserveDiag [21/50] ValACC=94.800 ValF1=94.720 Compact=5.533420 KVMargin=3.400905 CloseK->V=0.057%
+ReserveAnchors [21/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [21/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [21/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [22/50] LR=0.0002500 loss=0.230 (Known=0.167 Reserve=0.314) ACC=94.343 F1=75.311 Rec=75.952 Prec=74.773
+Train Client1 [22/50] LR=0.0002500 loss=0.099 (Known=0.072 Reserve=0.136) ACC=97.806 F1=90.333 Rec=89.252 Prec=91.683
+Train Client2 [22/50] LR=0.0002500 loss=0.264 (Known=0.170 Reserve=0.469) ACC=95.295 F1=89.651 Rec=89.188 Prec=90.687
+Train Client3 [22/50] LR=0.0002500 loss=0.173 (Known=0.128 Reserve=0.223) ACC=96.591 F1=95.800 Rec=95.410 Prec=96.221
+Train Client4 [22/50] LR=0.0002500 loss=0.165 (Known=0.106 Reserve=0.297) ACC=97.256 F1=82.425 Rec=85.286 Prec=80.137
+Train Client5 [22/50] LR=0.0002500 loss=0.118 (Known=0.081 Reserve=0.182) ACC=97.411 F1=86.942 Rec=87.980 Prec=86.128
+Train Client6 [22/50] LR=0.0002500 loss=0.617 (Known=0.411 Reserve=1.029) ACC=88.611 F1=83.794 Rec=88.614 Prec=80.709
+Train Client7 [22/50] LR=0.0002500 loss=0.359 (Known=0.224 Reserve=0.674) ACC=94.773 F1=94.218 Rec=93.444 Prec=95.055
+
+Val    [22/50] LR=0.0002500 loss=0.108 ACC=95.943 F1=95.915 Rec=95.943 Prec=96.121
+Val-KV [22/50] CloseK->V=0.000% KVMargin=3.801361
+Stage1Diag [22/50] FeatDim=512 IntraVar=148.043513 InterDist=36.484283 Compact=4.057734 CenterNorm=28.135420
+Stage1Boundary [22/50] KnownTrue-Other mean=5.6833 std=2.3681 p10=3.1174 p50=6.0996 p90=8.0013 | BoundaryRate=20.000% count=350 thr=4.3397 hist=[20, 4, 48, 150, 128]
+
+ReserveDiag [22/50] ValACC=95.943 ValF1=95.915 Compact=4.057734 KVMargin=3.801361 CloseK->V=0.000%
+ReserveAnchors [22/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [22/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [22/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving best model by known validation F1 . . . . . . . .
+
+>> New learning Rate: 0.000125
+Train Client0 [23/50] LR=0.0001250 loss=0.153 (Known=0.110 Reserve=0.213) ACC=96.767 F1=77.317 Rec=77.685 Prec=76.987
+Train Client1 [23/50] LR=0.0001250 loss=0.062 (Known=0.042 Reserve=0.098) ACC=98.747 F1=95.555 Rec=95.771 Prec=95.345
+Train Client2 [23/50] LR=0.0001250 loss=0.178 (Known=0.113 Reserve=0.324) ACC=96.673 F1=92.285 Rec=92.603 Prec=92.011
+Train Client3 [23/50] LR=0.0001250 loss=0.117 (Known=0.078 Reserve=0.192) ACC=97.348 F1=95.835 Rec=97.287 Prec=94.619
+Train Client4 [23/50] LR=0.0001250 loss=0.119 (Known=0.077 Reserve=0.208) ACC=97.942 F1=90.221 Rec=94.219 Prec=87.126
+Train Client5 [23/50] LR=0.0001250 loss=0.085 (Known=0.057 Reserve=0.142) ACC=98.214 F1=86.601 Rec=88.341 Prec=85.536
+Train Client6 [23/50] LR=0.0001250 loss=0.601 (Known=0.427 Reserve=0.870) ACC=88.889 F1=83.992 Rec=93.478 Prec=78.025
+Train Client7 [23/50] LR=0.0001250 loss=0.309 (Known=0.174 Reserve=0.678) ACC=95.076 F1=94.957 Rec=94.983 Prec=94.975
+
+Val    [23/50] LR=0.0001250 loss=0.126 ACC=95.429 F1=95.402 Rec=95.429 Prec=95.744
+Val-KV [23/50] CloseK->V=0.000% KVMargin=3.761857
+Stage1Diag [23/50] FeatDim=512 IntraVar=290.523557 InterDist=42.833000 Compact=6.782704 CenterNorm=33.057820
+Stage1Boundary [23/50] KnownTrue-Other mean=5.9057 std=2.5647 p10=3.1704 p50=6.2316 p90=8.6470 | BoundaryRate=20.000% count=350 thr=4.6652 hist=[17, 2, 84, 90, 157]
+
+ReserveDiag [23/50] ValACC=95.429 ValF1=95.402 Compact=6.782704 KVMargin=3.761857 CloseK->V=0.000%
+ReserveAnchors [23/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [23/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [23/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [24/50] LR=0.0001250 loss=0.157 (Known=0.114 Reserve=0.216) ACC=96.013 F1=76.613 Rec=77.026 Prec=76.244
+Train Client1 [24/50] LR=0.0001250 loss=0.059 (Known=0.040 Reserve=0.092) ACC=98.747 F1=94.424 Rec=94.746 Prec=94.125
+Train Client2 [24/50] LR=0.0001250 loss=0.187 (Known=0.119 Reserve=0.341) ACC=96.816 F1=92.719 Rec=92.465 Prec=93.256
+Train Client3 [24/50] LR=0.0001250 loss=0.145 (Known=0.103 Reserve=0.209) ACC=96.023 F1=94.184 Rec=95.350 Prec=93.258
+Train Client4 [24/50] LR=0.0001250 loss=0.177 (Known=0.120 Reserve=0.284) ACC=96.875 F1=82.343 Rec=88.897 Prec=79.045
+Train Client5 [24/50] LR=0.0001250 loss=0.104 (Known=0.073 Reserve=0.155) ACC=97.857 F1=82.003 Rec=83.644 Prec=81.203
+Train Client6 [24/50] LR=0.0001250 loss=0.594 (Known=0.424 Reserve=0.852) ACC=88.056 F1=81.359 Rec=88.689 Prec=76.381
+Train Client7 [24/50] LR=0.0001250 loss=0.295 (Known=0.172 Reserve=0.618) ACC=95.076 F1=94.881 Rec=94.828 Prec=94.966
+
+Val    [24/50] LR=0.0001250 loss=0.114 ACC=95.943 F1=95.923 Rec=95.943 Prec=96.156
+Val-KV [24/50] CloseK->V=0.000% KVMargin=3.804309
+Stage1Diag [24/50] FeatDim=512 IntraVar=226.354837 InterDist=39.668121 Compact=5.706215 CenterNorm=30.271880
+Stage1Boundary [24/50] KnownTrue-Other mean=5.9809 std=2.6053 p10=3.1522 p50=6.2363 p90=8.8792 | BoundaryRate=20.000% count=350 thr=4.5085 hist=[1, 2, 70, 128, 149]
+
+ReserveDiag [24/50] ValACC=95.943 ValF1=95.923 Compact=5.706215 KVMargin=3.804309 CloseK->V=0.000%
+ReserveAnchors [24/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [24/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [24/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [25/50] LR=0.0001250 loss=0.134 (Known=0.098 Reserve=0.180) ACC=96.659 F1=77.302 Rec=77.834 Prec=76.852
+Train Client1 [25/50] LR=0.0001250 loss=0.050 (Known=0.034 Reserve=0.079) ACC=98.955 F1=96.484 Rec=96.419 Prec=96.551
+Train Client2 [25/50] LR=0.0001250 loss=0.197 (Known=0.128 Reserve=0.347) ACC=96.673 F1=93.463 Rec=92.879 Prec=94.231
+Train Client3 [25/50] LR=0.0001250 loss=0.147 (Known=0.106 Reserve=0.209) ACC=97.727 F1=94.825 Rec=97.171 Prec=93.226
+Train Client4 [25/50] LR=0.0001250 loss=0.132 (Known=0.086 Reserve=0.230) ACC=97.942 F1=89.122 Rec=97.214 Prec=84.917
+Train Client5 [25/50] LR=0.0001250 loss=0.077 (Known=0.051 Reserve=0.132) ACC=98.750 F1=89.181 Rec=92.505 Prec=87.191
+Train Client6 [25/50] LR=0.0001250 loss=0.504 (Known=0.352 Reserve=0.760) ACC=91.111 F1=83.572 Rec=91.774 Prec=77.877
+Train Client7 [25/50] LR=0.0001250 loss=0.318 (Known=0.189 Reserve=0.645) ACC=95.455 F1=95.451 Rec=95.773 Prec=95.239
+
+Val    [25/50] LR=0.0001250 loss=0.114 ACC=96.114 F1=96.095 Rec=96.114 Prec=96.298
+Val-KV [25/50] CloseK->V=0.000% KVMargin=3.824068
+Stage1Diag [25/50] FeatDim=512 IntraVar=300.674387 InterDist=41.577450 Compact=7.231670 CenterNorm=32.105485
+Stage1Boundary [25/50] KnownTrue-Other mean=6.3333 std=2.5743 p10=3.5358 p50=6.7702 p90=8.9342 | BoundaryRate=20.000% count=350 thr=5.0867 hist=[7, 0, 75, 113, 155]
+
+ReserveDiag [25/50] ValACC=96.114 ValF1=96.095 Compact=7.231670 KVMargin=3.824068 CloseK->V=0.000%
+ReserveAnchors [25/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [25/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [25/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving best model by known validation F1 . . . . . . . .
+
+Saving model at epoch 25 . . . . . . . .
+
+Train Client0 [26/50] LR=0.0001250 loss=0.169 (Known=0.124 Reserve=0.225) ACC=95.744 F1=76.509 Rec=77.061 Prec=76.034
+Train Client1 [26/50] LR=0.0001250 loss=0.059 (Known=0.042 Reserve=0.084) ACC=98.433 F1=93.810 Rec=94.242 Prec=93.429
+Train Client2 [26/50] LR=0.0001250 loss=0.170 (Known=0.114 Reserve=0.279) ACC=96.340 F1=91.405 Rec=90.414 Prec=92.947
+Train Client3 [26/50] LR=0.0001250 loss=0.123 (Known=0.088 Reserve=0.174) ACC=96.780 F1=96.168 Rec=95.954 Prec=96.401
+Train Client4 [26/50] LR=0.0001250 loss=0.140 (Known=0.088 Reserve=0.260) ACC=97.104 F1=85.551 Rec=94.015 Prec=80.380
+Train Client5 [26/50] LR=0.0001250 loss=0.083 (Known=0.057 Reserve=0.127) ACC=98.482 F1=84.554 Rec=83.922 Prec=85.428
+Train Client6 [26/50] LR=0.0001250 loss=0.556 (Known=0.396 Reserve=0.801) ACC=89.444 F1=82.039 Rec=89.064 Prec=76.923
+Train Client7 [26/50] LR=0.0001250 loss=0.251 (Known=0.145 Reserve=0.532) ACC=95.833 F1=95.542 Rec=95.639 Prec=95.457
+
+Val    [26/50] LR=0.0001250 loss=0.129 ACC=95.600 F1=95.562 Rec=95.600 Prec=95.867
+Val-KV [26/50] CloseK->V=0.057% KVMargin=3.718675
+Stage1Diag [26/50] FeatDim=512 IntraVar=659.850678 InterDist=56.551109 Compact=11.668218 CenterNorm=42.368353
+Stage1Boundary [26/50] KnownTrue-Other mean=6.2520 std=2.5625 p10=3.5556 p50=6.6892 p90=8.6264 | BoundaryRate=20.000% count=350 thr=5.2156 hist=[5, 3, 68, 91, 183]
+
+ReserveDiag [26/50] ValACC=95.600 ValF1=95.562 Compact=11.668218 KVMargin=3.718675 CloseK->V=0.057%
+ReserveAnchors [26/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [26/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [26/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [27/50] LR=0.0001250 loss=0.128 (Known=0.095 Reserve=0.165) ACC=96.929 F1=77.557 Rec=78.023 Prec=77.151
+Train Client1 [27/50] LR=0.0001250 loss=0.052 (Known=0.035 Reserve=0.085) ACC=98.851 F1=94.786 Rec=96.032 Prec=93.714
+Train Client2 [27/50] LR=0.0001250 loss=0.165 (Known=0.110 Reserve=0.273) ACC=97.006 F1=92.791 Rec=92.396 Prec=93.301
+Train Client3 [27/50] LR=0.0001250 loss=0.141 (Known=0.106 Reserve=0.177) ACC=96.970 F1=96.505 Rec=96.251 Prec=96.838
+Train Client4 [27/50] LR=0.0001250 loss=0.095 (Known=0.063 Reserve=0.164) ACC=98.552 F1=93.398 Rec=97.393 Prec=90.336
+Train Client5 [27/50] LR=0.0001250 loss=0.091 (Known=0.064 Reserve=0.138) ACC=98.482 F1=90.992 Rec=94.015 Prec=88.972
+Train Client6 [27/50] LR=0.0001250 loss=0.470 (Known=0.341 Reserve=0.647) ACC=90.556 F1=84.289 Rec=90.882 Prec=79.277
+Train Client7 [27/50] LR=0.0001250 loss=0.295 (Known=0.175 Reserve=0.601) ACC=95.152 F1=94.695 Rec=94.598 Prec=94.809
+
+Val    [27/50] LR=0.0001250 loss=0.119 ACC=96.171 F1=96.154 Rec=96.171 Prec=96.422
+Val-KV [27/50] CloseK->V=0.000% KVMargin=4.056481
+Stage1Diag [27/50] FeatDim=512 IntraVar=204.825891 InterDist=42.486340 Compact=4.820982 CenterNorm=32.155049
+Stage1Boundary [27/50] KnownTrue-Other mean=6.2657 std=2.5480 p10=3.6263 p50=6.7996 p90=8.6765 | BoundaryRate=20.000% count=350 thr=5.0476 hist=[1, 3, 77, 125, 144]
+
+ReserveDiag [27/50] ValACC=96.171 ValF1=96.154 Compact=4.820982 KVMargin=4.056481 CloseK->V=0.000%
+ReserveAnchors [27/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [27/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [27/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [28/50] LR=0.0001250 loss=0.128 (Known=0.094 Reserve=0.166) ACC=96.498 F1=77.120 Rec=77.467 Prec=76.794
+Train Client1 [28/50] LR=0.0001250 loss=0.061 (Known=0.043 Reserve=0.090) ACC=98.851 F1=95.181 Rec=95.475 Prec=94.894
+Train Client2 [28/50] LR=0.0001250 loss=0.174 (Known=0.117 Reserve=0.286) ACC=96.958 F1=93.245 Rec=93.118 Prec=93.466
+Train Client3 [28/50] LR=0.0001250 loss=0.137 (Known=0.100 Reserve=0.184) ACC=97.159 F1=96.824 Rec=96.674 Prec=96.984
+Train Client4 [28/50] LR=0.0001250 loss=0.088 (Known=0.060 Reserve=0.138) ACC=98.399 F1=90.590 Rec=97.478 Prec=86.025
+Train Client5 [28/50] LR=0.0001250 loss=0.079 (Known=0.056 Reserve=0.115) ACC=98.571 F1=92.355 Rec=94.076 Prec=90.970
+Train Client6 [28/50] LR=0.0001250 loss=0.560 (Known=0.405 Reserve=0.775) ACC=88.889 F1=81.454 Rec=87.856 Prec=76.523
+Train Client7 [28/50] LR=0.0001250 loss=0.241 (Known=0.143 Reserve=0.489) ACC=95.682 F1=95.334 Rec=95.416 Prec=95.279
+
+Val    [28/50] LR=0.0001250 loss=0.116 ACC=95.943 F1=95.919 Rec=95.943 Prec=96.206
+Val-KV [28/50] CloseK->V=0.000% KVMargin=4.129765
+Stage1Diag [28/50] FeatDim=512 IntraVar=198.204372 InterDist=41.634453 Compact=4.760586 CenterNorm=31.114281
+Stage1Boundary [28/50] KnownTrue-Other mean=6.0388 std=2.5675 p10=3.1948 p50=6.3904 p90=8.7662 | BoundaryRate=20.000% count=350 thr=4.6430 hist=[2, 2, 92, 92, 162]
+
+ReserveDiag [28/50] ValACC=95.943 ValF1=95.919 Compact=4.760586 KVMargin=4.129765 CloseK->V=0.000%
+ReserveAnchors [28/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [28/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [28/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [29/50] LR=0.0001250 loss=0.121 (Known=0.091 Reserve=0.147) ACC=96.875 F1=77.397 Rec=77.680 Prec=77.137
+Train Client1 [29/50] LR=0.0001250 loss=0.046 (Known=0.034 Reserve=0.061) ACC=99.060 F1=95.785 Rec=96.730 Prec=94.971
+Train Client2 [29/50] LR=0.0001250 loss=0.170 (Known=0.114 Reserve=0.282) ACC=97.101 F1=93.591 Rec=93.627 Prec=93.602
+Train Client3 [29/50] LR=0.0001250 loss=0.125 (Known=0.093 Reserve=0.159) ACC=97.348 F1=94.435 Rec=96.799 Prec=92.820
+Train Client4 [29/50] LR=0.0001250 loss=0.141 (Known=0.094 Reserve=0.235) ACC=97.637 F1=86.980 Rec=96.238 Prec=82.585
+Train Client5 [29/50] LR=0.0001250 loss=0.061 (Known=0.042 Reserve=0.094) ACC=98.839 F1=94.942 Rec=98.819 Prec=92.400
+Train Client6 [29/50] LR=0.0001250 loss=0.553 (Known=0.398 Reserve=0.774) ACC=87.778 F1=82.000 Rec=90.599 Prec=75.930
+Train Client7 [29/50] LR=0.0001250 loss=0.245 (Known=0.154 Reserve=0.454) ACC=95.682 F1=95.637 Rec=95.700 Prec=95.654
+
+Val    [29/50] LR=0.0001250 loss=0.136 ACC=95.600 F1=95.554 Rec=95.600 Prec=95.951
+Val-KV [29/50] CloseK->V=0.000% KVMargin=4.159865
+Stage1Diag [29/50] FeatDim=512 IntraVar=221.736931 InterDist=40.805218 Compact=5.434034 CenterNorm=30.974434
+Stage1Boundary [29/50] KnownTrue-Other mean=6.3758 std=2.6515 p10=3.5503 p50=6.9574 p90=8.8551 | BoundaryRate=20.000% count=350 thr=5.1109 hist=[4, 0, 77, 94, 175]
+
+ReserveDiag [29/50] ValACC=95.600 ValF1=95.554 Compact=5.434034 KVMargin=4.159865 CloseK->V=0.000%
+ReserveAnchors [29/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [29/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [29/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [30/50] LR=0.0001250 loss=0.125 (Known=0.095 Reserve=0.152) ACC=96.552 F1=77.227 Rec=77.549 Prec=76.939
+Train Client1 [30/50] LR=0.0001250 loss=0.045 (Known=0.033 Reserve=0.059) ACC=99.060 F1=95.262 Rec=94.843 Prec=95.708
+Train Client2 [30/50] LR=0.0001250 loss=0.166 (Known=0.113 Reserve=0.266) ACC=96.435 F1=92.298 Rec=92.424 Prec=92.270
+Train Client3 [30/50] LR=0.0001250 loss=0.142 (Known=0.107 Reserve=0.177) ACC=97.348 F1=95.545 Rec=97.135 Prec=94.186
+Train Client4 [30/50] LR=0.0001250 loss=0.111 (Known=0.073 Reserve=0.188) ACC=98.095 F1=88.170 Rec=93.852 Prec=84.326
+Train Client5 [30/50] LR=0.0001250 loss=0.068 (Known=0.047 Reserve=0.109) ACC=98.304 F1=83.948 Rec=83.999 Prec=83.898
+Train Client6 [30/50] LR=0.0001250 loss=0.494 (Known=0.353 Reserve=0.706) ACC=89.167 F1=83.887 Rec=92.782 Prec=78.151
+Train Client7 [30/50] LR=0.0001250 loss=0.222 (Known=0.136 Reserve=0.431) ACC=96.439 F1=96.000 Rec=95.517 Prec=96.520
+
+Val    [30/50] LR=0.0001250 loss=0.127 ACC=95.771 F1=95.746 Rec=95.771 Prec=96.050
+Val-KV [30/50] CloseK->V=0.000% KVMargin=4.132394
+Stage1Diag [30/50] FeatDim=512 IntraVar=396.611879 InterDist=48.785835 Compact=8.129652 CenterNorm=36.713091
+Stage1Boundary [30/50] KnownTrue-Other mean=6.5046 std=2.7920 p10=3.3777 p50=6.8663 p90=9.6524 | BoundaryRate=20.000% count=350 thr=5.0310 hist=[8, 1, 96, 83, 162]
+
+ReserveDiag [30/50] ValACC=95.771 ValF1=95.746 Compact=8.129652 KVMargin=4.132394 CloseK->V=0.000%
+ReserveAnchors [30/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [30/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [30/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving model at epoch 30 . . . . . . . .
+
+Train Client0 [31/50] LR=0.0001250 loss=0.145 (Known=0.111 Reserve=0.171) ACC=96.767 F1=77.358 Rec=77.824 Prec=76.944
+Train Client1 [31/50] LR=0.0001250 loss=0.040 (Known=0.029 Reserve=0.055) ACC=99.199 F1=95.292 Rec=95.457 Prec=95.132
+Train Client2 [31/50] LR=0.0001250 loss=0.152 (Known=0.102 Reserve=0.251) ACC=97.148 F1=94.196 Rec=93.944 Prec=94.622
+Train Client3 [31/50] LR=0.0001250 loss=0.091 (Known=0.065 Reserve=0.128) ACC=98.106 F1=96.193 Rec=97.358 Prec=95.268
+Train Client4 [31/50] LR=0.0001250 loss=0.103 (Known=0.072 Reserve=0.159) ACC=98.323 F1=91.922 Rec=97.283 Prec=88.048
+Train Client5 [31/50] LR=0.0001250 loss=0.056 (Known=0.038 Reserve=0.092) ACC=98.929 F1=89.366 Rec=89.327 Prec=89.407
+Train Client6 [31/50] LR=0.0001250 loss=0.386 (Known=0.264 Reserve=0.610) ACC=91.944 F1=88.067 Rec=93.303 Prec=84.344
+Train Client7 [31/50] LR=0.0001250 loss=0.241 (Known=0.153 Reserve=0.442) ACC=96.439 F1=96.550 Rec=96.304 Prec=96.812
+
+Val    [31/50] LR=0.0001250 loss=0.105 ACC=96.171 F1=96.145 Rec=96.171 Prec=96.400
+Val-KV [31/50] CloseK->V=0.000% KVMargin=4.298288
+Stage1Diag [31/50] FeatDim=512 IntraVar=197.803144 InterDist=42.453247 Compact=4.659317 CenterNorm=31.931868
+Stage1Boundary [31/50] KnownTrue-Other mean=6.5362 std=2.8163 p10=3.0382 p50=7.1723 p90=9.4971 | BoundaryRate=20.000% count=350 thr=4.5614 hist=[0, 1, 50, 152, 147]
+
+ReserveDiag [31/50] ValACC=96.171 ValF1=96.145 Compact=4.659317 KVMargin=4.298288 CloseK->V=0.000%
+ReserveAnchors [31/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [31/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [31/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [32/50] LR=0.0001250 loss=0.133 (Known=0.101 Reserve=0.158) ACC=96.606 F1=77.188 Rec=77.468 Prec=76.929
+Train Client1 [32/50] LR=0.0001250 loss=0.042 (Known=0.031 Reserve=0.057) ACC=99.130 F1=95.842 Rec=97.200 Prec=94.728
+Train Client2 [32/50] LR=0.0001250 loss=0.158 (Known=0.105 Reserve=0.267) ACC=96.863 F1=92.776 Rec=92.496 Prec=93.195
+Train Client3 [32/50] LR=0.0001250 loss=0.080 (Known=0.057 Reserve=0.113) ACC=98.106 F1=97.778 Rec=97.543 Prec=98.033
+Train Client4 [32/50] LR=0.0001250 loss=0.110 (Known=0.074 Reserve=0.180) ACC=98.095 F1=88.697 Rec=94.997 Prec=84.959
+Train Client5 [32/50] LR=0.0001250 loss=0.060 (Known=0.042 Reserve=0.090) ACC=98.750 F1=88.018 Rec=89.079 Prec=87.179
+Train Client6 [32/50] LR=0.0001250 loss=0.475 (Known=0.346 Reserve=0.645) ACC=89.444 F1=83.815 Rec=92.106 Prec=78.145
+Train Client7 [32/50] LR=0.0001250 loss=0.239 (Known=0.151 Reserve=0.441) ACC=95.985 F1=95.661 Rec=95.588 Prec=95.766
+
+Val    [32/50] LR=0.0001250 loss=0.105 ACC=95.943 F1=95.898 Rec=95.943 Prec=96.132
+Val-KV [32/50] CloseK->V=0.000% KVMargin=4.389581
+Stage1Diag [32/50] FeatDim=512 IntraVar=184.544429 InterDist=38.050621 Compact=4.849972 CenterNorm=28.970830
+Stage1Boundary [32/50] KnownTrue-Other mean=6.8374 std=2.9074 p10=3.3279 p50=7.4784 p90=9.9197 | BoundaryRate=20.000% count=350 thr=4.8871 hist=[1, 1, 38, 146, 164]
+
+ReserveDiag [32/50] ValACC=95.943 ValF1=95.898 Compact=4.849972 KVMargin=4.389581 CloseK->V=0.000%
+ReserveAnchors [32/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [32/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [32/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [33/50] LR=0.0001250 loss=0.121 (Known=0.090 Reserve=0.151) ACC=96.929 F1=77.486 Rec=77.731 Prec=77.255
+Train Client1 [33/50] LR=0.0001250 loss=0.050 (Known=0.037 Reserve=0.064) ACC=98.677 F1=94.417 Rec=94.027 Prec=94.824
+Train Client2 [33/50] LR=0.0001250 loss=0.129 (Known=0.089 Reserve=0.201) ACC=97.291 F1=94.141 Rec=93.302 Prec=95.205
+Train Client3 [33/50] LR=0.0001250 loss=0.148 (Known=0.111 Reserve=0.185) ACC=97.538 F1=97.031 Rec=96.903 Prec=97.178
+Train Client4 [33/50] LR=0.0001250 loss=0.076 (Known=0.052 Reserve=0.123) ACC=98.704 F1=94.241 Rec=96.163 Prec=92.789
+Train Client5 [33/50] LR=0.0001250 loss=0.063 (Known=0.045 Reserve=0.092) ACC=98.571 F1=88.033 Rec=89.152 Prec=87.139
+Train Client6 [33/50] LR=0.0001250 loss=0.637 (Known=0.467 Reserve=0.851) ACC=86.111 F1=80.392 Rec=83.242 Prec=78.500
+Train Client7 [33/50] LR=0.0001250 loss=0.275 (Known=0.174 Reserve=0.504) ACC=95.152 F1=94.620 Rec=94.398 Prec=94.877
+
+Val    [33/50] LR=0.0001250 loss=0.135 ACC=95.943 F1=95.910 Rec=95.943 Prec=96.268
+Val-KV [33/50] CloseK->V=0.000% KVMargin=4.317565
+Stage1Diag [33/50] FeatDim=512 IntraVar=397.673225 InterDist=46.729774 Compact=8.510061 CenterNorm=35.042820
+Stage1Boundary [33/50] KnownTrue-Other mean=6.7468 std=2.8971 p10=3.7814 p50=7.0015 p90=9.8806 | BoundaryRate=20.000% count=350 thr=5.2564 hist=[0, 3, 76, 79, 192]
+
+ReserveDiag [33/50] ValACC=95.943 ValF1=95.910 Compact=8.510061 KVMargin=4.317565 CloseK->V=0.000%
+ReserveAnchors [33/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [33/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [33/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [34/50] LR=0.0001250 loss=0.121 (Known=0.091 Reserve=0.151) ACC=96.444 F1=77.052 Rec=77.416 Prec=76.724
+Train Client1 [34/50] LR=0.0001250 loss=0.039 (Known=0.028 Reserve=0.055) ACC=99.060 F1=96.525 Rec=97.096 Prec=96.007
+Train Client2 [34/50] LR=0.0001250 loss=0.137 (Known=0.095 Reserve=0.207) ACC=97.386 F1=94.071 Rec=93.465 Prec=94.857
+Train Client3 [34/50] LR=0.0001250 loss=0.139 (Known=0.107 Reserve=0.161) ACC=96.402 F1=94.263 Rec=95.511 Prec=93.248
+Train Client4 [34/50] LR=0.0001250 loss=0.096 (Known=0.065 Reserve=0.157) ACC=98.247 F1=91.827 Rec=96.872 Prec=88.642
+Train Client5 [34/50] LR=0.0001250 loss=0.058 (Known=0.041 Reserve=0.081) ACC=98.393 F1=88.811 Rec=89.028 Prec=88.602
+Train Client6 [34/50] LR=0.0001250 loss=0.511 (Known=0.376 Reserve=0.676) ACC=88.889 F1=80.765 Rec=89.118 Prec=74.921
+Train Client7 [34/50] LR=0.0001250 loss=0.246 (Known=0.163 Reserve=0.418) ACC=95.833 F1=95.475 Rec=94.694 Prec=96.317
+
+Val    [34/50] LR=0.0001250 loss=0.109 ACC=96.114 F1=96.075 Rec=96.114 Prec=96.351
+Val-KV [34/50] CloseK->V=0.000% KVMargin=4.509313
+Stage1Diag [34/50] FeatDim=512 IntraVar=190.839197 InterDist=38.353645 Compact=4.975777 CenterNorm=28.914677
+Stage1Boundary [34/50] KnownTrue-Other mean=6.6302 std=2.8203 p10=3.4921 p50=7.0037 p90=9.7495 | BoundaryRate=20.000% count=350 thr=4.8843 hist=[0, 0, 64, 129, 157]
+
+ReserveDiag [34/50] ValACC=96.114 ValF1=96.075 Compact=4.975777 KVMargin=4.509313 CloseK->V=0.000%
+ReserveAnchors [34/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [34/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [34/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+>> New learning Rate: 6.25e-05
+Train Client0 [35/50] LR=0.0000625 loss=0.113 (Known=0.087 Reserve=0.133) ACC=97.360 F1=77.897 Rec=78.290 Prec=77.542
+Train Client1 [35/50] LR=0.0000625 loss=0.028 (Known=0.019 Reserve=0.045) ACC=99.338 F1=96.641 Rec=97.535 Prec=95.883
+Train Client2 [35/50] LR=0.0000625 loss=0.112 (Known=0.075 Reserve=0.184) ACC=97.814 F1=95.048 Rec=95.180 Prec=94.948
+Train Client3 [35/50] LR=0.0000625 loss=0.098 (Known=0.073 Reserve=0.125) ACC=98.295 F1=98.208 Rec=98.192 Prec=98.228
+Train Client4 [35/50] LR=0.0000625 loss=0.096 (Known=0.067 Reserve=0.148) ACC=98.476 F1=90.732 Rec=98.215 Prec=86.658
+Train Client5 [35/50] LR=0.0000625 loss=0.046 (Known=0.031 Reserve=0.072) ACC=99.286 F1=90.548 Rec=94.528 Prec=88.323
+Train Client6 [35/50] LR=0.0000625 loss=0.547 (Known=0.413 Reserve=0.671) ACC=90.556 F1=86.626 Rec=94.453 Prec=81.072
+Train Client7 [35/50] LR=0.0000625 loss=0.226 (Known=0.134 Reserve=0.460) ACC=96.364 F1=96.193 Rec=96.379 Prec=96.014
+
+Val    [35/50] LR=0.0000625 loss=0.099 ACC=96.400 F1=96.372 Rec=96.400 Prec=96.532
+Val-KV [35/50] CloseK->V=0.000% KVMargin=4.344721
+Stage1Diag [35/50] FeatDim=512 IntraVar=314.361784 InterDist=46.869667 Compact=6.707148 CenterNorm=34.432656
+Stage1Boundary [35/50] KnownTrue-Other mean=6.5024 std=2.5955 p10=3.4506 p50=7.1482 p90=8.9546 | BoundaryRate=20.000% count=350 thr=4.9130 hist=[0, 2, 49, 172, 127]
+
+ReserveDiag [35/50] ValACC=96.400 ValF1=96.372 Compact=6.707148 KVMargin=4.344721 CloseK->V=0.000%
+ReserveAnchors [35/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [35/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [35/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving best model by known validation F1 . . . . . . . .
+
+Saving model at epoch 35 . . . . . . . .
+
+Train Client0 [36/50] LR=0.0000625 loss=0.109 (Known=0.083 Reserve=0.131) ACC=97.575 F1=78.020 Rec=78.086 Prec=77.956
+Train Client1 [36/50] LR=0.0000625 loss=0.031 (Known=0.022 Reserve=0.045) ACC=99.199 F1=95.969 Rec=96.285 Prec=95.678
+Train Client2 [36/50] LR=0.0000625 loss=0.145 (Known=0.099 Reserve=0.232) ACC=97.196 F1=93.822 Rec=93.537 Prec=94.309
+Train Client3 [36/50] LR=0.0000625 loss=0.086 (Known=0.063 Reserve=0.114) ACC=98.485 F1=98.271 Rec=98.294 Prec=98.264
+Train Client4 [36/50] LR=0.0000625 loss=0.130 (Known=0.088 Reserve=0.210) ACC=97.790 F1=86.414 Rec=98.358 Prec=81.308
+Train Client5 [36/50] LR=0.0000625 loss=0.067 (Known=0.049 Reserve=0.092) ACC=98.482 F1=94.997 Rec=98.987 Prec=92.342
+Train Client6 [36/50] LR=0.0000625 loss=0.465 (Known=0.349 Reserve=0.582) ACC=90.556 F1=87.179 Rec=90.882 Prec=84.581
+Train Client7 [36/50] LR=0.0000625 loss=0.227 (Known=0.137 Reserve=0.451) ACC=96.061 F1=96.341 Rec=96.737 Prec=95.988
+
+Val    [36/50] LR=0.0000625 loss=0.106 ACC=96.400 F1=96.393 Rec=96.400 Prec=96.573
+Val-KV [36/50] CloseK->V=0.000% KVMargin=4.345489
+Stage1Diag [36/50] FeatDim=512 IntraVar=343.844059 InterDist=44.270729 Compact=7.766849 CenterNorm=33.238822
+Stage1Boundary [36/50] KnownTrue-Other mean=6.5772 std=2.7929 p10=3.3570 p50=7.0034 p90=9.6369 | BoundaryRate=20.000% count=350 thr=4.8727 hist=[0, 2, 87, 128, 133]
+
+ReserveDiag [36/50] ValACC=96.400 ValF1=96.393 Compact=7.766849 KVMargin=4.345489 CloseK->V=0.000%
+ReserveAnchors [36/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [36/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [36/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [37/50] LR=0.0000625 loss=0.112 (Known=0.085 Reserve=0.137) ACC=96.929 F1=77.566 Rec=77.840 Prec=77.322
+Train Client1 [37/50] LR=0.0000625 loss=0.037 (Known=0.026 Reserve=0.055) ACC=99.304 F1=96.860 Rec=97.086 Prec=96.641
+Train Client2 [37/50] LR=0.0000625 loss=0.131 (Known=0.086 Reserve=0.223) ACC=97.291 F1=94.020 Rec=94.606 Prec=93.467
+Train Client3 [37/50] LR=0.0000625 loss=0.114 (Known=0.086 Reserve=0.141) ACC=97.159 F1=96.797 Rec=96.826 Prec=96.792
+Train Client4 [37/50] LR=0.0000625 loss=0.058 (Known=0.035 Reserve=0.113) ACC=98.857 F1=92.973 Rec=98.585 Prec=89.267
+Train Client5 [37/50] LR=0.0000625 loss=0.044 (Known=0.030 Reserve=0.070) ACC=99.018 F1=91.429 Rec=94.381 Prec=89.478
+Train Client6 [37/50] LR=0.0000625 loss=0.492 (Known=0.361 Reserve=0.656) ACC=87.778 F1=81.315 Rec=86.943 Prec=77.160
+Train Client7 [37/50] LR=0.0000625 loss=0.234 (Known=0.138 Reserve=0.478) ACC=96.439 F1=96.422 Rec=96.406 Prec=96.449
+
+Val    [37/50] LR=0.0000625 loss=0.104 ACC=96.457 F1=96.446 Rec=96.457 Prec=96.634
+Val-KV [37/50] CloseK->V=0.000% KVMargin=4.327445
+Stage1Diag [37/50] FeatDim=512 IntraVar=304.823273 InterDist=44.801266 Compact=6.803899 CenterNorm=33.204450
+Stage1Boundary [37/50] KnownTrue-Other mean=6.5629 std=2.7795 p10=3.2577 p50=7.0861 p90=9.5449 | BoundaryRate=20.000% count=350 thr=4.7652 hist=[0, 0, 65, 137, 148]
+
+ReserveDiag [37/50] ValACC=96.457 ValF1=96.446 Compact=6.803899 KVMargin=4.327445 CloseK->V=0.000%
+ReserveAnchors [37/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [37/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [37/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [38/50] LR=0.0000625 loss=0.111 (Known=0.084 Reserve=0.135) ACC=96.713 F1=77.384 Rec=77.556 Prec=77.226
+Train Client1 [38/50] LR=0.0000625 loss=0.027 (Known=0.018 Reserve=0.044) ACC=99.547 F1=97.544 Rec=98.404 Prec=96.775
+Train Client2 [38/50] LR=0.0000625 loss=0.121 (Known=0.082 Reserve=0.191) ACC=97.338 F1=92.501 Rec=91.926 Prec=93.280
+Train Client3 [38/50] LR=0.0000625 loss=0.101 (Known=0.076 Reserve=0.124) ACC=97.727 F1=97.522 Rec=97.537 Prec=97.511
+Train Client4 [38/50] LR=0.0000625 loss=0.087 (Known=0.060 Reserve=0.135) ACC=98.552 F1=92.228 Rec=96.809 Prec=89.507
+Train Client5 [38/50] LR=0.0000625 loss=0.044 (Known=0.029 Reserve=0.071) ACC=99.196 F1=84.098 Rec=84.604 Prec=83.704
+Train Client6 [38/50] LR=0.0000625 loss=0.436 (Known=0.317 Reserve=0.596) ACC=91.111 F1=86.768 Rec=91.789 Prec=83.029
+Train Client7 [38/50] LR=0.0000625 loss=0.222 (Known=0.134 Reserve=0.439) ACC=96.894 F1=90.130 Rec=96.588 Prec=87.016
+
+Val    [38/50] LR=0.0000625 loss=0.110 ACC=96.457 F1=96.443 Rec=96.457 Prec=96.667
+Val-KV [38/50] CloseK->V=0.000% KVMargin=4.440917
+Stage1Diag [38/50] FeatDim=512 IntraVar=334.333311 InterDist=43.689125 Compact=7.652552 CenterNorm=32.696796
+Stage1Boundary [38/50] KnownTrue-Other mean=6.8728 std=2.7925 p10=3.6800 p50=7.4030 p90=9.8489 | BoundaryRate=20.000% count=350 thr=5.2519 hist=[1, 1, 71, 122, 155]
+
+ReserveDiag [38/50] ValACC=96.457 ValF1=96.443 Compact=7.652552 KVMargin=4.440917 CloseK->V=0.000%
+ReserveAnchors [38/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [38/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [38/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [39/50] LR=0.0000625 loss=0.106 (Known=0.080 Reserve=0.128) ACC=96.983 F1=96.774 Rec=97.285 Prec=96.316
+Train Client1 [39/50] LR=0.0000625 loss=0.033 (Known=0.023 Reserve=0.046) ACC=99.373 F1=96.318 Rec=97.068 Prec=95.656
+Train Client2 [39/50] LR=0.0000625 loss=0.131 (Known=0.090 Reserve=0.207) ACC=97.338 F1=93.936 Rec=93.830 Prec=94.131
+Train Client3 [39/50] LR=0.0000625 loss=0.099 (Known=0.075 Reserve=0.121) ACC=97.538 F1=97.022 Rec=96.843 Prec=97.224
+Train Client4 [39/50] LR=0.0000625 loss=0.105 (Known=0.071 Reserve=0.171) ACC=98.171 F1=90.149 Rec=97.325 Prec=86.331
+Train Client5 [39/50] LR=0.0000625 loss=0.050 (Known=0.035 Reserve=0.076) ACC=99.196 F1=91.555 Rec=94.533 Prec=89.578
+Train Client6 [39/50] LR=0.0000625 loss=0.420 (Known=0.308 Reserve=0.564) ACC=90.278 F1=85.154 Rec=90.037 Prec=81.365
+Train Client7 [39/50] LR=0.0000625 loss=0.216 (Known=0.137 Reserve=0.396) ACC=96.515 F1=96.018 Rec=96.771 Prec=95.371
+
+Val    [39/50] LR=0.0000625 loss=0.102 ACC=96.800 F1=96.798 Rec=96.800 Prec=96.934
+Val-KV [39/50] CloseK->V=0.000% KVMargin=4.450812
+Stage1Diag [39/50] FeatDim=512 IntraVar=303.834300 InterDist=42.934788 Compact=7.076646 CenterNorm=31.852264
+Stage1Boundary [39/50] KnownTrue-Other mean=6.7431 std=2.7644 p10=3.5152 p50=7.1729 p90=9.7354 | BoundaryRate=20.000% count=350 thr=5.0311 hist=[0, 1, 107, 125, 117]
+
+ReserveDiag [39/50] ValACC=96.800 ValF1=96.798 Compact=7.076646 KVMargin=4.450812 CloseK->V=0.000%
+ReserveAnchors [39/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [39/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [39/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving best model by known validation F1 . . . . . . . .
+
+Train Client0 [40/50] LR=0.0000625 loss=0.108 (Known=0.083 Reserve=0.126) ACC=97.360 F1=77.853 Rec=78.049 Prec=77.666
+Train Client1 [40/50] LR=0.0000625 loss=0.029 (Known=0.020 Reserve=0.046) ACC=99.373 F1=97.109 Rec=97.031 Prec=97.187
+Train Client2 [40/50] LR=0.0000625 loss=0.114 (Known=0.080 Reserve=0.171) ACC=97.909 F1=95.443 Rec=95.459 Prec=95.459
+Train Client3 [40/50] LR=0.0000625 loss=0.090 (Known=0.066 Reserve=0.116) ACC=98.485 F1=98.311 Rec=98.466 Prec=98.164
+Train Client4 [40/50] LR=0.0000625 loss=0.124 (Known=0.081 Reserve=0.214) ACC=97.790 F1=87.074 Rec=96.714 Prec=83.027
+Train Client5 [40/50] LR=0.0000625 loss=0.044 (Known=0.030 Reserve=0.065) ACC=99.286 F1=95.554 Rec=99.506 Prec=92.936
+Train Client6 [40/50] LR=0.0000625 loss=0.568 (Known=0.416 Reserve=0.758) ACC=88.611 F1=83.540 Rec=91.125 Prec=78.118
+Train Client7 [40/50] LR=0.0000625 loss=0.207 (Known=0.124 Reserve=0.412) ACC=96.742 F1=96.986 Rec=96.747 Prec=97.241
+
+Val    [40/50] LR=0.0000625 loss=0.108 ACC=96.514 F1=96.492 Rec=96.514 Prec=96.695
+Val-KV [40/50] CloseK->V=0.000% KVMargin=4.539612
+Stage1Diag [40/50] FeatDim=512 IntraVar=326.876874 InterDist=43.712334 Compact=7.477909 CenterNorm=32.411231
+Stage1Boundary [40/50] KnownTrue-Other mean=6.9381 std=2.8883 p10=3.7978 p50=7.2670 p90=10.1840 | BoundaryRate=20.000% count=350 thr=5.1236 hist=[0, 1, 75, 104, 170]
+
+ReserveDiag [40/50] ValACC=96.514 ValF1=96.492 Compact=7.477909 KVMargin=4.539612 CloseK->V=0.000%
+ReserveAnchors [40/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [40/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [40/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving model at epoch 40 . . . . . . . .
+
+Train Client0 [41/50] LR=0.0000625 loss=0.106 (Known=0.081 Reserve=0.127) ACC=97.360 F1=77.873 Rec=78.196 Prec=77.578
+Train Client1 [41/50] LR=0.0000625 loss=0.018 (Known=0.012 Reserve=0.028) ACC=99.617 F1=97.963 Rec=98.021 Prec=97.906
+Train Client2 [41/50] LR=0.0000625 loss=0.139 (Known=0.094 Reserve=0.226) ACC=97.576 F1=94.583 Rec=94.789 Prec=94.402
+Train Client3 [41/50] LR=0.0000625 loss=0.085 (Known=0.062 Reserve=0.112) ACC=98.106 F1=97.697 Rec=97.697 Prec=97.697
+Train Client4 [41/50] LR=0.0000625 loss=0.108 (Known=0.072 Reserve=0.181) ACC=98.095 F1=87.877 Rec=98.793 Prec=83.718
+Train Client5 [41/50] LR=0.0000625 loss=0.043 (Known=0.029 Reserve=0.069) ACC=98.839 F1=89.368 Rec=94.234 Prec=87.003
+Train Client6 [41/50] LR=0.0000625 loss=0.645 (Known=0.483 Reserve=0.807) ACC=86.667 F1=78.635 Rec=89.090 Prec=71.856
+Train Client7 [41/50] LR=0.0000625 loss=0.213 (Known=0.127 Reserve=0.430) ACC=96.742 F1=96.525 Rec=96.190 Prec=96.872
+
+Val    [41/50] LR=0.0000625 loss=0.118 ACC=96.400 F1=96.389 Rec=96.400 Prec=96.618
+Val-KV [41/50] CloseK->V=0.000% KVMargin=4.575425
+Stage1Diag [41/50] FeatDim=512 IntraVar=352.918683 InterDist=41.705444 Compact=8.462173 CenterNorm=31.422606
+Stage1Boundary [41/50] KnownTrue-Other mean=7.0289 std=3.0570 p10=3.5444 p50=7.1028 p90=10.5241 | BoundaryRate=20.000% count=350 thr=5.1443 hist=[0, 1, 112, 88, 149]
+
+ReserveDiag [41/50] ValACC=96.400 ValF1=96.389 Compact=8.462173 KVMargin=4.575425 CloseK->V=0.000%
+ReserveAnchors [41/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [41/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [41/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [42/50] LR=0.0000625 loss=0.091 (Known=0.069 Reserve=0.112) ACC=96.929 F1=77.482 Rec=77.640 Prec=77.332
+Train Client1 [42/50] LR=0.0000625 loss=0.030 (Known=0.022 Reserve=0.041) ACC=99.547 F1=98.047 Rec=99.376 Prec=96.918
+Train Client2 [42/50] LR=0.0000625 loss=0.118 (Known=0.078 Reserve=0.198) ACC=97.719 F1=95.474 Rec=95.117 Prec=95.929
+Train Client3 [42/50] LR=0.0000625 loss=0.104 (Known=0.079 Reserve=0.123) ACC=97.727 F1=97.534 Rec=97.534 Prec=97.534
+Train Client4 [42/50] LR=0.0000625 loss=0.163 (Known=0.114 Reserve=0.246) ACC=97.332 F1=84.986 Rec=95.607 Prec=81.075
+Train Client5 [42/50] LR=0.0000625 loss=0.042 (Known=0.029 Reserve=0.063) ACC=99.107 F1=88.408 Rec=89.521 Prec=87.519
+Train Client6 [42/50] LR=0.0000625 loss=0.609 (Known=0.446 Reserve=0.817) ACC=87.500 F1=81.444 Rec=88.333 Prec=76.453
+Train Client7 [42/50] LR=0.0000625 loss=0.215 (Known=0.133 Reserve=0.413) ACC=96.364 F1=96.245 Rec=96.164 Prec=96.358
+
+Val    [42/50] LR=0.0000625 loss=0.108 ACC=96.629 F1=96.612 Rec=96.629 Prec=96.783
+Val-KV [42/50] CloseK->V=0.000% KVMargin=4.542608
+Stage1Diag [42/50] FeatDim=512 IntraVar=390.722578 InterDist=47.908195 Compact=8.155652 CenterNorm=35.689136
+Stage1Boundary [42/50] KnownTrue-Other mean=7.0477 std=2.8509 p10=3.7765 p50=7.4844 p90=10.0765 | BoundaryRate=20.000% count=350 thr=5.3926 hist=[1, 1, 74, 117, 157]
+
+ReserveDiag [42/50] ValACC=96.629 ValF1=96.612 Compact=8.155652 KVMargin=4.542608 CloseK->V=0.000%
+ReserveAnchors [42/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [42/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [42/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [43/50] LR=0.0000625 loss=0.103 (Known=0.079 Reserve=0.121) ACC=97.252 F1=77.769 Rec=77.910 Prec=77.638
+Train Client1 [43/50] LR=0.0000625 loss=0.022 (Known=0.014 Reserve=0.038) ACC=99.513 F1=97.544 Rec=97.680 Prec=97.417
+Train Client2 [43/50] LR=0.0000625 loss=0.129 (Known=0.088 Reserve=0.205) ACC=97.148 F1=93.482 Rec=93.840 Prec=93.155
+Train Client3 [43/50] LR=0.0000625 loss=0.101 (Known=0.077 Reserve=0.122) ACC=97.917 F1=97.810 Rec=97.627 Prec=98.002
+Train Client4 [43/50] LR=0.0000625 loss=0.103 (Known=0.067 Reserve=0.180) ACC=98.095 F1=87.223 Rec=95.030 Prec=83.698
+Train Client5 [43/50] LR=0.0000625 loss=0.051 (Known=0.036 Reserve=0.074) ACC=98.482 F1=85.291 Rec=89.019 Prec=83.705
+Train Client6 [43/50] LR=0.0000625 loss=0.391 (Known=0.286 Reserve=0.526) ACC=90.833 F1=87.455 Rec=90.404 Prec=85.107
+Train Client7 [43/50] LR=0.0000625 loss=0.206 (Known=0.126 Reserve=0.400) ACC=97.273 F1=97.215 Rec=96.887 Prec=97.561
+
+Val    [43/50] LR=0.0000625 loss=0.102 ACC=96.629 F1=96.613 Rec=96.629 Prec=96.770
+Val-KV [43/50] CloseK->V=0.000% KVMargin=4.665754
+Stage1Diag [43/50] FeatDim=512 IntraVar=284.062225 InterDist=41.572014 Compact=6.833016 CenterNorm=30.733840
+Stage1Boundary [43/50] KnownTrue-Other mean=7.0901 std=2.8861 p10=3.8264 p50=7.6593 p90=10.2019 | BoundaryRate=20.000% count=350 thr=5.2533 hist=[0, 1, 68, 122, 159]
+
+ReserveDiag [43/50] ValACC=96.629 ValF1=96.613 Compact=6.833016 KVMargin=4.665754 CloseK->V=0.000%
+ReserveAnchors [43/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [43/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [43/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [44/50] LR=0.0000625 loss=0.104 (Known=0.079 Reserve=0.126) ACC=97.791 F1=97.696 Rec=98.081 Prec=97.333
+Train Client1 [44/50] LR=0.0000625 loss=0.023 (Known=0.016 Reserve=0.035) ACC=99.652 F1=98.541 Rec=99.471 Prec=97.706
+Train Client2 [44/50] LR=0.0000625 loss=0.123 (Known=0.083 Reserve=0.198) ACC=97.624 F1=95.174 Rec=95.338 Prec=95.037
+Train Client3 [44/50] LR=0.0000625 loss=0.090 (Known=0.066 Reserve=0.117) ACC=98.485 F1=98.192 Rec=98.128 Prec=98.266
+Train Client4 [44/50] LR=0.0000625 loss=0.103 (Known=0.070 Reserve=0.165) ACC=98.171 F1=88.234 Rec=96.869 Prec=85.177
+Train Client5 [44/50] LR=0.0000625 loss=0.047 (Known=0.033 Reserve=0.071) ACC=99.018 F1=87.464 Rec=89.429 Prec=86.167
+Train Client6 [44/50] LR=0.0000625 loss=0.485 (Known=0.357 Reserve=0.639) ACC=91.389 F1=88.046 Rec=92.418 Prec=84.722
+Train Client7 [44/50] LR=0.0000625 loss=0.189 (Known=0.113 Reserve=0.376) ACC=96.288 F1=95.614 Rec=95.376 Prec=95.898
+
+Val    [44/50] LR=0.0000625 loss=0.100 ACC=96.800 F1=96.795 Rec=96.800 Prec=96.941
+Val-KV [44/50] CloseK->V=0.000% KVMargin=4.543233
+Stage1Diag [44/50] FeatDim=512 IntraVar=453.476507 InterDist=51.308086 Compact=8.838305 CenterNorm=37.572796
+Stage1Boundary [44/50] KnownTrue-Other mean=6.9432 std=2.7541 p10=3.6614 p50=7.5632 p90=9.7637 | BoundaryRate=20.000% count=350 thr=5.3235 hist=[0, 2, 71, 142, 135]
+
+ReserveDiag [44/50] ValACC=96.800 ValF1=96.795 Compact=8.838305 KVMargin=4.543233 CloseK->V=0.000%
+ReserveAnchors [44/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [44/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [44/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [45/50] LR=0.0000625 loss=0.085 (Known=0.063 Reserve=0.106) ACC=97.845 F1=78.236 Rec=78.335 Prec=78.140
+Train Client1 [45/50] LR=0.0000625 loss=0.027 (Known=0.019 Reserve=0.038) ACC=99.338 F1=96.872 Rec=96.968 Prec=96.786
+Train Client2 [45/50] LR=0.0000625 loss=0.103 (Known=0.070 Reserve=0.162) ACC=97.956 F1=95.742 Rec=95.723 Prec=95.779
+Train Client3 [45/50] LR=0.0000625 loss=0.090 (Known=0.067 Reserve=0.115) ACC=97.917 F1=97.759 Rec=97.771 Prec=97.751
+Train Client4 [45/50] LR=0.0000625 loss=0.131 (Known=0.082 Reserve=0.247) ACC=97.790 F1=86.280 Rec=98.032 Prec=81.719
+Train Client5 [45/50] LR=0.0000625 loss=0.049 (Known=0.035 Reserve=0.072) ACC=99.286 F1=90.561 Rec=94.579 Prec=88.295
+Train Client6 [45/50] LR=0.0000625 loss=0.522 (Known=0.386 Reserve=0.680) ACC=89.722 F1=82.838 Rec=90.115 Prec=77.655
+Train Client7 [45/50] LR=0.0000625 loss=0.210 (Known=0.129 Reserve=0.403) ACC=96.667 F1=97.051 Rec=96.425 Prec=97.713
+
+Val    [45/50] LR=0.0000625 loss=0.112 ACC=96.743 F1=96.730 Rec=96.743 Prec=96.904
+Val-KV [45/50] CloseK->V=0.000% KVMargin=4.671152
+Stage1Diag [45/50] FeatDim=512 IntraVar=286.492147 InterDist=43.606121 Compact=6.569998 CenterNorm=32.247732
+Stage1Boundary [45/50] KnownTrue-Other mean=7.2835 std=2.8778 p10=4.1036 p50=7.8637 p90=10.2404 | BoundaryRate=20.000% count=350 thr=5.7378 hist=[0, 1, 72, 116, 161]
+
+ReserveDiag [45/50] ValACC=96.743 ValF1=96.730 Compact=6.569998 KVMargin=4.671152 CloseK->V=0.000%
+ReserveAnchors [45/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [45/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [45/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving model at epoch 45 . . . . . . . .
+
+Train Client0 [46/50] LR=0.0000625 loss=0.109 (Known=0.084 Reserve=0.128) ACC=96.767 F1=77.429 Rec=77.821 Prec=77.077
+Train Client1 [46/50] LR=0.0000625 loss=0.027 (Known=0.020 Reserve=0.037) ACC=99.443 F1=96.914 Rec=97.689 Prec=96.228
+Train Client2 [46/50] LR=0.0000625 loss=0.102 (Known=0.067 Reserve=0.173) ACC=97.909 F1=94.868 Rec=94.074 Prec=95.878
+Train Client3 [46/50] LR=0.0000625 loss=0.124 (Known=0.096 Reserve=0.141) ACC=97.348 F1=97.189 Rec=96.779 Prec=97.631
+Train Client4 [46/50] LR=0.0000625 loss=0.108 (Known=0.071 Reserve=0.184) ACC=97.866 F1=87.208 Rec=95.418 Prec=84.164
+Train Client5 [46/50] LR=0.0000625 loss=0.035 (Known=0.023 Reserve=0.056) ACC=99.375 F1=92.996 Rec=99.527 Prec=89.799
+Train Client6 [46/50] LR=0.0000625 loss=0.512 (Known=0.375 Reserve=0.686) ACC=90.556 F1=87.821 Rec=93.693 Prec=83.820
+Train Client7 [46/50] LR=0.0000625 loss=0.240 (Known=0.158 Reserve=0.413) ACC=95.909 F1=95.916 Rec=95.420 Prec=96.449
+
+Val    [46/50] LR=0.0000625 loss=0.089 ACC=96.971 F1=96.947 Rec=96.971 Prec=97.087
+Val-KV [46/50] CloseK->V=0.000% KVMargin=4.765271
+Stage1Diag [46/50] FeatDim=512 IntraVar=297.335692 InterDist=42.979832 Compact=6.918028 CenterNorm=32.041698
+Stage1Boundary [46/50] KnownTrue-Other mean=7.1531 std=3.0487 p10=3.1372 p50=7.8183 p90=10.5270 | BoundaryRate=20.000% count=350 thr=4.9151 hist=[0, 1, 37, 157, 155]
+
+ReserveDiag [46/50] ValACC=96.971 ValF1=96.947 Compact=6.918028 KVMargin=4.765271 CloseK->V=0.000%
+ReserveAnchors [46/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [46/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [46/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Saving best model by known validation F1 . . . . . . . .
+
+>> New learning Rate: 3.125e-05
+Train Client0 [47/50] LR=0.0000313 loss=0.108 (Known=0.082 Reserve=0.127) ACC=97.360 F1=77.937 Rec=78.196 Prec=77.702
+Train Client1 [47/50] LR=0.0000313 loss=0.022 (Known=0.015 Reserve=0.037) ACC=99.547 F1=97.696 Rec=98.288 Prec=97.159
+Train Client2 [47/50] LR=0.0000313 loss=0.126 (Known=0.085 Reserve=0.207) ACC=97.338 F1=93.836 Rec=93.940 Prec=93.894
+Train Client3 [47/50] LR=0.0000313 loss=0.091 (Known=0.068 Reserve=0.112) ACC=97.727 F1=95.992 Rec=97.480 Prec=94.725
+Train Client4 [47/50] LR=0.0000313 loss=0.095 (Known=0.062 Reserve=0.162) ACC=98.171 F1=88.097 Rec=97.885 Prec=83.606
+Train Client5 [47/50] LR=0.0000313 loss=0.036 (Known=0.024 Reserve=0.059) ACC=99.286 F1=94.074 Rec=99.547 Prec=90.942
+Train Client6 [47/50] LR=0.0000313 loss=0.611 (Known=0.467 Reserve=0.718) ACC=90.000 F1=83.406 Rec=93.762 Prec=76.667
+Train Client7 [47/50] LR=0.0000313 loss=0.207 (Known=0.119 Reserve=0.439) ACC=96.818 F1=96.343 Rec=97.059 Prec=95.700
+
+Val    [47/50] LR=0.0000313 loss=0.096 ACC=96.857 F1=96.845 Rec=96.857 Prec=96.943
+Val-KV [47/50] CloseK->V=0.000% KVMargin=4.525031
+Stage1Diag [47/50] FeatDim=512 IntraVar=374.907607 InterDist=49.417229 Compact=7.586577 CenterNorm=36.176507
+Stage1Boundary [47/50] KnownTrue-Other mean=7.0454 std=2.7813 p10=3.6383 p50=7.5287 p90=10.0489 | BoundaryRate=20.000% count=350 thr=5.5209 hist=[1, 1, 82, 129, 137]
+
+ReserveDiag [47/50] ValACC=96.857 ValF1=96.845 Compact=7.586577 KVMargin=4.525031 CloseK->V=0.000%
+ReserveAnchors [47/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [47/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [47/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [48/50] LR=0.0000313 loss=0.110 (Known=0.084 Reserve=0.132) ACC=97.252 F1=77.720 Rec=77.976 Prec=77.484
+Train Client1 [48/50] LR=0.0000313 loss=0.018 (Known=0.011 Reserve=0.031) ACC=99.721 F1=98.615 Rec=99.050 Prec=98.205
+Train Client2 [48/50] LR=0.0000313 loss=0.122 (Known=0.084 Reserve=0.189) ACC=97.576 F1=94.570 Rec=94.539 Prec=94.673
+Train Client3 [48/50] LR=0.0000313 loss=0.057 (Known=0.039 Reserve=0.091) ACC=98.485 F1=98.372 Rec=98.466 Prec=98.280
+Train Client4 [48/50] LR=0.0000313 loss=0.129 (Known=0.087 Reserve=0.209) ACC=97.561 F1=85.824 Rec=96.819 Prec=81.889
+Train Client5 [48/50] LR=0.0000313 loss=0.045 (Known=0.031 Reserve=0.068) ACC=99.107 F1=90.244 Rec=99.382 Prec=87.046
+Train Client6 [48/50] LR=0.0000313 loss=0.544 (Known=0.400 Reserve=0.721) ACC=88.611 F1=84.776 Rec=93.061 Prec=79.087
+Train Client7 [48/50] LR=0.0000313 loss=0.211 (Known=0.131 Reserve=0.397) ACC=96.515 F1=96.202 Rec=96.236 Prec=96.201
+
+Val    [48/50] LR=0.0000313 loss=0.093 ACC=96.914 F1=96.903 Rec=96.914 Prec=96.992
+Val-KV [48/50] CloseK->V=0.000% KVMargin=4.563330
+Stage1Diag [48/50] FeatDim=512 IntraVar=451.783938 InterDist=48.489704 Compact=9.317111 CenterNorm=35.743019
+Stage1Boundary [48/50] KnownTrue-Other mean=7.1226 std=2.9213 p10=3.4433 p50=7.5453 p90=10.3998 | BoundaryRate=20.000% count=350 thr=5.2603 hist=[0, 0, 92, 123, 135]
+
+ReserveDiag [48/50] ValACC=96.914 ValF1=96.903 Compact=9.317111 KVMargin=4.563330 CloseK->V=0.000%
+ReserveAnchors [48/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [48/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [48/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+Train Client0 [49/50] LR=0.0000313 loss=0.100 (Known=0.076 Reserve=0.122) ACC=97.306 F1=77.785 Rec=78.031 Prec=77.554
+Train Client1 [49/50] LR=0.0000313 loss=0.019 (Known=0.013 Reserve=0.029) ACC=99.652 F1=98.066 Rec=98.430 Prec=97.729
+Train Client2 [49/50] LR=0.0000313 loss=0.104 (Known=0.069 Reserve=0.177) ACC=97.576 F1=94.350 Rec=94.788 Prec=93.926
+Train Client3 [49/50] LR=0.0000313 loss=0.092 (Known=0.067 Reserve=0.127) ACC=98.295 F1=97.907 Rec=97.985 Prec=97.830
+Train Client4 [49/50] LR=0.0000313 loss=0.072 (Known=0.047 Reserve=0.129) ACC=98.933 F1=92.642 Rec=98.282 Prec=89.866
+Train Client5 [49/50] LR=0.0000313 loss=0.053 (Known=0.037 Reserve=0.082) ACC=98.661 F1=89.864 Rec=98.971 Prec=86.701
+Train Client6 [49/50] LR=0.0000313 loss=0.470 (Known=0.353 Reserve=0.583) ACC=90.556 F1=83.528 Rec=88.805 Prec=79.646
+Train Client7 [49/50] LR=0.0000313 loss=0.209 (Known=0.123 Reserve=0.432) ACC=96.515 F1=90.328 Rec=97.376 Prec=86.654
+
+Val    [49/50] LR=0.0000313 loss=0.095 ACC=96.800 F1=96.789 Rec=96.800 Prec=96.873
+Val-KV [49/50] CloseK->V=0.000% KVMargin=4.557094
+Stage1Diag [49/50] FeatDim=512 IntraVar=427.966219 InterDist=45.237682 Compact=9.460392 CenterNorm=33.786355
+Stage1Boundary [49/50] KnownTrue-Other mean=7.2636 std=2.9449 p10=3.5636 p50=7.6597 p90=10.4807 | BoundaryRate=20.000% count=350 thr=5.3555 hist=[0, 1, 92, 127, 130]
+
+ReserveDiag [49/50] ValACC=96.800 ValF1=96.789 Compact=9.460392 KVMargin=4.557094 CloseK->V=0.000%
+ReserveAnchors [49/50] [{'pair': [3, 4], 'pair_names': ['K3', 'K4'], 'pair_score': 0.47333305563245504, 'sym_confusion': 0.07857142857142858, 'prototype_similarity': 0.8680946826934814}, {'pair': [2, 4], 'pair_names': ['K2', 'K4'], 'pair_score': 0.46176616498402184, 'sym_confusion': 0.032857142857142856, 'prototype_similarity': 0.8906751871109009}, {'pair': [2, 3], 'pair_names': ['K2', 'K3'], 'pair_score': 0.4280242088011333, 'sym_confusion': 0.008571428571428572, 'prototype_similarity': 0.847476989030838}]
+ReserveCosine [49/50] [[1.0, 0.9133538603782654, 0.936342716217041], [0.9133538603782654, 1.0, 0.9243972897529602], [0.936342716217041, 0.9243972897529602, 1.000000238418579]]
+ReserveDensity [49/50] {'15': [0, 0, 0], '20': [0, 0, 0], '25': [0, 0, 0]}
+------>Best performance (by known validation F1)--->>>>>>>
+
+Best epoch: 46/50
+Val    ACC=96.971 F1=96.947 Rec=96.971 Prec=97.087
+Test-Close ACC=97.143 F1=97.126 Rec=97.143 Prec=97.183
+Test-Virtual CloseK->V=0.000% Open->V=1.333% CloseHist=[0, 0, 0] OpenHist=[1, 1, 12]
+=====================================================================================================================================
+The ending time ：2026-06-24 04:41:32

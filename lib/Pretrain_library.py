@@ -260,7 +260,6 @@ def train(args, device, epoch, net, trainloader, optimizer, stage1_state=None):
     train_loss_ce = 0
     train_loss_vir = 0
     train_loss_vir_weighted = 0
-    train_loss_aux = 0
     pred_list = []
     label_list = []
     criterion = nn.CrossEntropyLoss()
@@ -270,7 +269,6 @@ def train(args, device, epoch, net, trainloader, optimizer, stage1_state=None):
         optimizer.zero_grad()
         outs = net(inputs)
         outputs = outs['outputs']
-        aux_outputs = outs['aux_out']
 
         known_logits = outputs[:, :args.known_class]
         virtual_logits = outputs[:, args.known_class:]
@@ -288,8 +286,6 @@ def train(args, device, epoch, net, trainloader, optimizer, stage1_state=None):
         vir_weight = _get_virtual_loss_weight(args, epoch)
         weighted_loss_vir = vir_weight * loss_vir
         loss = loss_ce + weighted_loss_vir
-        loss_aux = criterion(aux_outputs, targets)
-        loss += loss_aux
         loss.backward()
         if args.virtue_num > 0 and net.main_cls.weight.grad is not None:
             net.main_cls.weight.grad[args.known_class:] = 0
@@ -298,7 +294,6 @@ def train(args, device, epoch, net, trainloader, optimizer, stage1_state=None):
         train_loss_ce += loss_ce.item()
         train_loss_vir += loss_vir.item()
         train_loss_vir_weighted += weighted_loss_vir.item()
-        train_loss_aux += loss_aux.item()
         _, predicted = outputs[:, :args.known_class].max(1)
 
         pred_list.extend(predicted.cpu().numpy().tolist())
@@ -311,7 +306,6 @@ def train(args, device, epoch, net, trainloader, optimizer, stage1_state=None):
     loss_ce_avg = train_loss_ce/(batch_idx+1)
     loss_vir_avg = train_loss_vir/(batch_idx+1)
     loss_vir_weighted_avg = train_loss_vir_weighted/(batch_idx+1)
-    loss_aux_avg = train_loss_aux/(batch_idx+1)
     mean_acc = 100*metrics.accuracy_score(label_list, pred_list)
     precision = 100*metrics.precision_score(label_list, pred_list, average='macro', zero_division=0)
     recall_macro = 100*metrics.recall_score(y_true=label_list, y_pred=pred_list, average='macro', zero_division=0)
@@ -321,7 +315,6 @@ def train(args, device, epoch, net, trainloader, optimizer, stage1_state=None):
               'loss_ce': loss_ce_avg,
               'loss_vir': loss_vir_avg,
               'loss_vir_weighted': loss_vir_weighted_avg,
-              'loss_aux': loss_aux_avg,
               'vir_weight': vir_weight,
               'acc':mean_acc,
               'f1': f1_macro,
@@ -427,9 +420,7 @@ def val(args, device, epoch, net, valloader, stage1_state=None):
             inputs, targets = inputs.to(device), targets.long().to(device)
             outs = net(inputs)
             outputs = outs['outputs']
-            aux_outputs = outs['aux_out']
             loss = criterion(outputs, targets)
-            loss += criterion(aux_outputs, targets)
             val_loss += loss.item()
             _, predicted = outputs[:, :args.known_class].max(1)
             pred_list.extend(predicted.cpu().numpy().tolist())
@@ -510,9 +501,7 @@ def test(args, device, epoch, net, closerloader, openloader, threshold=0, stage1
             inputs, targets = inputs.to(device), targets.long().to(device)
             outs = net(inputs)
             outputs = outs['outputs']
-            aux_outputs = outs['aux_out']
             loss = criterion(outputs, targets)
-            loss += criterion(aux_outputs, targets)
             test_loss += loss.item()
             _, predicted = outputs[:, :args.known_class].max(1)
             pred_list_temp.extend(predicted.cpu().numpy().tolist())

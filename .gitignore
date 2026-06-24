@@ -7,3 +7,5 @@ datasets/MedMNIST/bloodmnist.npz
 pre_model
 datasets
 datasets_smoke/*
+*.pth
+results_stage1_grid/*

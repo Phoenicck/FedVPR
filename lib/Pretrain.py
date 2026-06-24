@@ -375,11 +375,10 @@ def run(args):
                 train_loss_ce = train_result.get('loss_ce', 0.0)
                 train_loss_vir = train_result.get('loss_vir', 0.0)
                 train_loss_vir_weighted = train_result.get('loss_vir_weighted', 0.0)
-                train_loss_aux = train_result.get('loss_aux', 0.0)
                 train_vir_weight = train_result.get('vir_weight', 0.0)
                 print(
                     f"Train {client_name} [{epoch}/{args.epoches}] LR={args.lr:.7f} loss={train_loss:.3f} "
-                    f"(CE={train_loss_ce:.3f} VIR={train_loss_vir:.3f} wVIR={train_loss_vir_weighted:.3f} AUX={train_loss_aux:.3f} w={train_vir_weight:.3f}) "
+                    f"(CE={train_loss_ce:.3f} VIR={train_loss_vir:.3f} wVIR={train_loss_vir_weighted:.3f} w={train_vir_weight:.3f}) "
                     f"ACC={train_acc:.3f} F1={train_f1:.3f} Rec={train_recall:.3f} Prec={train_precision:.3f}"
                 )
         server_model, models = communication_Pretrain(args, server_model, models, client_weights)
