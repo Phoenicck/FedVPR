@@ -19,13 +19,16 @@ def run(args):
     print('==> Preparing data..')
     param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'protocol_mode': args.protocol_mode}          
     if args.dataset=='Hyperkvasir':
-        from data.fed_hyper_kvasir_relabel import get_dataloaders
+        from data.fed_hyperkvasir_relabel import get_dataloaders
     elif args.dataset=='RetinalOCT':
         param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'protocol_mode': args.protocol_mode}
         from data.fed_retinal_oct_relabel import get_dataloaders
     elif args.dataset=='ISIC':
         param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'protocol_mode': args.protocol_mode}
         from data.fed_isic_relabel import get_dataloaders
+    elif args.dataset=='HAM10000':
+        param = {'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'protocol_mode': args.protocol_mode}
+        from data.fed_ham10000_relabel import get_dataloaders
     elif args.dataset=='Bloodmnist':
         param = {'dataset': args.dataset, 'Known_class': args.known_class, 'unKnown_class': args.unknown_class, 'Rotation': args.rotation, 'Resize': args.resize, 'CropSize':args.cropsize, 'Batchsize': args.batchsize, 'dirichlet': args.dirichlet, 'protocol_mode': args.protocol_mode}        
         from data.fed_MedMINIST_relabel import get_dataloaders

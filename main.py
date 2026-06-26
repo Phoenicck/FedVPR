@@ -21,7 +21,7 @@ warnings.filterwarnings('ignore')
 def resolve_foss_mode(args):
     if args.foss_mode != 'auto':
         return args.foss_mode
-    if args.dataset in {'ISIC', 'RetinalOCT', 'Hyperkvasir'}:
+    if args.dataset in {'ISIC', 'RetinalOCT', 'Hyperkvasir', 'HAM10000'}:
         return 'diag'
     return 'fullcov'
 

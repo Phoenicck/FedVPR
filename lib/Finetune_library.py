@@ -13,7 +13,7 @@ import gc
 
 
 def feature_shape(args):
-    if args.dataset in {'Hyperkvasir', 'ISIC', 'RetinalOCT'}:
+    if args.dataset in {'Hyperkvasir', 'ISIC', 'RetinalOCT', 'HAM10000'}:
         return (256, 8, 8)
     if args.dataset == 'Bloodmnist':
         return (256, 2, 2)
@@ -61,6 +61,14 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
             p_lower = 0
             p_upper = 1.
         if args.unknown_class == 9:
+            p_lower = 0
+            p_upper = 1.
+
+    if args.dataset == 'HAM10000':
+        if args.unknown_class == 2:
+            p_lower = 0
+            p_upper = 1.
+        if args.unknown_class == 3:
             p_lower = 0
             p_upper = 1.
 
@@ -131,7 +139,7 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
             is_boundary_lower = torch.gt(aux_preds_peers / (net_peers_sample_number + 1), p_lower)
             is_boundary = is_boundary_lower & is_boundary_upper
 
-            if (is_boundary.sum() > 0 and (args.dataset == 'Hyperkvasir' or args.dataset == 'RetinalOCT' or args.dataset == 'ISIC')) or (is_boundary.sum() > 1 and (args.dataset == 'Bloodmnist' or args.dataset == 'OrganMNIST3D')):
+            if (is_boundary.sum() > 0 and (args.dataset == 'Hyperkvasir' or args.dataset == 'RetinalOCT' or args.dataset == 'ISIC' or args.dataset == 'HAM10000')) or (is_boundary.sum() > 1 and (args.dataset == 'Bloodmnist' or args.dataset == 'OrganMNIST3D')):
                 discrete_feats = discrete_feats[is_boundary]
                 discrete_targets = targets[is_boundary]
                 inputs_unknown, targets_unknown = attack.i_DUS(net, discrete_feats, discrete_targets, net_peers_sample)
@@ -149,7 +157,7 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
                     if epoch in args.start_epoch:
                         targets_unknown_numpy = targets_unknown.cpu().data.numpy()
                         for index in range(len(targets_unknown)):
-                            if ((args.dataset == 'Hyperkvasir' or args.dataset == 'RetinalOCT' or args.dataset == 'ISIC') and PDs[index] > 0) or ((args.dataset == 'Bloodmnist' or args.dataset == 'OrganMNIST3D') and PDs[index] > -1):
+                            if ((args.dataset == 'Hyperkvasir' or args.dataset == 'RetinalOCT' or args.dataset == 'ISIC' or args.dataset == 'HAM10000') and PDs[index] > 0) or ((args.dataset == 'Bloodmnist' or args.dataset == 'OrganMNIST3D') and PDs[index] > -1):
                                 dict_key = targets_unknown_numpy[index]
                                 unknown_sample = inputs_unknown[index].clone().detach().view(1, -1)
                                 if unknown_dict[dict_key] is None:
