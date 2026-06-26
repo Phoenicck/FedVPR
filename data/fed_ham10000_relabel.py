@@ -29,9 +29,9 @@ HAM10000_PROTOCOLS = {
         'unknown': ['vasc', 'df'],
     },
     'hard': {
-        # Hard: melanoma (most important clinically) becomes unknown
-        'known': ['nv', 'bkl', 'bcc', 'akiec', 'vasc'],
-        'unknown': ['mel', 'df'],
+        # Hard: 3 most common classes as known, 4 rarer clinically significant classes as unknown
+        'known': ['nv', 'mel', 'bkl'],
+        'unknown': ['bcc', 'akiec', 'vasc', 'df'],
     },
 }
 

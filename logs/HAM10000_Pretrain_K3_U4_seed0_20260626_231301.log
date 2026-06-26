@@ -1,0 +1,32 @@
+Logging to: ./logs/HAM10000_Pretrain_K3_U4_seed0_20260626_231301.log
+==> Preparing data..
+Protocol mode: hard
+Fixed known classes: ['nv', 'mel', 'bkl']
+Fixed unknown classes: ['bcc', 'akiec', 'vasc', 'df']
+Known class list: [0 1 2] Unknown class list [3 4 5 6]
+Loaded 10015 images from 7470 lesions
+Class distribution: [(0, 6705), (1, 1113), (2, 1099), (3, 514), (4, 327), (5, 142), (6, 115)]
+Train: 6987, Val: 989, Test: 2039
+Train class distribution: [(0, 4680), (1, 780), (2, 759), (3, 356), (4, 230), (5, 103), (6, 79)]
+{0: 0, 1: 1, 2: 2} {3: 3, 4: 4, 5: 5, 6: 6}
+Known origin: [0 1 2] , new: [0 1 2]
+Unknown origin: [3 4 5 6] , new: [3 4 5 6]
+Known/Unknown in Train: 6219/768
+Known/Unknown in Val:   882/107
+Known/Unknown in Test:  1816/223
+Client0 sample num: 735
+Client1 sample num: 1417
+Client2 sample num: 850
+Client3 sample num: 420
+Client4 sample num: 1920
+Client5 sample num: 802
+Client6 sample num: 28
+Client7 sample num: 47
+
+>>> Setting up
+==> Using device: cuda:0
+==> Building [Resnet18] model..
+154
+120
+Train Client0 [0/200] LR=0.0005000 loss=0.907 ACC=83.611 F1=44.273 Rec=43.793 Prec=44.840
+Train Client1 [0/200] LR=0.0005000 loss=1.363 ACC=71.520 F1=51.622 Rec=51.365 Prec=57.000

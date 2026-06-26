@@ -71,6 +71,9 @@ def train(args, device, epoch, net, trainloader, optimizer, net_peers=None, atta
         if args.unknown_class == 3:
             p_lower = 0
             p_upper = 1.
+        if args.unknown_class == 4:
+            p_lower = 0
+            p_upper = 1.
 
     if args.dataset == 'RetinalOCT':
         if args.unknown_class == 3:
