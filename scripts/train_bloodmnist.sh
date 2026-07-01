@@ -6,22 +6,23 @@ echo "====== FedOSS BloodMNIST Training ======"
 echo ""
 
 # Pretrain (seed 0, known=5, unknown=3)
-# python main.py \
-#     --data_root='./datasets/MedMNIST/bloodmnist.npz' \
-#     --lr=5e-4 \
-#     --backbone='Resnet18' \
-#     --dataset='Bloodmnist' \
-#     --known_class=5 \
-#     --unknown_class=3 \
-#     --seed=1 \
-#     --batchsize=8 \
-#     --epoches=50 \
-#     --client_num=8 \
-#     --worker_steps=1 \
-#     --mode='Pretrain' \
-#     --dirichlet=0.5 \
-#     --save_interval=5 \
-#     --log_dir='./logs'
+python main.py \
+    --data_root='./datasets/MedMNIST/bloodmnist.npz' \
+    --lr=5e-4 \
+    --backbone='Resnet18' \
+    --dataset='Bloodmnist' \
+    --known_class=5 \
+    --unknown_class=3 \
+    --seed=0 \
+    --batchsize=8 \
+    --epoches=50 \
+    --client_num=8 \
+    --worker_steps=1 \
+    --mode='Pretrain' \
+    --dirichlet=0.5 \
+    --save_interval=5 \
+    --log_dir='./logs' \
+    --device_id=0
 
 # Finetune
 python main.py \
@@ -31,7 +32,7 @@ python main.py \
     --dataset='Bloodmnist' \
     --known_class=5 \
     --unknown_class=3 \
-    --seed=1 \
+    --seed=0 \
     --batchsize=8 \
     --epoches=30 \
     --client_num=8 \
@@ -44,7 +45,7 @@ python main.py \
     --start_epoch='[5,10,15,20,25]' \
     --sample_from=8 \
     --log_dir='./logs' \
-    --device_id=1
+    --device_id=0
 
 echo ""
 echo "====== Training Complete ======"
