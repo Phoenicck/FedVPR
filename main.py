@@ -112,7 +112,7 @@ if __name__=="__main__":
     set_seed(args.seed)
 
     save_path1 = osp.join('results','M{}-D{}-M{}-B{}'.format(args.mode, args.dataset,args.model_type, args.backbone))
-    save_path2 = 'LR{}-K{}-U{}-Seed{}'.format(str(args.lr),str(args.known_class),str(args.unknown_class),str(args.seed))
+    save_path2 = 'LR{}-K{}-U{}-Diri{}-Seed{}'.format(str(args.lr),str(args.known_class),str(args.unknown_class),str(args.dirichlet),str(args.seed))
     args.save_path = osp.join(save_path1, save_path2)
     ensure_path(save_path1, remove=False)
     ensure_path(args.save_path, remove=False)

@@ -54,7 +54,7 @@ def setup(args, trainloaders):
         if args.backbone== 'Resnet18':
             from models.ResNet_FedOSR_Finetune import resnet18     
             base1 = 'MPretrain-D'+args.dataset+'-Msoftmax-BResnet18'
-            base2 = 'LR'+str(0.0005)+'-K'+str(args.known_class)+'-U'+str(args.unknown_class)+'-Seed'+str(args.seed)
+            base2 = 'LR'+str(0.0005)+'-K'+str(args.known_class)+'-U'+str(args.unknown_class)+'-Diri'+str(args.dirichlet)+'-Seed'+str(args.seed)
             server = 'best_ckpt_Pretrain_known_class_'+str(args.known_class)+'_unknown_class_'+str(args.unknown_class)+'_seed_'+str(args.seed)+'.pth'
             pretrained = os.path.join(base0, base1, base2, server)
             server_model=resnet18(pretrained=pretrained, num_classes=args.known_class) 
@@ -72,7 +72,7 @@ def setup(args, trainloaders):
         if args.backbone== 'Resnet18_3D':
             from models.ResNet_FedOSR_Finetune import resnet18
             base1 = 'MPretrain-D'+args.dataset+'-Msoftmax-BResnet18_3D'
-            base2 = 'LR'+str(0.0005)+'-K'+str(args.known_class)+'-U'+str(args.unknown_class)+'-Seed'+str(args.seed)
+            base2 = 'LR'+str(0.0005)+'-K'+str(args.known_class)+'-U'+str(args.unknown_class)+'-Diri'+str(args.dirichlet)+'-Seed'+str(args.seed)
             server = 'best_ckpt_Pretrain_known_class_'+str(args.known_class)+'_unknown_class_'+str(args.unknown_class)+'_seed_'+str(args.seed)+'.pth'
             pretrained = os.path.join(base0, base1, base2, server)
             server_model=resnet18(pretrained=False, num_classes=args.known_class)
