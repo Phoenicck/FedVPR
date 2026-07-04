@@ -1,0 +1,46 @@
+Logging to: ./logs/RetinalOCT_Finetune_K5_U3_seed0_20260703_171152.log
+==> Preparing data..
+Protocol mode: hard
+Fixed known classes: ['CSR', 'DR', 'DRUSEN', 'MH', 'NORMAL']
+Fixed unknown classes: ['AMD', 'CNV', 'DME']
+Known class list: [2 4 5 6 7] Unknown class list [0 1 3]
+Total images — Train: 18400, Val: 2800, Test: 2800
+{2: 0, 4: 1, 5: 2, 6: 3, 7: 4} {0: 5, 1: 6, 3: 7}
+Known origin: [2 4 5 6 7] , new: [0 1 2 3 4]
+Unknown origin: [0 1 3] , new: [5 6 7]
+Known/Unknown in Train: 11500/6900
+Known/Unknown in Val:   1750/1050
+Known/Unknown in Test:  1750/1050
+Client0 sample num: 1861
+Client1 sample num: 2876
+Client2 sample num: 2109
+Client3 sample num: 533
+Client4 sample num: 1312
+Client5 sample num: 1125
+Client6 sample num: 362
+Client7 sample num: 1322
+
+>>> Setting up
+==> Using device: cuda:1
+==> Building [Resnet18] model..
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+Train Client0 [0/30] LR=0.0001000 loss=6.125 ACC=79.957 F1=56.821 Rec=56.132 Prec=58.551
+Train Client1 [0/30] LR=0.0001000 loss=4.544 ACC=82.834 F1=53.952 Rec=54.322 Prec=57.896
+Train Client2 [0/30] LR=0.0001000 loss=6.435 ACC=74.857 F1=40.794 Rec=41.915 Prec=40.595

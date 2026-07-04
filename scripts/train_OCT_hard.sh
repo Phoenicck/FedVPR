@@ -51,7 +51,7 @@ python main.py \
     --mode='Finetune' \
     --eps=0.1 \
     --num_steps=1 \
-    --unknown_weight=1. \
+    --unknown_weight=1.2 \
     --dirichlet=0.5 \
     --start_epoch='[5,10,15,20,25]' \
     --sample_from=8 \

@@ -1,0 +1,64 @@
+Logging to: ./logs/FedISIC2019_Finetune_K4_U4_seed0_20260703_105743.log
+==> Preparing data..
+Protocol mode: easy
+Fixed known classes: ['NV', 'BCC', 'BKL', 'MEL']
+Fixed unknown classes: ['VASC', 'DF', 'AK', 'SCC']
+Known class list: [1 2 4 0] Unknown class list: [6 5 3 7]
+train_test_split: /workspace/Phoenic/claude0527/data0623/FedISIC2019/preprocess/train_test_split
+Image dir: /workspace/Phoenic/claude0527/data0623/FedISIC2019/preprocess/ISIC_2019_Training_Input_preprocessed
+Centers: 6, train images per center: {0: 9930, 1: 3163, 2: 2691, 3: 1807, 4: 655, 5: 351}
+Test images (global): 4650
+Known/Unknown in Val:  1695/163
+Known/Unknown in Test: 4245/405
+Client0 (center 0) sample num: 7933
+Client1 (center 1) sample num: 2785
+Client2 (center 2) sample num: 2297
+Client3 (center 3) sample num: 1404
+Client4 (center 4) sample num: 590
+Client5 (center 5) sample num: 311
+
+>>> Setting up
+==> Using device: cuda:1
+==> Building [Resnet18] model..
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+Train Client0 [0/5] LR=0.0001000 loss=1.444 ACC=72.200 F1=67.321 Rec=66.409 Prec=69.625
+Train Client1 [0/5] LR=0.0001000 loss=0.180 ACC=96.983 F1=40.103 Rec=38.431 Prec=42.357
+Train Client2 [0/5] LR=0.0001000 loss=1.385 ACC=72.343 F1=65.178 Rec=63.536 Prec=68.312
+Train Client3 [0/5] LR=0.0001000 loss=1.708 ACC=64.857 F1=60.745 Rec=60.903 Prec=62.141
+Train Client4 [0/5] LR=0.0001000 loss=1.439 ACC=71.062 F1=50.420 Rec=49.102 Prec=52.630
+Train Client5 [0/5] LR=0.0001000 loss=0.899 ACC=83.553 F1=46.491 Rec=47.551 Prec=48.283
+
+Test-  OSR [0/5] LR=0.0001000 ACC=66.237 F1=47.126 Rec=48.185 Prec=52.539 UNK=0.000 OS*=60.231 HOS=0.000 AUROC=71.284 AUPR=16.399 OSCR=56.777
+Test-Close [0/5] LR=0.0001000 loss=2.069 ACC=72.556 F1=62.730 Rec=60.231 Prec=74.211
+
+Saving best model . . . . . . . .
+
+Train Client0 [1/5] LR=0.0001000 loss=1.392 ACC=73.562 F1=68.964 Rec=68.020 Prec=71.189
+Train Client1 [1/5] LR=0.0001000 loss=0.166 ACC=97.522 F1=42.212 Rec=40.219 Prec=44.939
+Train Client2 [1/5] LR=0.0001000 loss=1.332 ACC=73.171 F1=65.504 Rec=63.556 Prec=68.602
+Train Client3 [1/5] LR=0.0001000 loss=1.606 ACC=66.571 F1=62.485 Rec=62.284 Prec=64.048
+Train Client4 [1/5] LR=0.0001000 loss=1.464 ACC=69.349 F1=48.592 Rec=47.313 Prec=50.833
+Train Client5 [1/5] LR=0.0001000 loss=0.858 ACC=79.934 F1=30.899 Rec=30.066 Prec=34.375
+
+Test-  OSR [1/5] LR=0.0001000 ACC=68.538 F1=50.153 Rec=50.946 Prec=52.371 UNK=0.000 OS*=63.683 HOS=0.000 AUROC=69.898 AUPR=15.336 OSCR=57.647
+Test-Close [1/5] LR=0.0001000 loss=2.006 ACC=75.077 F1=66.803 Rec=63.683 Prec=74.721
+
+Saving best model . . . . . . . .
+
+Train Client0 [2/5] LR=0.0001000 loss=1.374 ACC=74.218 F1=69.439 Rec=68.536 Prec=71.462
+Train Client1 [2/5] LR=0.0001000 loss=0.157 ACC=97.522 F1=42.772 Rec=40.664 Prec=45.656
+Train Client2 [2/5] LR=0.0001000 loss=1.328 ACC=74.260 F1=66.920 Rec=64.974 Prec=70.327
+Train Client3 [2/5] LR=0.0001000 loss=1.625 ACC=67.071 F1=63.099 Rec=62.749 Prec=64.868

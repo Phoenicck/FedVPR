@@ -1,0 +1,24 @@
+Logging to: ./logs/FedISIC2019_Pretrain_K4_U4_seed0_20260703_104538.log
+==> Preparing data..
+Protocol mode: easy
+Fixed known classes: ['NV', 'BCC', 'BKL', 'MEL']
+Fixed unknown classes: ['VASC', 'DF', 'AK', 'SCC']
+Known class list: [1 2 4 0] Unknown class list: [6 5 3 7]
+train_test_split: /workspace/Phoenic/claude0527/data0623/FedISIC2019/preprocess/train_test_split
+Image dir: /workspace/Phoenic/claude0527/data0623/FedISIC2019/preprocess/ISIC_2019_Training_Input_preprocessed
+Centers: 6, train images per center: {0: 9930, 1: 3163, 2: 2691, 3: 1807, 4: 655, 5: 351}
+Test images (global): 4650
+Known/Unknown in Val:  1695/163
+Known/Unknown in Test: 4245/405
+Client0 (center 0) sample num: 7933
+Client1 (center 1) sample num: 2785
+Client2 (center 2) sample num: 2297
+Client3 (center 3) sample num: 1404
+Client4 (center 4) sample num: 590
+Client5 (center 5) sample num: 311
+
+>>> Setting up
+==> Using device: cuda:1
+==> Building [Resnet18] model..
+154
+120
