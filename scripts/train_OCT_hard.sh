@@ -20,9 +20,9 @@ python main.py \
     --lr=5e-4 \
     --backbone='Resnet18' \
     --dataset='RetinalOCT' \
-    --protocol_mode='hard' \
-    --known_class=5 \
-    --unknown_class=3 \
+    --protocol_mode='hard_k3' \
+    --known_class=3 \
+    --unknown_class=5 \
     --seed=0 \
     --batchsize=8 \
     --epoches=50 \
@@ -40,9 +40,9 @@ python main.py \
     --lr=1e-4 \
     --backbone='Resnet18' \
     --dataset='RetinalOCT' \
-    --protocol_mode='hard' \
-    --known_class=5 \
-    --unknown_class=3 \
+    --protocol_mode='hard_k3' \
+    --known_class=3 \
+    --unknown_class=5 \
     --seed=0 \
     --batchsize=8 \
     --epoches=30 \

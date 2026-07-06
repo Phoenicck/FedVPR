@@ -6,23 +6,23 @@
 
 set -e
 
-DEVICE_ID="${DEVICE_ID:-0}"
+DEVICE_ID="${DEVICE_ID:-1}"
 DATA_ROOT="${DATA_ROOT:-./datasets/RetinalOCT_Dataset}"
 LOG_DIR="${LOG_DIR:-./logs}"
 
-echo "====== FedOSS RetinalOCT Training (easy) ======"
+echo "====== FedOSS RetinalOCT Training (easy_k3) ======"
 echo "DEVICE_ID=${DEVICE_ID}"
 echo ""
 
-# Pretrain (seed 0, known=5, unknown=3)
+# Pretrain (seed 0, known=3, unknown=5)
 python main.py \
     --data_root="${DATA_ROOT}" \
     --lr=5e-4 \
     --backbone='Resnet18' \
     --dataset='RetinalOCT' \
-    --protocol_mode='easy' \
-    --known_class=5 \
-    --unknown_class=3 \
+    --protocol_mode='easy_k3' \
+    --known_class=3 \
+    --unknown_class=5 \
     --seed=0 \
     --batchsize=8 \
     --epoches=50 \
@@ -40,9 +40,9 @@ python main.py \
     --lr=1e-4 \
     --backbone='Resnet18' \
     --dataset='RetinalOCT' \
-    --protocol_mode='easy' \
-    --known_class=5 \
-    --unknown_class=3 \
+    --protocol_mode='easy_k3' \
+    --known_class=3 \
+    --unknown_class=5 \
     --seed=0 \
     --batchsize=8 \
     --epoches=30 \
@@ -59,4 +59,4 @@ python main.py \
     --device_id="${DEVICE_ID}"
 
 echo ""
-echo "====== Training Complete (easy) ======"
+echo "====== Training Complete (easy_k3) ======"

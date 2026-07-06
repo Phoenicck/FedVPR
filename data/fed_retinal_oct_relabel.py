@@ -18,6 +18,7 @@ OCT_CLASSES = ['AMD', 'CNV', 'CSR', 'DME', 'DR', 'DRUSEN', 'MH', 'NORMAL']
 TOTAL_CLASS = 8
 
 OCT_PROTOCOLS = {
+    # ---- K=5, U=3 ----
     'easy': {
         'known': ['CNV', 'DME', 'DR', 'DRUSEN', 'NORMAL'],
         'unknown': ['AMD', 'CSR', 'MH'],
@@ -25,6 +26,15 @@ OCT_PROTOCOLS = {
     'hard': {
         'known': ['CSR', 'DR', 'DRUSEN', 'MH', 'NORMAL'],
         'unknown': ['AMD', 'CNV', 'DME'],
+    },
+    # ---- K=3, U=5 ----
+    'easy_k3': {
+        'known': ['NORMAL', 'MH', 'DRUSEN'],
+        'unknown': ['AMD', 'CNV', 'CSR', 'DME', 'DR'],
+    },
+    'hard_k3': {
+        'known': ['AMD', 'DME', 'DR'],
+        'unknown': ['CNV', 'CSR', 'DRUSEN', 'MH', 'NORMAL'],
     },
 }
 
