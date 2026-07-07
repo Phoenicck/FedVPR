@@ -16,6 +16,7 @@ import copy
 import csv
 import random
 import platform
+from data.partition_utils import _balanced_iid_split
 from collections import Counter
 
 HAM10000_CLASSES = ['nv', 'mel', 'bkl', 'bcc', 'akiec', 'vasc', 'df']
@@ -51,6 +52,10 @@ def _build_image_folder_lookup(data_root):
 
 
 def dirichlet_split_noniid(train_labels, alpha, n_clients, state):
+    if alpha == 0:
+        print(f'[balanced IID] alpha=0 — using balanced IID split '
+              f'({len(train_labels)} samples → {n_clients} clients)')
+        return _balanced_iid_split(train_labels, n_clients, state)
     n_classes = train_labels.max() + 1
     np.random.set_state(state)
     label_distribution = np.random.dirichlet([alpha] * n_clients, n_classes)

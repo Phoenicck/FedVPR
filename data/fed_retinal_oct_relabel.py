@@ -12,6 +12,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 import copy
 import platform
+from data.partition_utils import _balanced_iid_split
 
 # 8 classes in fixed order
 OCT_CLASSES = ['AMD', 'CNV', 'CSR', 'DME', 'DR', 'DRUSEN', 'MH', 'NORMAL']
@@ -40,6 +41,10 @@ OCT_PROTOCOLS = {
 
 
 def dirichlet_split_noniid(train_labels, alpha, n_clients, state):
+    if alpha == 0:
+        print(f'[balanced IID] alpha=0 — using balanced IID split '
+              f'({len(train_labels)} samples → {n_clients} clients)')
+        return _balanced_iid_split(train_labels, n_clients, state)
     n_classes = train_labels.max() + 1
     np.random.set_state(state)
     label_distribution = np.random.dirichlet([alpha] * n_clients, n_classes)

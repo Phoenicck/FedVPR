@@ -29,7 +29,7 @@ python main.py \
     --client_num=8 \
     --worker_steps=1 \
     --mode='Pretrain' \
-    --dirichlet=0.5 \
+    --dirichlet=0 \
     --save_interval=5 \
     --log_dir="${LOG_DIR}" \
     --device_id="${DEVICE_ID}"
@@ -52,7 +52,7 @@ python main.py \
     --eps=0.1 \
     --num_steps=1 \
     --unknown_weight=1.2 \
-    --dirichlet=0.5 \
+    --dirichlet=0 \
     --start_epoch='[5,10,15,20,25]' \
     --sample_from=8 \
     --log_dir="${LOG_DIR}" \

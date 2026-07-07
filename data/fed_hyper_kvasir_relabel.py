@@ -14,6 +14,7 @@ from torchvision import transforms
 import copy
 from torch.utils import data
 import platform
+from data.partition_utils import _balanced_iid_split
 
 types_ = {'bbps': 0, 'polyps':1, 'cecum':2, 'dyed-lifted-polyps':3, 'pylorus':4,
           'dyed-resection-margins':5,'z-line':6, 'ulcerative-colitis':7,'retroflex-stomach':8,
@@ -24,6 +25,10 @@ def dirichlet_split_noniid(train_labels, alpha, n_clients,state):
     '''
     参数为alpha的Dirichlet分布将数据索引划分为n_clients个子集
     '''
+    if alpha == 0:
+        print(f'[balanced IID] alpha=0 — using balanced IID split '
+              f'({len(train_labels)} samples → {n_clients} clients)')
+        return _balanced_iid_split(train_labels, n_clients, state)
     n_classes = train_labels.max()+1
     np.random.set_state(state)
     label_distribution = np.random.dirichlet([alpha]*n_clients, n_classes)

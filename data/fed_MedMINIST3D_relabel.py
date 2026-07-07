@@ -14,12 +14,17 @@ from torchvision import transforms
 import copy
 from torch.utils import data
 import platform
+from data.partition_utils import _balanced_iid_split
 from collections import Counter
 
 def dirichlet_split_noniid(train_labels, alpha, n_clients,state):
     '''
     参数为alpha的Dirichlet分布将数据索引划分为n_clients个子集
     '''
+    if alpha == 0:
+        print(f'[balanced IID] alpha=0 — using balanced IID split '
+              f'({len(train_labels)} samples → {n_clients} clients)')
+        return _balanced_iid_split(train_labels, n_clients, state)
     n_classes = train_labels.max()+1
     np.random.set_state(state)
     label_distribution = np.random.dirichlet([alpha]*n_clients, n_classes)
