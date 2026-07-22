@@ -1,0 +1,41 @@
+Logging to: ./logs/RetinalOCT_Finetune_K3_U5_seed1_20260715_151830.log
+==> Preparing data..
+Protocol mode: random
+Known class list: [7 2 1] Unknown class list [6 0 4 3 5]
+Total images — Train: 18400, Val: 2800, Test: 2800
+{7: 0, 2: 1, 1: 2} {6: 3, 0: 4, 4: 5, 3: 6, 5: 7}
+Known origin: [7 2 1] , new: [0 1 2]
+Unknown origin: [6 0 4 3 5] , new: [3 4 5 6 7]
+Known/Unknown in Train: 6900/11500
+Known/Unknown in Val:   1050/1750
+Known/Unknown in Test:  1050/1750
+Client0 sample num: 1945
+Client1 sample num: 225
+Client2 sample num: 1070
+Client3 sample num: 216
+Client4 sample num: 1852
+Client5 sample num: 678
+Client6 sample num: 870
+Client7 sample num: 44
+
+>>> Setting up
+==> Using device: cuda:1
+==> Building [Resnet18] model..
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154

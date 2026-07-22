@@ -1,0 +1,85 @@
+Logging to: ./logs/RetinalOCT_Finetune_K3_U5_seed1_20260715_145118.log
+==> Preparing data..
+Protocol mode: random
+Known class list: [7 2 1] Unknown class list [6 0 4 3 5]
+Total images — Train: 18400, Val: 2800, Test: 2800
+{7: 0, 2: 1, 1: 2} {6: 3, 0: 4, 4: 5, 3: 6, 5: 7}
+Known origin: [7 2 1] , new: [0 1 2]
+Unknown origin: [6 0 4 3 5] , new: [3 4 5 6 7]
+Known/Unknown in Train: 6900/11500
+Known/Unknown in Val:   1050/1750
+Known/Unknown in Test:  1050/1750
+Client0 sample num: 1945
+Client1 sample num: 225
+Client2 sample num: 1070
+Client3 sample num: 216
+Client4 sample num: 1852
+Client5 sample num: 678
+Client6 sample num: 870
+Client7 sample num: 44
+
+>>> Setting up
+==> Using device: cuda:0
+==> Building [Resnet18] model..
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+154
+Train Client0 [0/30] LR=0.0001000 loss=19.543 ACC=94.136 F1=93.562 Rec=94.257 Prec=92.938
+Train Client1 [0/30] LR=0.0001000 loss=40.131 ACC=89.732 F1=57.130 Rec=62.963 Prec=54.321
+Train Client2 [0/30] LR=0.0001000 loss=28.621 ACC=97.932 F1=96.296 Rec=98.205 Prec=94.583
+Train Client3 [0/30] LR=0.0001000 loss=34.496 ACC=99.537 F1=66.540 Rec=66.414 Prec=66.667
+Train Client4 [0/30] LR=0.0001000 loss=22.264 ACC=99.567 F1=96.344 Rec=96.415 Prec=96.275
+Train Client5 [0/30] LR=0.0001000 loss=30.617 ACC=84.077 F1=36.374 Rec=61.473 Prec=36.455
+Train Client6 [0/30] LR=0.0001000 loss=29.116 ACC=93.981 F1=85.420 Rec=95.633 Prec=79.387
+Train Client7 [0/30] LR=0.0001000 loss=41.493 ACC=85.000 F1=79.487 Rec=93.103 Prec=77.778
+
+Test-  OSR [0/30] LR=0.0001000 ACC=37.321 F1=42.892 Rec=74.643 Prec=30.804 UNK=0.000 OS*=99.524 HOS=0.000 AUROC=63.664 AUPR=75.236 OSCR=63.606
+Test-Close [0/30] LR=0.0001000 loss=1.173 ACC=99.524 F1=99.524 Rec=99.524 Prec=99.531
+
+Saving best model . . . . . . . .
+
+Train Client0 [1/30] LR=0.0001000 loss=5.686 ACC=95.988 F1=96.365 Rec=96.251 Prec=96.485
+Train Client1 [1/30] LR=0.0001000 loss=15.552 ACC=92.857 F1=61.818 Rec=64.090 Prec=60.317
+Train Client2 [1/30] LR=0.0001000 loss=11.558 ACC=96.805 F1=94.948 Rec=95.969 Prec=94.225
+Train Client3 [1/30] LR=0.0001000 loss=16.818 ACC=97.222 F1=65.752 Rec=64.863 Prec=66.667
+Train Client4 [1/30] LR=0.0001000 loss=8.237 ACC=99.080 F1=92.888 Rec=95.998 Prec=90.405
+Train Client5 [1/30] LR=0.0001000 loss=11.773 ACC=85.268 F1=49.834 Rec=67.439 Prec=48.690
+Train Client6 [1/30] LR=0.0001000 loss=10.218 ACC=96.528 F1=94.366 Rec=94.395 Prec=94.414
+Train Client7 [1/30] LR=0.0001000 loss=17.012 ACC=90.000 F1=80.864 Rec=95.402 Prec=77.778
+
+Test-  OSR [1/30] LR=0.0001000 ACC=37.321 F1=43.110 Rec=74.643 Prec=31.094 UNK=0.000 OS*=99.524 HOS=0.000 AUROC=59.932 AUPR=72.449 OSCR=59.875
+Test-Close [1/30] LR=0.0001000 loss=1.217 ACC=99.524 F1=99.524 Rec=99.524 Prec=99.531
+
+Train Client0 [2/30] LR=0.0001000 loss=0.898 ACC=96.811 F1=96.792 Rec=96.762 Prec=96.822
+Train Client1 [2/30] LR=0.0001000 loss=3.603 ACC=95.982 F1=61.652 Rec=65.217 Prec=59.091
+Train Client2 [2/30] LR=0.0001000 loss=1.774 ACC=96.617 F1=94.569 Rec=95.446 Prec=94.025
+Train Client3 [2/30] LR=0.0001000 loss=5.972 ACC=94.907 F1=64.789 Rec=63.023 Prec=66.667
+Train Client4 [2/30] LR=0.0001000 loss=1.204 ACC=98.918 F1=91.420 Rec=96.869 Prec=87.699
+Train Client5 [2/30] LR=0.0001000 loss=3.815 ACC=79.018 F1=54.881 Rec=76.324 Prec=53.141
+Train Client6 [2/30] LR=0.0001000 loss=1.379 ACC=97.338 F1=94.787 Rec=97.255 Prec=92.686
+Train Client7 [2/30] LR=0.0001000 loss=4.620 ACC=95.000 F1=87.698 Rec=97.701 Prec=83.333
+
+Test-  OSR [2/30] LR=0.0001000 ACC=45.107 F1=51.698 Rec=75.471 Prec=56.244 UNK=14.743 OS*=95.714 HOS=25.550 AUROC=71.528 AUPR=79.721 OSCR=70.973
+Test-Close [2/30] LR=0.0001000 loss=1.304 ACC=99.524 F1=99.524 Rec=99.524 Prec=99.531
+
+Saving best model . . . . . . . .
+
+Train Client0 [3/30] LR=0.0001000 loss=0.336 ACC=97.685 F1=97.757 Rec=97.599 Prec=97.928
+Train Client1 [3/30] LR=0.0001000 loss=0.629 ACC=98.214 F1=64.490 Rec=66.023 Prec=63.158
+Train Client2 [3/30] LR=0.0001000 loss=0.280 ACC=98.778 F1=97.731 Rec=98.079 Prec=97.418
+Train Client3 [3/30] LR=0.0001000 loss=1.291 ACC=97.685 F1=65.882 Rec=65.115 Prec=66.667

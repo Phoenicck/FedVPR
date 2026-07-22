@@ -6,7 +6,7 @@
 
 set -e
 
-DEVICE_ID="${DEVICE_ID:-0}"
+DEVICE_ID="${DEVICE_ID:-1}"
 DATA_ROOT="${DATA_ROOT:-./datasets/RetinalOCT_Dataset}"
 LOG_DIR="${LOG_DIR:-./logs}"
 
@@ -20,10 +20,10 @@ python main.py \
     --lr=5e-4 \
     --backbone='Resnet18' \
     --dataset='RetinalOCT' \
-    --protocol_mode='hard_k3' \
+    --protocol_mode='random' \
     --known_class=3 \
     --unknown_class=5 \
-    --seed=0 \
+    --seed=1 \
     --batchsize=8 \
     --epoches=50 \
     --client_num=8 \
@@ -43,7 +43,7 @@ python main.py \
     --protocol_mode='hard_k3' \
     --known_class=3 \
     --unknown_class=5 \
-    --seed=0 \
+    --seed=1 \
     --batchsize=8 \
     --epoches=30 \
     --client_num=8 \
@@ -51,7 +51,7 @@ python main.py \
     --mode='Finetune' \
     --eps=0.1 \
     --num_steps=1 \
-    --unknown_weight=1.2 \
+    --unknown_weight=1.0 \
     --dirichlet=0 \
     --start_epoch='[5,10,15,20,25]' \
     --sample_from=8 \
